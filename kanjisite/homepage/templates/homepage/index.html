@@ -1,0 +1,59 @@
+{% extends "overall_site_temp.html" %}
+
+
+
+
+{% block pagetitle%}Home{% endblock %}
+{% block content %}
+	<section id = "featured" class = "section">
+		<div class = "header">Take control of your learning.</div>
+		<br/>
+		
+		
+		<div>
+			<div id = "answerbox">
+				<div class = "flipper">
+					<div id = "front">&#x4e9c</div>
+					<div id = "back">Welcome</div>
+				</div>
+			</div>
+			
+			<div id = "answerbox">
+				<div class = "flipper">
+					<div id = "front">歓迎</div>
+					<div id = "back">Welcome</div>
+				</div>
+			</div>
+			
+		</div>
+		
+	</section>
+	
+	<section id = "signin" class = "section">
+		<form action = "/login/auth/" method = "POST">{% csrf_token %}
+			<input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
+			<br/>
+			<input type = "text" class = "login" name = "username" placeholder = "username"></input>
+			<br>
+			<input type = "password" class = "login" name = "password" placeholder = "password"></input>
+			<br/>
+			<input type = "submit" class = "button" value = "login"></input>
+			<br/>
+			<br/>
+			or
+			<br/>
+		</form>
+		<a href = "/create-account/"><button class = "button">create account</button></a>
+		
+		
+		
+	</section>
+	
+	<hr/>
+	<div id = "articles" class = "section">
+		<div class = "header">Articles</div>
+	</div>
+	<div id = "resources" class = "section">
+		<div class = "header">Resources</div>
+	</div>
+{% endblock %}

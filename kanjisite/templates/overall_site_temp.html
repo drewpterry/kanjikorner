@@ -1,0 +1,51 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Kanji Corner - {% block pagetitle %}{% endblock %}</title>
+
+
+
+</head>
+
+<body>
+
+<header>
+	<div id = "navigation">
+		<div id ="logo">Kanji Corner</div>
+		<ul>
+			<li><a href = "/">Home</a></li>
+			<li><a href = "languages.html">Language</a></li>
+			<li><a href = "about.html">About</a></li>
+		</ul>
+		
+	</div>
+</header>	
+	
+	
+
+<div id = "outercontainer">
+	{% block content %}{% endblock %}
+	
+	
+	
+</div>
+
+<br style = "clear:both"/>
+<footer>
+	<div id = "footermain">
+		Drew Terry
+	</div>
+	
+</footer>
+
+
+</div>
+
+
+
+
+</body>
+</html>

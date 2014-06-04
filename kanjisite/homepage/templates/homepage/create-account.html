@@ -1,0 +1,14 @@
+{% extends 'overall_site_temp.html' %}
+{% block pagetitle %}Invalid Login{% endblock %}
+
+{% block content %}
+		<p>Type in your information to create an account! </p>
+		<form id ="invalidform" action = "/create-account/" method = "POST">{% csrf_token %}
+			
+			{{ form }}
+			<input type = "submit" value = "create account!">
+		
+		</form>
+		
+
+{% endblock %}
