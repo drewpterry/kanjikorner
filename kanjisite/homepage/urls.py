@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # ex: /login/
     url(r'^$', views.create_account, name='index'),
     url(r'^success/$', views.create_account_success),
+    url(r'^complete/$', views.logout),
     # url(r'^login/$', views.login, name = 'login'),
     url(r'^auth/$', views.auth_view),
     url(r'^invalid/$', views.invalid_login),

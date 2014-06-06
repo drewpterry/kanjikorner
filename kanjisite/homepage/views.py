@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.context_processors import csrf
 from django.contrib import auth
@@ -8,9 +8,10 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 def index(request):
+    full_name = request.user.username
     c = {}
     c.update(csrf(request))
-    return render(request, 'homepage/index.html')
+    return render(request, 'homepage/index.html', {'full_name':full_name})
      
 
 def auth_view(request):
@@ -32,6 +33,10 @@ def auth_view(request):
 
 def invalid_login(request):
     return render(request, 'homepage/invalid-login.html')
+    
+def logout(request):
+    auth.logout(request)
+    return HttpResponse("you are logged out")    
     
 def create_account(request):
     if request.method == 'POST':

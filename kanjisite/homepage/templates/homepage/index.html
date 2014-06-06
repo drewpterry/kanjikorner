@@ -6,7 +6,13 @@
 {% block pagetitle%}Home{% endblock %}
 {% block content %}
 	<section id = "featured" class = "section">
-		<div class = "header">Take control of your learning.</div>
+		{% if full_name %}
+		<div class = "header">Hi, {{ full_name }}.</div>
+		
+		{% else %}
+		<div class = "header"> Take control of your learning. </div>
+		{% endif %}
+		
 		<br/>
 		
 		
@@ -44,6 +50,7 @@
 			<br/>
 		</form>
 		<a href = "/create-account/"><button class = "button">create account</button></a>
+		<a href = "/logout/complete/"><button class = "button">logout</button></a>
 		
 		
 		
