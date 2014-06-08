@@ -7,7 +7,10 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def main_profile(request,full_name):
-    userprofiles = User.objects.get(username = full_name).userprofile.id
-    userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-    
-    return render(request,'manageset/profile.html', {'full_name':full_name, 'userprofileid':userprofiles, 'usersets':userprofile})
+    if not request.user.is_authenticated() or request.user.username != full_name:
+            # return render(request, 'myapp/login_error.html')
+            return HttpResponse("you are not authenticated")
+    else:        
+        userprofiles = User.objects.get(username = full_name).userprofile.id
+        userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+        return render(request,'manageset/profile.html', {'full_name':full_name, 'userprofileid':userprofiles, 'usersets':userprofile})
