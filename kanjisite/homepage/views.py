@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
+from manageset.models import UserProfile
 
 
 # Create your views here.
@@ -19,7 +20,9 @@ def auth_view(request):
     password = request.POST.get('password', '')
     user = auth.authenticate(username = username, password = password)
     if user is not None:
-        # p = UserProfile()
+        # theusername = User.objects.get(username = username)
+#         p = UserProfile(user = "testuser")
+#         p.save()
         auth.login(request,user)
         return HttpResponseRedirect('/')
     else:
@@ -44,6 +47,8 @@ def create_account(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
+            p = UserProfile(user = new_user)
+            p.save()
             return HttpResponseRedirect('/create-account/success')
     else:
         form = UserCreationForm()
