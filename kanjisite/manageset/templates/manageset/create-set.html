@@ -1,0 +1,21 @@
+{% extends 'overall_site_temp.html' %}
+{% load staticfiles %}
+{% block pagetitle %}Profile{% endblock %}
+
+{% block content %}
+		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
+		<br style = "clear:both">
+		<!-- <p> this is your id: {{ userprofileid }}</p> -->
+		<input type = "text" id = "searchbox" placeholder = "Search grade" autofocus></input><input type = "button" value = "search" onclick = "getjson(document.getElementById('searchbox').value)"></input>
+	
+		<br style = "clear:both"/>
+	
+		<div id = "container">
+	
+		
+	
+		</div>
+		
+		
+<!-- <script src = "manageset/main_profile.js"></script> -->
+{% endblock %}

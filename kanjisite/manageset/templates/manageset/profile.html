@@ -7,11 +7,13 @@
 		<br style = "clear:both">
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
 		<div id = "set-preview">
-			<a href = "#">
+	
+			<a href = "{% url 'profile:newset' full_name %}">	
 				<div class = "set-list">Create a new set
 					<div>+</div><!-- <p>+</p> -->
 				</div>
 			</a>
+		
 			<div class = "set-list"><div class = "overlay"> 
 					<div id = "set-description">This has all the words in all of your sets combined</div></br>
 					<a href = "#"><div class = "set-option">Practice</div></a>
@@ -32,6 +34,7 @@
 		<canvas></canvas>
 		
 		
+		<script src = "{% static 'manageset/main_profile.js' %}"></script>
 <!-- <script src = "manageset/main_profile.js"></script> -->
 {% endblock %}
 

@@ -1,9 +1,10 @@
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'homepage/stylesheet.css' %}">
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src = "{% static 'homepage/jquery-2.0.3.min.js' %}"></script>
 <title>Kanji Corner - {% block pagetitle %}{% endblock %}</title>
 
 
@@ -51,8 +52,6 @@
 </div>
 
 
-<script src = "{% static 'jquery-2.0.3.min.js' %}"></script>
-<script src = "{% static 'main_profile.js' %}"></script>
 
 </body>
 </html>
