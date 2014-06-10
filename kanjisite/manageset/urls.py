@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # ex: /profile/
     url(r'^(?P<full_name>\w*)$', views.main_profile, name='index'),
     url(r'^(?P<full_name>\w*)/new-set$', views.create_new_set, name='newset'),
+    url(r'^(?P<full_name>\w*)/new-set/word-search$', views.word_search, name='newset'),
    
     
 )   

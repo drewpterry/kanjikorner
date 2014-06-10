@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji
 from django.contrib.auth.models import User
+from django.utils import simplejson
+from django.core import serializers
 # import pdb; pdb.set_trace()
 
 # Create your views here.
@@ -21,4 +23,15 @@ def create_new_set(request,full_name):
             # return render(request, 'myapp/login_error.html')
             return HttpResponse("you are not authenticated")
     else:
-        return render(request, "manageset/create-set.html", {'full_name':full_name})                
+        kanjis = Kanji.objects.all()
+        return render(request, "manageset/create-set.html", {'full_name':full_name, 'kanjis':kanjis})   
+        
+
+def word_search(request, full_name):
+    if not request.user.is_authenticated() or request.user.username != full_name:
+        return HttpResponse("You are not authenticated")
+    else:
+        kanji = Kanji.objects.all()
+        data = serializers.serialize("json",kanji)
+        # dump = simplejson.dumps(kanji)   
+        return HttpResponse(simplejson.dumps(data), content_type="application/json")                    

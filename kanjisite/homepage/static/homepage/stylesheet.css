@@ -1,3 +1,8 @@
+colors{
+	red: #e65555;
+	blue: #86e7fc;
+}
+
 body {
   margin: 0px;
   font-family: "Helvetica Neue";
@@ -511,6 +516,100 @@ canvas {
 	height:400px;
 	width:60%;
 }
+
+
+/*Create new set page ---------------------------------------------------------*/
+
+.text-area {
+    border: none;
+    border-radius: 5px;
+	color: #b4b4b4;
+	float:left;
+	outline:none;
+	
+}
+
+.left-margin{
+	margin-left:5%;
+}
+
+
+
+#create-set-description, #set-title{
+	margin-left:5%;
+	width:20%;
+	padding-left:10px;
+}
+
+#set-title{
+	height:40px;
+	font-size:1.7em;
+	margin-bottom:5px;
+}
+
+#create-set-button{
+	float:left;
+	margin-left:20px;
+	background-color:#e65555;
+	border-radius:5px;
+	outline:none;
+	color:white;
+	border-color:rgba(134, 231, 252, 1);
+	border-style:solid;
+	height:40px;
+	font-size:1.5em;
+	cursor:pointer;
+}
+
+#create-set-description{
+	height:50px;
+	padding:0px;
+	padding-left:10px;
+	resize:none;
+		
+}
+
+#search-area{
+	float:left;
+	height:50px;
+	width:67%;
+	margin-left:20px;
+	//border-style:solid;
+}
+
+#search-area input[type = "button"]{
+	float:left;
+	width:100px;
+	height:25px;
+	margin-left:5px;
+	background-color:rgba(200,200,200,1);
+	border-radius:3px;
+	outline:none;
+	padding:0px;
+	color:rgba(100,100,100,1);
+	//border-style:solid;
+	border:none;
+	cursor:pointer;
+}
+
+#searchbox{
+	width:50%;
+	height:20px;
+	margin-top:5px;
+	margin-left:5%;
+	padding-left:5px;
+	font-size:1em;
+}
+
+#search-area #start-search{
+	height:20px;
+	margin-top:5px;
+	background-color:;
+	//color:blue;
+}
+
+
+
 	  
 	  
 	  
