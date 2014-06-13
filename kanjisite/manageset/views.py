@@ -4,6 +4,7 @@ from manageset.models import UserProfile, Sets, Words, Kanji
 from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.core import serializers
+from datetime import datetime
 # import pdb; pdb.set_trace()
 
 # Create your views here.
@@ -33,7 +34,7 @@ def word_search(request, full_name):
     else:
         if request.is_ajax():
             try:
-                ordering = request.POST['theorder']
+                ordering = request.GET['theorder']
                 kanji = Kanji.objects.all().order_by(ordering)
                 data = serializers.serialize("json",kanji)
             except KeyError:
@@ -44,6 +45,13 @@ def word_search(request, full_name):
         
         
 def add_words_to_set(request,full_name):
+    userprofiles = User.objects.get(username = full_name).userprofile.id
+    userprofile = get_object_or_404(UserProfile, pk = userprofiles)
     setname = request.GET['title']
-    return HttpResponse("You created a new set!" + setname + "called.")        
+    description = request.GET['description']
+    newset = Sets(name = setname, description = description, pub_date = datetime.now())
+    newset.save()
+    userprofile.user_sets.add(newset)
+    chosenwords = request.GET.getlist('chosenwords')
+    return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':chosenwords})        
     

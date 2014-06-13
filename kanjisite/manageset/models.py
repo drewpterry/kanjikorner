@@ -29,7 +29,7 @@ class Words(models.Model):
 class Sets(models.Model):
     name = models.CharField(max_length = 50)
     description = models.CharField(max_length = 200)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField("pub_date")
     words = models.ManyToManyField(Words, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     # userprofile = models.ForeignKey(UserProfile)

@@ -9,22 +9,23 @@
 		<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}">
 			<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
 			<input type = "submit" id = "create-set-button" value = "Create Stack"></input>
-
+			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
 		
 			<br style = "clear:both"/>
 			<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
+			
 		
 		</form>
 		<div id = "search-area">
 			<span style = "float:left;">Filter:</span>
 			<input type = "button" id = "allwords" value = "All"></input>
-			<input type = "button" value = "Kanji" onclick = "search()"></input>
-			<input type = "button" value = "Words"></input>
 			<input type = "button" id = "gradefilter" value = "Grade"></input>
+			<input type = "button" id = "strokes" value = "Simplicity"></input>
 			<input type = "button" value = "Frequency"></input>
+			<input type = "button" value = "NLPT" onclick = ></input>
 			<br style = "clear:both;">
 			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
-			<input type = "button" value = "search" id = "start-search"></input>
+			<!-- <input type = "button" value = "search" id = "start-search"></input> -->
 		</div>
 		<br style = "clear:both"/>
 	
@@ -56,16 +57,23 @@
 {% block scripts %}
 <script language>
 
+var chosenwords = [1,2,3,4];
+document.getElementById('chosenwords').value = chosenwords;
+
+
 var filter = "grade";
 
 var search = function(signal){
-	console.log("worked");
+	
 	$.ajax({
-		url:'http://localhost:8000/profile/drew/new-set/word-search',
-		type:'POST',
+		url:'http://localhost:8000/profile/{{ full_name }}/new-set/word-search',
+		type:'GET',
+		// dataType: 'json',
 		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: function(data){
+			
 			data = JSON.parse(data);
+			console.log("workeds");
 			
 			if (signal == ''){
 				keyword = '';
@@ -131,7 +139,7 @@ var search = function(signal){
 };
 
 
-document.getElementById('allwords').onclick = function(){
+document.getElementById('strokes').onclick = function(){
 	filter = "strokes";
 	search('');
 }

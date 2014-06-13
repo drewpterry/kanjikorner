@@ -36,6 +36,7 @@
 	</section>
 	
 	<section id = "signin" class = "section">
+		{% if not full_name %}
 		<form id = "login-form" action = "/login/auth/" method = "POST">{% csrf_token %}
 			<input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
 			<br/>
@@ -51,6 +52,8 @@
 		</form>
 		<a href = "/create-account/"><button class = "button">create account</button></a>
 		<a href = "/logout/complete/"><button class = "button">logout</button></a>
+		{% else %}
+		{% endif %}
 		
 		
 		
