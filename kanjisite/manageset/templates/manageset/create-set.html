@@ -6,37 +6,43 @@
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
 		<br style = "clear:both">
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
-		<input type = "text" id = "set-title" class = "text-area left-margin" placeholder = "Name your stack" autofocus></input>
-		<input type = "button" id = "create-set-button" value = "Create Stack"></input>
+		<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}">
+			<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
+			<input type = "submit" id = "create-set-button" value = "Create Stack"></input>
+
 		
-		<br style = "clear:both"/>
-		<textarea id = "create-set-description" class = "text-area left-margin" placeholder = "Write a brief description here"></textarea>
+			<br style = "clear:both"/>
+			<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
+		
+		</form>
 		<div id = "search-area">
 			<span style = "float:left;">Filter:</span>
-			<input type = "button" value = "All"></input>
+			<input type = "button" id = "allwords" value = "All"></input>
 			<input type = "button" value = "Kanji" onclick = "search()"></input>
 			<input type = "button" value = "Words"></input>
-			<input type = "button" value = "Grade"></input>
+			<input type = "button" id = "gradefilter" value = "Grade"></input>
 			<input type = "button" value = "Frequency"></input>
 			<br style = "clear:both;">
 			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
-			<input type = "button" value = "search" id = "start-search" onclick = "search()"></input>
+			<input type = "button" value = "search" id = "start-search"></input>
 		</div>
 		<br style = "clear:both"/>
 	
 		<div id = "container">
-			<!-- {% if kanjis %}
-				{% for kanji_name in kanjis %}
-				<div id = 'answercontainer' class = 'answerbox' onclick = 'clicked(this)'>
+				
+				<div id = 'answercontainer' class = 'answerbox'>
 					<div class = 'flipper'>
-						<div class = 'front'> {{ kanji_name }} </div>	
-						<div class = 'back'> {{ kanji_name.kanji_meaning }} </div>
+						<div class = 'front'>
+							<div id = "kanji"> 本</div>
+							<div id = "meaning">Book </div>
+							
+							<div id = "grade"> Grade: 1 </div>
+							<button class = "add-remove">know it!</button>
+							<button class = "add-remove">add</button>
+						</div>	
+						<div class = 'back'> Readings? or associated words? </div>
 					</div>
 				</div>
-				{% endfor %}
-			{% else %}	
-				<p> Something didnt work.</p>
-			{% endif %} -->
 		
 	
 		</div>
@@ -50,19 +56,97 @@
 {% block scripts %}
 <script language>
 
-var search = function(){
+var filter = "grade";
+
+var search = function(signal){
+	console.log("worked");
 	$.ajax({
 		url:'http://localhost:8000/profile/drew/new-set/word-search',
-		type:'get',
+		type:'POST',
+		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: function(data){
 			data = JSON.parse(data);
-			document.getElementById('container').innerHTML = data[1].fields.kanji_name;
+			
+			if (signal == ''){
+				keyword = '';
+			}else{
+			keyword = document.getElementById('searchbox').value;
+			}
+			
+			var foundflag = false;
+			var content = "";
+			
+			if(keyword == ''){
+				for(var i= 0; i<data.length; i++){
+					
+						content = content + "<div id = 'answercontainer' class = 'answerbox' >";
+						content = content + "<div class = 'flipper'><div class = front>"; 
+						content = content + "<div id = 'kanji'>" + data[i].fields.kanji_name + "</div>";
+						content = content + "<div id = 'meaning'>" + data[i].fields.kanji_meaning + "</div>";
+						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+						content = content + "<button class = 'add-remove'>know it!</button>";
+						content = content + "<button class = 'add-remove'>add</button>";
+						content = content + "</div></div>"
+						content = content + "<div class = 'back'>" + data[i].fields.kanji_name + "</div></div></div>";
+						
+					}
+				document.getElementById('container').innerHTML = content;	
+						
+			}else{
+				
+				for(var i= 0; i<data.length; i++){
+					
+					if(data[i].fields.kanji_meaning.toLowerCase().indexOf(keyword.toLowerCase())!= -1||data[i].fields.kanji_name.indexOf(keyword)!=-1){
+				
+						content = content + "<div id = 'answercontainer' class = 'answerbox' onclick = 'clicked(this)'>";
+						content = content + "<div class = 'flipper'><div class = front>"; 
+						content = content + "<div id = 'kanji'>" + data[i].fields.kanji_name + "</div>";
+						content = content + "<div id = 'meaning'>" + data[i].fields.kanji_meaning + "</div>";
+						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+						content = content + "<button class = 'add-remove'>know it!</button>";
+						content = content + "<button class = 'add-remove'>add</button>";
+						content = content + "</div></div>"
+						content = content + "<div class = 'back'>" + data[i].fields.kanji_name + "</div></div></div>";
+						foundflag = true;
+					}
+					
+					if(foundflag == true){
+						document.getElementById('container').innerHTML = content;
+					}else{
+						document.getElementById('container').innerHTML = "There are no matching results for your query: " + keyword ;
+					}
+						
+					
+					
+				}
+			}
+				// document.getElementById('container').innerHTML = content;
+			
+			
 		},
 		failure: function(data){
 			alert("Sorry got an error")
 		}
 	});
 };
+
+
+document.getElementById('allwords').onclick = function(){
+	filter = "strokes";
+	search('');
+}
+
+document.getElementById('gradefilter').onclick = function(){
+	filter = "grade"
+	search("yes");
+}
+
+document.getElementById('searchbox').onkeyup = function(){
+	// filter = "grade"
+	search("yes");
+}
+
+search('');
 		
 </script>
 {% endblock %}		

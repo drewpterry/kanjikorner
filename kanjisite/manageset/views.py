@@ -31,7 +31,19 @@ def word_search(request, full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("You are not authenticated")
     else:
-        kanji = Kanji.objects.all()
-        data = serializers.serialize("json",kanji)
+        if request.is_ajax():
+            try:
+                ordering = request.POST['theorder']
+                kanji = Kanji.objects.all().order_by(ordering)
+                data = serializers.serialize("json",kanji)
+            except KeyError:
+                return HttpResponse("error")    
         # dump = simplejson.dumps(kanji)   
-        return HttpResponse(simplejson.dumps(data), content_type="application/json")                    
+        return HttpResponse(simplejson.dumps(data), content_type="application/json")   
+        # return HttpResponse("hello")
+        
+        
+def add_words_to_set(request,full_name):
+    setname = request.GET['title']
+    return HttpResponse("You created a new set!" + setname + "called.")        
+    

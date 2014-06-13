@@ -36,7 +36,7 @@
 	</section>
 	
 	<section id = "signin" class = "section">
-		<form action = "/login/auth/" method = "POST">{% csrf_token %}
+		<form id = "login-form" action = "/login/auth/" method = "POST">{% csrf_token %}
 			<input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
 			<br/>
 			<input type = "text" class = "login" name = "username" placeholder = "username"></input>

@@ -17,9 +17,11 @@ class SetsAdmin(admin.ModelAdmin):
 
 class WordsAdmin(admin.ModelAdmin):
     fields = ('real_word', 'meaning', 'hiragana', 'kanji')
+    extra = 5
     
 class KanjiAdmin(admin.ModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
+    extra = 5
     
 class UserProfileAdmin(admin.ModelAdmin):
     fields = ('user', 'user_sets')   
