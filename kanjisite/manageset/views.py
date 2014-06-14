@@ -28,8 +28,8 @@ def create_new_set(request,full_name):
         return render(request, "manageset/create-set.html", {'full_name':full_name, 'kanjis':kanjis})   
         
 
-def word_search(request, full_name):
-    if not request.user.is_authenticated() or request.user.username != full_name:
+def word_search(request):
+    if not request.user.is_authenticated():
         return HttpResponse("You are not authenticated")
     else:
         if request.is_ajax():
@@ -49,9 +49,15 @@ def add_words_to_set(request,full_name):
     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
     setname = request.GET['title']
     description = request.GET['description']
+    chosenwords = request.GET.getlist('chosenwords')
+    thechosenwords = []
+    for kanji in chosenwords:
+        obj1 = Kanji.objects.get(id = kanji)
+        thechosenwords.append(obj1)
+        
     newset = Sets(name = setname, description = description, pub_date = datetime.now())
     newset.save()
+    newset.kanji.add(*thechosenwords)
     userprofile.user_sets.add(newset)
-    chosenwords = request.GET.getlist('chosenwords')
-    return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':chosenwords})        
+    return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})        
     
