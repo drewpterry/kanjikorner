@@ -681,16 +681,21 @@ canvas {
 	  font-size:.5em;
   }
   
- .front:hover {
+ /*.front:hover {
 	 -webkit-box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
 	 -moz-box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
 	 box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
- } 
+ } */
  
  .outline {
-	 -webkit-box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
-	 -moz-box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
-	 box-shadow: 1px 0px 23px 3px rgba(230,85,85,1);
+	 -webkit-box-shadow: 3px 3px 3px 0px rgba(230,85,85,1);
+	 -moz-box-shadow: 3px 3px 3px 0px rgba(230,85,85,1);
+	 box-shadow: 3px 3px 3px 0px rgba(230,85,85,1);
+	 
+	 /*-webkit-box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);
+	 -moz-box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);
+	 box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);*/
+	/* border-color:rgba(230, 85, 85, 1);*/
  }
   
   .back {
