@@ -6,28 +6,32 @@
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
 		<br style = "clear:both">
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
-		<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}">
-			<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
-			<input type = "submit" id = "create-set-button" value = "Create Stack"></input>
-			
-			
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			<input type = "text" id = "chosenwords" class = "text-area left-margin" name = "chosenwords" ></input>
-			
 		
-			<br style = "clear:both"/>
-			<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
+		<div id = "left-form">
 			
+			
+			<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}">
+			
+				<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
+			
+				<br style = "clear:both"/>
+				<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
+				<br style = "clear:both"/>
+				<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
+			</form>
+			<br style = "clear:both;"/>
+			
+			<div id = "wordlist">
+				
+				<!-- Where chosen mini words appear -->
+				
+				
+			</div>
+		</div>
 		
-		</form>
+		
 		<div id = "search-area">
-			<span style = "float:left;">Filter:</span>
+			<span style = "float:left;">Order By:</span>
 			<input type = "button" id = "allwords" value = "All"></input>
 			<input type = "button" id = "gradefilter" value = "Grade"></input>
 			<input type = "button" id = "strokes" value = "Simplicity"></input>
@@ -35,25 +39,12 @@
 			<input type = "button" value = "NLPT" onclick = ></input>
 			<br style = "clear:both;">
 			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
-			<!-- <input type = "button" value = "search" id = "start-search"></input> -->
 		</div>
-		<br style = "clear:both"/>
+		<!-- <br style = "clear:both"/> -->
 	
 		<div id = "container">
 				
-				<div id = 'answercontainer' class = 'answerbox'>
-					<div class = 'flipper'>
-						<div class = 'front'>
-							<div id = "kanji"> 本</div>
-							<div id = "meaning">Book </div>
-							
-							<div id = "grade"> Grade: 1 </div>
-							<button class = "add-remove">know it!</button>
-							<button class = "add-remove">add</button>
-						</div>	
-						<div class = 'back'> Readings? or associated words? </div>
-					</div>
-				</div>
+				<!-- Where searched words appear -->
 		
 	
 		</div>
