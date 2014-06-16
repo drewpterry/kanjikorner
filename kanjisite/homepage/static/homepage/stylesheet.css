@@ -679,6 +679,16 @@ canvas {
 	  height:50px;
 	  width:50px;
 	  font-size:.5em;
+	  cursor:pointer;
+  }
+  
+  #red-ex {
+	  font-size:10em;
+	  position:absolute;
+	  margin-left:27%;
+	  line-height:50px;
+	  color:rgba(230, 85, 85, 1);
+	  display:none;
   }
   
  /*.front:hover {

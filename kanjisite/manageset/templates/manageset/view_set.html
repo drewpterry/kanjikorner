@@ -1,6 +1,6 @@
 {% extends 'overall_site_temp.html' %}
 {% load staticfiles %}
-{% block pagetitle %}Profile{% endblock %}
+{% block pagetitle %} View and Edit {{ set_name }}{% endblock %}
 
 {% block content %}
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
@@ -12,10 +12,10 @@
 			
 			<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
 			
-				<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
+				<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" value = "{{ set_name }}" readonly></input>
 			
 				<br style = "clear:both"/>
-				<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
+				<textarea id = "create-set-description" class = "text-area left-margin" name = "description" value = "{{ set_name.description }}" readonly></textarea>
 				<br style = "clear:both"/>
 				<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
 			</form>
@@ -56,5 +56,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src = "{% static 'manageset/card-search.js' %}"></script>
+<!-- <script src = "{% static 'manageset/card-search.js' %}"></script> -->
 {% endblock %}		
