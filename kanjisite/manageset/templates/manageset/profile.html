@@ -1,0 +1,42 @@
+{% extends 'overall_site_temp.html' %}
+{% load staticfiles %}
+{% block pagetitle %}Profile{% endblock %}
+
+{% block content %}
+		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
+		<br style = "clear:both">
+		<!-- <p> this is your id: {{ userprofileid }}</p> -->
+		<div id = "set-preview">
+	
+			<a href = "{% url 'profile:newset' full_name %}">	
+				<div class = "set-list">Create a new set
+					<div>+</div><!-- <p>+</p> -->
+				</div>
+			</a>
+		
+			<div class = "set-list"><div class = "overlay"> 
+					<div id = "set-description">This has all the words in all of your sets combined</div></br>
+					<a href = "#"><div class = "set-option">Practice</div></a>
+					<!-- <a href = "#"><div class = "set-option">Edit</div></a> -->
+				</div>Master Set</div>
+		{% for name in usersets.user_sets.all %}
+			<div class = "set-list">
+				<div class = "overlay"> 
+					<div id = "set-description">{{ name.description }}</div></br>
+					<a href = "#"><div class = "set-option">Practice</div></a>
+					<a href = "{% url 'profile:view_stack' full_name  name %}"><div class = "set-option">Edit</div></a>
+				</div>
+				<p>{{ name }}</p>
+			</div>
+		{% endfor %}
+		</div>
+		
+		<canvas></canvas>
+		
+		
+		<script src = "{% static 'manageset/main_profile.js' %}"></script>
+<!-- <script src = "manageset/main_profile.js"></script> -->
+{% endblock %}
+
+
+
