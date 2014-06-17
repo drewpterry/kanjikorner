@@ -73,6 +73,9 @@ def view_stack(request,full_name, set_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
             return HttpResponse("you are not authenticated")
     else:
-        return render(request, "manageset/view_set.html", {'full_name':full_name, 'set_name':set_name})
+        userprofiles = User.objects.get(username = full_name).userprofile.id
+        userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+        setobject = Sets.objects.get(name = set_name, userprofile = userprofiles)
+        return render(request, "manageset/view_set.html", {'full_name':full_name, 'set_name':set_name, 'setthing':setobject})
             
     

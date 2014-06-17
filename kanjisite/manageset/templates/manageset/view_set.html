@@ -23,7 +23,11 @@
 			
 			<div id = "wordlist">
 				
-				<!-- Where chosen mini words appear -->
+			{% for kanji in setthing.kanji.all %}
+			
+			<p>{{ kanji.kanji_name}}</p>
+			
+			{% endfor %}
 				
 				
 			</div>
