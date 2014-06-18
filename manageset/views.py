@@ -75,7 +75,40 @@ def view_stack(request,full_name, set_name):
     else:
         userprofiles = User.objects.get(username = full_name).userprofile.id
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-        setobject = Sets.objects.get(name = set_name, userprofile = userprofiles)
-        return render(request, "manageset/view_set.html", {'full_name':full_name, 'set_name':set_name, 'setthing':setobject})
+        return render(request, "manageset/view_set.html", {'full_name':full_name, 'set_name':set_name})
+           
+                
+def view_stack_search(request):
+    if not request.user.is_authenticated():
+        return HttpResponse("you are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+                fullname = request.GET['full_name']
+                setname = request.GET['set_name']
+                userprofiles = User.objects.get(username = fullname).userprofile.id
+                ordering = request.GET['theorder']
+                userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+                setobject = Sets.objects.get(name = setname, userprofile = userprofiles).kanji.all().order_by(ordering)
+                data = serializers.serialize("json",setobject)
+            except KeyError:
+                return HttpResponse("ajax error")
+        return HttpResponse(simplejson.dumps(data), content_type="application/json")
+
+# def word_search(request):
+#     if not request.user.is_authenticated():
+#         return HttpResponse("You are not authenticated")
+#     else:
+#         if request.is_ajax():
+#             try:
+#                 ordering = request.GET['theorder']
+#                 kanji = Kanji.objects.all().order_by(ordering)
+#                 data = serializers.serialize("json",kanji)
+#             except KeyError:
+#                 return HttpResponse("error")    
+#         # dump = simplejson.dumps(kanji)   
+#         return HttpResponse(simplejson.dumps(data), content_type="application/json")   
+#         # return HttpResponse("hello")
+                  
             
     

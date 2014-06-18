@@ -1,14 +1,13 @@
-
-
 var filter = "grade";
 var addcheck = [];
+
 
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/word-search',
+		url:'http://localhost:8000/profile/view-set/get-set-words',
 		type:'GET',
-		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}'},
+		data:{full_name: thefullname , set_name: thesetname, theorder: filter},
 		success: function(data){
 			
 			data = JSON.parse(data);
@@ -31,10 +30,10 @@ var search = function(signal){
 						content = content + "<div id = 'kanji'>" + data[i].fields.kanji_name + "</div>";
 						content = content + "<div id = 'meaning'>" + data[i].fields.kanji_meaning + "</div>";
 						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
-						content = content + "<button class = 'add-remove'>know it!</button>";
+						//content = content + "<button class = 'add-remove'>know it!</button>";
 						//hmmm some people on stackoverflow say inline javascript is bad practice...
 						//also probably the fact that I repeat it 3 times is bad...
-						content = content + "<button class = 'add-remove' onclick = 'addword(" + data[i].pk + ",\"" + data[i].fields.kanji_name + "\",\"" + data[i].fields.kanji_meaning + "\", this)'>add</button>";
+						//content = content + "<button class = 'add-remove' onclick = 'addword(" + data[i].pk + ",\"" + data[i].fields.kanji_name + "\",\"" + data[i].fields.kanji_meaning + "\", this)'>add</button>";
 						content = content + "</div></div>"
 						content = content + "<div class = 'back'>" + data[i].fields.kanji_name + "</div></div></div>";
 						
@@ -53,9 +52,9 @@ var search = function(signal){
 						content = content + "<div id = 'kanji'>" + data[i].fields.kanji_name + "</div>";
 						content = content + "<div id = 'meaning'>" + data[i].fields.kanji_meaning + "</div>";
 						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
-						content = content + "<button class = 'add-remove'>know it!</button>";
-						content = content + "<button class = 'add-remove'"; 
-						content = content + "onclick = 'addword(" + data[i].pk + ",\"" + data[i].fields.kanji_name + "\",\"" + data[i].fields.kanji_meaning + "\", this)'>add</button>";
+						// content = content + "<button class = 'add-remove'>know it!</button>";
+// 						content = content + "<button class = 'add-remove'"; 
+						// content = content + "onclick = 'addword(" + data[i].pk + ",\"" + data[i].fields.kanji_name + "\",\"" + data[i].fields.kanji_meaning + "\", this)'>add</button>";
 						content = content + "</div></div>"
 						content = content + "<div class = 'back'>" + data[i].fields.kanji_name + "</div></div></div>";
 						foundflag = true;
@@ -176,4 +175,3 @@ document.getElementById('searchbox').onkeyup = function(){
 
 //so that opening page has all the cards
 search('');
-		

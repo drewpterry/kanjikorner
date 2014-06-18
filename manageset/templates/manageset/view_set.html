@@ -17,17 +17,13 @@
 				<br style = "clear:both"/>
 				<textarea id = "create-set-description" class = "text-area left-margin" name = "description" value = "{{ set_name.description }}" readonly></textarea>
 				<br style = "clear:both"/>
-				<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
+				<input type = "submit" id = "create-set-button" class = "left-margin" value = "Edit Stack"></input>
 			</form>
 			<br style = "clear:both;"/>
 			
 			<div id = "wordlist">
 				
-			{% for kanji in setthing.kanji.all %}
 			
-			<p>{{ kanji.kanji_name}}</p>
-			
-			{% endfor %}
 				
 				
 			</div>
@@ -48,7 +44,7 @@
 	
 		<div id = "container">
 				
-				<!-- Where searched words appear -->
+				
 		
 	
 		</div>
@@ -60,5 +56,10 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- <script src = "{% static 'manageset/card-search.js' %}"></script> -->
+
+<script language = "javascript">
+var thefullname = "{{ full_name }}";
+var thesetname = "{{ set_name }}";
+</script>
+<script src = "{% static 'manageset/view_set.js' %}"></script>
 {% endblock %}		
