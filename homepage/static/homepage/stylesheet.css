@@ -204,7 +204,10 @@ header {
     background-color: #86e7fc;
     margin-top: 12px;
     line-height: 160px;
-    float: left; }
+    float: left;
+    margin-right: 10px;
+    width: 150px;
+    height: 150px; }
 	
   #outercontainer .answerbox2 .flipper,
   #outercontainer .answerbox2 .flipper {
@@ -213,10 +216,6 @@ header {
     -o-transform: rotateY(180deg);
     transform: rotateY(180deg); }
 	
-  #outercontainer #answerbox {
-    margin-right: 10px;
-    width: 150px;
-    height: 150px; }
 	
   #outercontainer .flipper {
     -webkit-transition: 0.2s;
@@ -281,15 +280,9 @@ header {
     float: right;
     margin-right: 5%; }
 	
-  #middle {
-    width: 70%;
-    height: 450px;
-    float: left;
-    /*flipping animation*/
-    /*speed of flip*/ }
 	
     #card {
-      width: 50%;
+      width: 30%;
       height: 200px;
       margin: auto;
       margin-top: 100px;
@@ -302,10 +295,10 @@ header {
       border-radius: 10px; }
 	  
     #answerinput {
-      width: 50%;
+      width: 30%;
       height: 50px;
       margin: auto;
-      margin-top: 30px;
+      margin-top: 15px;
       background-color: white;
       border-color: rgba(88, 211, 247, 0.5);
       border-style: solid;
@@ -330,7 +323,7 @@ header {
       position: relative;
       margin-bottom: 10px; }
 	  
-    #middle .scorebox {
+    .scorebox {
       width: 47%;
       height: auto;
       float: left;
@@ -338,14 +331,14 @@ header {
       border-radius: 5px;
       padding-top: 3px; }
 	  
-    #middle .title {
+    .title {
       width: 100%;
       height: 20px;
       float: left;
       font-size: .8em;
       color: white; }
 	  
-    #middle .score {
+    .score {
       width: 100%;
       height: 30px;
       margin-top: -10px;
@@ -353,33 +346,62 @@ header {
       font-size: 1.5em;
       color: #969696; }
 	  
-    #middle .right {
+    .right {
       float: right; }
+	 
+	#middle{
+		text-align:center;
+	} 
+	
+	#middle #center {
+		//border-style:solid;
+		height:210px;
+		//overflow:auto;
+	} 
+	 
+	#middle .cardhold {
+		height:210px;
+		width:33.3%;
+		overflow:auto;
+		//border-style:solid;
+		float:left;
+		text-align:center;
+		position:relative;
+		
+	} 
 	  
-    #outercontainer #middle #answerbox {
+    #outercontainer #middle .answerbox {
       -webkit-perspective: 1000;
       -moz-perspective: 1000;
       -o-perspective: 1000;
       perspective: 1000;
+      width: 90%;
+      height: 200px; 
       background-color: #86e7fc;
-      margin-left: 12px;
-      margin-top: 12px;
-      line-height: 160px; }
+      /*margin-left: auto;
+      margin-top: 12px;*/
+/*	  margin-top:30px;*/
+      line-height: 160px; 
+	  text-align:center;
+	  float:none;
+	  position:relative;
+	  margin:auto;
+	  margin-top:0px;
 	  
+  }
 	  
-    #outercontainer #middle .answerbox2 .flipper,
-    #outercontainer #middle .answerbox2 .flipper {
+	 
+	  
+    #middle .answerbox2 .flipper,
+   	#middle .answerbox2 .flipper {
       -webkit-transform: rotateY(180deg);
       -moz-transform: rotateY(180deg);
       -o-transform: rotateY(180deg);
-      transform: rotateY(180deg); }
+      transform: rotateY(180deg);
+  height:200px; }
 	  
-    #outercontainer #middle #answerbox {
-      margin: auto;
-      width: 50%;
-      height: 200px; }
 	  
-    #outercontainer #middle .flipper {
+    #middle .flipper {
       -webkit-transition: 0.2s;
       -webkit-transform-style: preserve-3d;
       -moz-transition: 0.2s;
@@ -389,7 +411,7 @@ header {
       transition: 0.2s;
       transform-style: preserve-3d; }
 	  
-    #outercontainer #middle #front, #outercontainer #middle #back {
+    #middle .front, #middle .back {
       -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
       -o-backface-visibility: hidden;
@@ -402,18 +424,44 @@ header {
       -webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.75);
       box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.75);
-      font-size: 3em;
+      font-size: 60px;
       float: left;
       width: 100%;
-      height: 200px;
+      height: 100%;
       line-height: 200px; }
 	  
-    #outercontainer #middle #back {
+    #middle .back {
       -webkit-transform: rotateY(180deg);
       -moz-transform: rotateY(180deg);
       -o-transform: rotateY(180deg);
       transform: rotateY(180deg);
-      position: absolute; }
+      position: absolute;
+  height:100%;
+font-size: 40px; }
+	  
+	  #outercontainer #middle .mini{
+		  width:45%;
+		  height:133px;
+		  margin:auto;
+		  margin-top:40px;
+		  float:none;
+	  }
+	  
+/*need this for the front and back classes because they are within the answerbox and need a width that is 100%*/
+	 #middle .mini2{
+		  width:100%;
+		  height:100%;
+		  font-size:20px;
+		  line-height:133px;
+	  }
+	  
+	  #middle .left{
+		  float:left;
+	  }
+	  
+	  #middle .right{
+		  float:right;
+	  }
 	  
 	 #qtype {
 		 font-size:1em;
@@ -448,7 +496,7 @@ header {
 	margin:5%;
 	margin-top:0px;
 	overflow:auto;
-	border-style:solid;
+	//border-style:solid;
 }	
 
 .set-list, .overlay {
@@ -461,7 +509,7 @@ header {
     background-color: #f0f0f0;
     border-width: 1px;
     border-color: #969696;
-    //border-style: solid;
+    border-style: solid;
     border-radius: 5px;
     -webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.75);

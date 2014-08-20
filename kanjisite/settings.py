@@ -32,6 +32,11 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -43,6 +48,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'homepage',
     'manageset',
+    'flashcard',
+    'endless_pagination',
 )
 
 MIDDLEWARE_CLASSES = (

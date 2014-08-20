@@ -84,10 +84,10 @@ def view_stack_search(request):
     else:
         if request.is_ajax():
             try:
-                fullname = request.GET['full_name']
-                setname = request.GET['set_name']
+                fullname = request.POST['full_name']
+                setname = request.POST['set_name']
                 userprofiles = User.objects.get(username = fullname).userprofile.id
-                ordering = request.GET['theorder']
+                ordering = request.POST['theorder']
                 userprofile = get_object_or_404(UserProfile, pk = userprofiles)
                 setobject = Sets.objects.get(name = setname, userprofile = userprofiles).kanji.all().order_by(ordering)
                 data = serializers.serialize("json",setobject)

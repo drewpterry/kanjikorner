@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^login/', include('homepage.urls', namespace = "login")),
     url(r'^logout/', include('homepage.urls', namespace = "logout")),
     url(r'^profile/', include('manageset.urls', namespace = "profile")),
+    url(r'^profile/', include('flashcard.urls', namespace = "flashcard")),
     # url(r'^polls/', include('polls.urls', namespace="polls")),
     url(r'^admin/', include(admin.site.urls)),
 )
