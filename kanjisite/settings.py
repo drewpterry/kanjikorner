@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'homepage',
     'manageset',
     'flashcard',
-    'endless_pagination',
+    # 'endless_pagination',
 )
 
 MIDDLEWARE_CLASSES = (

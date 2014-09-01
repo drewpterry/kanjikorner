@@ -30,15 +30,14 @@ def create_new_set(request,full_name):
         
 
 def word_search(request):
-    # c = {}
-#     c.update(csrf(request))
     if not request.user.is_authenticated():
         return HttpResponse("You are not authenticated")
     else:
         if request.is_ajax():
             try:
                 ordering = request.GET['theorder']
-                kanji = Kanji.objects.all().order_by(ordering)
+                searchword = request.GET['searchword']
+                kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering)
                 data = serializers.serialize("json",kanji)
             except KeyError:
                 return HttpResponse("error")    
