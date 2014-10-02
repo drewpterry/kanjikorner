@@ -580,13 +580,20 @@ canvas {
 .left-margin{
 	margin-left:5%;
 }
-
+#left-form-outer-container{
+	width:20%;
+	float:left;
+	margin-left:5%;
+/*	border-style:solid;*/
+	height:100%;
+/*	position:fixed;*/
+}
 #left-form{
 	width:20%;
 	float:left;
-	//border-style:solid;
-	margin-left:5%;
-	//position:fixed;
+/*	border-style:solid;*/
+	/*margin-left:0px;*/
+	position:fixed;
 }
 
 #create-set-description, #set-title{
@@ -624,10 +631,12 @@ canvas {
 		
 }
 
-#wordlist {
+#wordlist-new {
 	/*background-color:grey;
+	border-style:solid;
 	border-radius:5px;
 	margin-top:10px;*/
+	height:200px;
 }
 
 #search-area{

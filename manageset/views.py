@@ -10,26 +10,32 @@ from django.core.context_processors import csrf
 
 # Create your views here.
 
-def main_profile(request,full_name):
+def verify_profiles(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
             # return render(request, 'myapp/login_error.html')
-            return HttpResponse("you are not authenticated")
-    else:        
+            return False
+            
+not_auth = HttpResponse("you are not authenticated")
+
+def main_profile(request,full_name):
+    if verify_profiles(request,full_name) == False:
+            return not_auth
+    else:
         userprofiles = User.objects.get(username = full_name).userprofile.id
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':userprofile})
         
         
 def create_new_set(request,full_name):
-    if not request.user.is_authenticated() or request.user.username != full_name:
-            # return render(request, 'myapp/login_error.html')
-            return HttpResponse("you are not authenticated")
+    if verify_profiles(request,full_name) == False:
+            return not_auth
     else:
         kanjis = Kanji.objects.all()
         return render(request, "manageset/create-set.html", {'full_name':full_name, 'kanjis':kanjis})   
         
 
 def word_search(request):
+    #for some reason this doesnt work when i pass in full_name
     if not request.user.is_authenticated():
         return HttpResponse("You are not authenticated")
     else:
@@ -37,7 +43,7 @@ def word_search(request):
             try:
                 ordering = request.GET['theorder']
                 searchword = request.GET['searchword']
-                kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering)
+                kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering)[0:200]
                 data = serializers.serialize("json",kanji)
             except KeyError:
                 return HttpResponse("error")    
@@ -94,20 +100,7 @@ def view_stack_search(request):
                 return HttpResponse("ajax error")
         return HttpResponse(simplejson.dumps(data), content_type="application/json")
 
-# def word_search(request):
-#     if not request.user.is_authenticated():
-#         return HttpResponse("You are not authenticated")
-#     else:
-#         if request.is_ajax():
-#             try:
-#                 ordering = request.GET['theorder']
-#                 kanji = Kanji.objects.all().order_by(ordering)
-#                 data = serializers.serialize("json",kanji)
-#             except KeyError:
-#                 return HttpResponse("error")    
-#         # dump = simplejson.dumps(kanji)   
-#         return HttpResponse(simplejson.dumps(data), content_type="application/json")   
-#         # return HttpResponse("hello")
+
                   
             
     

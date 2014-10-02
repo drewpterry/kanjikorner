@@ -18,8 +18,9 @@ class Kanji(models.Model):
 
 class Words(models.Model):
     real_word = models.CharField(max_length = 200)
-    meaning = models.CharField(max_length = 200)
+    meaning = models.CharField(max_length = 500)
     hiragana = models.CharField(max_length = 200)
+    frequency = models.IntegerField()
     kanji = models.ManyToManyField(Kanji, blank = True)
     
     def __unicode__(self):
