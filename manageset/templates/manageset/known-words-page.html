@@ -1,6 +1,6 @@
 {% extends 'overall_site_temp.html' %}
 {% load staticfiles %}
-{% block pagetitle %}Add Words{% endblock %}
+{% block pagetitle %}Known Words{% endblock %}
 
 {% block content %}
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
@@ -34,20 +34,20 @@
 				</div>
 				
 				<!-- <br style = "clear:both"/> -->
-				
+
 				<span style = "float:left"> Known Words: </span>
-				
+
 				<form id = "known-kanji-form" action = "{% url 'profile:add-known-words' full_name %}" method = "post">{% csrf_token %}
-				
+
 					<input type = "submit" class = "left-margin" value = "Submit Known Words"></input>
 				</form>
-				
-				
+
+
 				<div id = "wordlist-know">
-					
+
 					<!-- Where chosen known mini words appear -->
-					
-					
+
+
 				</div>
 			</div>
 		</div>
@@ -79,6 +79,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src = "{% static 'manageset/card-search.js' %}"></script>
+<script src = "{% static 'manageset/known-kanji-view.js' %}"></script>
 	
-{% endblock %}		
+{% endblock %}	

@@ -49,7 +49,9 @@ INSTALLED_APPS = (
     'homepage',
     'manageset',
     'flashcard',
-    'endless_pagination',
+    'south',
+    'southtut',    
+    # 'endless_pagination',
 )
 
 MIDDLEWARE_CLASSES = (

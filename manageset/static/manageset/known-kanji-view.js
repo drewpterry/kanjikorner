@@ -1,5 +1,3 @@
-
-
 var filter = "grade";
 
 //addcheck holds the ids so when you search words it knows which ones have been highlighted or not
@@ -13,9 +11,9 @@ var keyword = '';
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/word-search',
+		url:'http://localhost:8000/profile/new-set/view-known-words',
 		type:'GET',
-		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}', searchword: keyword},
+		data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: displaySearch, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -157,14 +155,14 @@ var displaySearch = function(data,signal){
 			
 				for(var i= 0; i<dataLength; i++){
 					var pk = data[i].pk;
-					var kanjiName = data[i].fields.kanji_name;
-					var kanjiMeaning = data[i].fields.kanji_meaning;
+					var kanjiName = data[i].fields.real_word;
+					var kanjiMeaning = data[i].fields.meaning;
 
 						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
 						content = content + "<div class = 'flipper'><div class = front>";
 						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
 						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+						content = content + "<div id = 'grade'>" + data[i].fields.frequency + "</div>";
 						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
 						//hmmm some people on stackoverflow say inline javascript is bad practice...
 						//also probably the fact that I repeat it 2 times is bad...

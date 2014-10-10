@@ -1,7 +1,11 @@
+# coding=utf-8
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji
 from django.contrib.auth.models import User
+from django.db import connection
+from django.db.models import Q
+import json
 from django.utils import simplejson
 from django.core import serializers
 from datetime import datetime
@@ -43,7 +47,7 @@ def word_search(request):
             try:
                 ordering = request.GET['theorder']
                 searchword = request.GET['searchword']
-                kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering)[0:200]
+                kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering, 'grade', 'id')[0:200]
                 data = serializers.serialize("json",kanji)
             except KeyError:
                 return HttpResponse("error")    
@@ -72,6 +76,97 @@ def add_words_to_set(request,full_name):
     newset.kanji.add(*thechosenwords)
     userprofile.user_sets.add(newset)
     return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
+    
+def add_known_words(request, full_name):    
+    c = {}
+    c.update(csrf(request))
+    userprofiles = User.objects.get(username = full_name).userprofile.id
+    userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+    knownkanji = request.POST.getlist('known-kanji')
+    theknownkanji = []
+    
+    for kanji in knownkanji:
+        if UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = kanji).exists() == False:
+            obj1 = Kanji.objects.get(id = kanji)
+            theknownkanji.append(obj1)
+            
+    
+    userprofile.known_kanji.add(*theknownkanji)    
+    #submit known words
+    return render(request,"manageset/known-words-page.html", {'full_name': full_name, 'knownkanji': theknownkanji})
+   
+    
+def view_known_words(request):
+    if not request.user.is_authenticated():
+        return HttpResponse("You are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+                # ordering = request.GET['theorder']
+                # searchword = request.GET['searchword']
+                # words = Words.objects.filter(kanji_meaning__contains = searchword).order_by(ordering, 'grade', 'id')[0:200]
+                #userid = User.objects.get(username = 'min').id
+                #UserProfile.objects.get(id = userid )
+                #this gets all kanji
+                # UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = kanji)
+                # words = Words.objects.exclude(frequency).filter(kanji__in = [1,909]).order_by('frequency')[0:200]
+                i = 12
+                kanji_in = []
+                while i < 1000:
+                    kanji_in.append(i)
+                    i = i + 1
+                kanji_list = []
+                while i < 2417:
+                    if i not in kanji_in:
+                        kanji_list.append(i)
+                    i = i + 1
+                # print kanji_list
+                # words = Words.objects.exclude(~Q(kanji__in = kanji_in)|Q(frequency = 0)).order_by('frequency')[0:200]
+                # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(kanji__in = kanji_list).order_by('frequency')[0:200]
+                words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).order_by('frequency')[0:200]
+                
+                
+                # cursor =  connection.cursor()
+  #               sql = '''SELECT p.id, real_word, k.words_id
+  # FROM manageset_words p
+  # LEFT
+  # JOIN ( SELECT j.kanji_id, j.words_id
+  #          FROM manageset_words_kanji j
+  #         WHERE j.kanji_id IN ('287')
+  #      ) k
+  #   ON k.words_id = p.id
+  # WHERE k.words_id IS NOT NULL'''
+  #
+  #
+  #               cursor.execute(sql)
+#                 row = cursor.fetchall()
+                data = serializers.serialize("json",words)
+                jsondata = json.loads(data)
+                
+                # testlist = [1,2,3,4,5,6,7,8,9,10]
+#                 checklist = [2,3,4,5,6,11]
+#                 print list(set(checklist)-set(testlist))
+                for each in jsondata:
+                    
+                    thelist = list(set(each[u'fields'][u'kanji'])-set(kanji_in))
+                    if thelist:
+                        print thelist, "this exists"
+                    else:
+                        print "doesnt exist"   
+                    # if 2 in each[u'fields'][u'kanji']:
+#                         print each[u'fields'][u'kanji'], "TRUE"
+#                     else:
+#                         print each[u'fields'][u'kanji'], "FALSE"  
+                newlist = [item for item in jsondata]
+                data = serializers.serialize("json",words)
+                # data = simplejson.dumps(data)
+                data = json.dumps(data)
+
+            except KeyError:
+                return HttpResponse("error")    
+        # dump = simplejson.dumps(kanji)   
+        return HttpResponse(data, content_type="application/json")
+         
     
     
 def view_stack(request,full_name, set_name):

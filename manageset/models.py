@@ -41,6 +41,8 @@ class Sets(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     user_sets = models.ManyToManyField(Sets, blank = True)
+    known_kanji = models.ManyToManyField(Kanji, blank = True)
+    
     
     def __unicode__(self):
         return unicode(self.user)

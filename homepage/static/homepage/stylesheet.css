@@ -639,6 +639,14 @@ canvas {
 	height:200px;
 }
 
+#wordlist-know {
+	height: 200px;
+	overflow: auto;
+	/*-webkit-box-shadow: inset 0px -8px 3px 0px rgba(250,247,250,1);
+	-moz-box-shadow: inset 0px -8px 3px 0px rgba(250,247,250,1);
+	box-shadow: inset 0px -8px 3px 0px rgba(250,247,250,1);*/
+}
+
 #search-area{
 	float:left;
 	height:50px;
@@ -759,11 +767,13 @@ canvas {
 	 -moz-box-shadow: 3px 3px 3px 0px rgba(230,85,85,1);
 	 box-shadow: 3px 3px 3px 0px rgba(230,85,85,1);
 	 
-	 /*-webkit-box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);
-	 -moz-box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);
-	 box-shadow: 1px 0px 10px 1px rgba(230,85,85,1);*/
-	/* border-color:rgba(230, 85, 85, 1);*/
  }
+ 
+ .outline-2 {
+	 -webkit-box-shadow: 3px 3px 3px 0px rgba(23,83,235,1);
+	 -moz-box-shadow: 3px 3px 3px 0px rgba(23,83,235,1);
+	 box-shadow: 3px 3px 3px 0px rgba(23,83,235,1);
+ } 
   
   .back {
   -webkit-transform: rotateY(180deg);

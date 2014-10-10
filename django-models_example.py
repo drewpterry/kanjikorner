@@ -2,6 +2,7 @@
 from django.db import models
 from manageset.models import UserProfile, Sets, Words, Kanji
 
+from manageset.models import Knight
 # execfile('django-models_example.py')
 
 
@@ -14,8 +15,20 @@ wordses =  Words.objects.all()
 # Kanji.objects.filter(id = 1)
 # Kanji(kanji_name = name, ect).save()
 # Words(real_word = "寒い", meaning = "cold", hiragana = "さむい" , frequency = 3, kanji = 4).save()
-#
+# Entry.objects.filter(name='name', title='title').exists()
+UserProfile.objects.get(id = 8).known_kanji.filter(id = 8).exists()
 # Words.objects.get(meaning = "cold").kanji.add(Kanji.objects.get(pk =4))
+
+# gets me id, need to loop through though to extract full list, change get to all
+# next figure out how to return words with kanji associated
+UserProfile.objects.get(id = 8).known_kanji.get(id =1).id
+
+WHERE real_word SIMILAR TO '%(本|日)%'
+http://stackoverflow.com/questions/22848046/mysql-return-all-rows-where-a-column-contains-any-but-only-keywords-from-a-set
+
+
+# Get blogs entries with id 1, 4 and 7
+>>> Blog.objects.filter(pk__in=[1,4,7])
 
 # for kanji in Kanji.objects.all():
 def kanji_match():
