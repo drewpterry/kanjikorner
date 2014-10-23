@@ -13,7 +13,7 @@ var search = function(signal){
 	$.ajax({
 		url:'http://localhost:8000/profile/new-set/view-known-words',
 		type:'GET',
-		data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
+		data:{csrfmiddlewaretoken: '{{ csrf_token }}', full_name: '{{ full_name }}'},
 		success: displaySearch, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -142,7 +142,7 @@ $("#search-area").on("click",".filter", function(){
 
 
 var displaySearch = function(data,signal){
-
+			data = JSON.stringify(data);
 			data = JSON.parse(data);
 
 

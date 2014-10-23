@@ -29,8 +29,8 @@ var startpage = function(){
 	var randvocabword = vocab[randarray[wordnumber]];
 	
 	for(var i = 0; i<2; i++){
-		document.getElementById('front' + i).innerHTML = vocab[randarray[i]].kanji;
-		document.getElementById('back' + i).innerHTML = vocab[randarray[i]].english;
+		document.getElementById('front' + i).innerHTML = vocab[randarray[i]].word;
+		document.getElementById('back' + i).innerHTML = vocab[randarray[i]].hiragana;
 	}
 }
 
@@ -82,19 +82,19 @@ var nextset = function(){
 		rewritecards += "<div id = 'cardhold" + addtwo + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addtwo + "' class = 'answerbox mini left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'>" + vocab[randarray[addtwo]].kanji + "</div>";
+		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'>" + vocab[randarray[addtwo]].word + "</div>";
 		rewritecards += "<div id = 'back" + addtwo + "' class = 'back mini2'></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + addone + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].kanji + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].english + "</div>";
+		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + wordnumber + "' class = 'front mini2'>" + vocab[randarray[wordnumber]].kanji + "</div>";
+		rewritecards += "<div id = 'front" + wordnumber + "' class = 'front mini2'>" + vocab[randarray[wordnumber]].word + "</div>";
 		rewritecards += "<div id = 'back" + wordnumber + "' class = 'back mini2'></div>";
 		rewritecards += "</div></div></div>";
 	}else{
@@ -107,13 +107,13 @@ var nextset = function(){
 		rewritecards += "<div id = 'cardhold" + addone + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].kanji + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].english + "</div>";
+		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + wordnumber + "' class = 'front mini2'>" + vocab[randarray[wordnumber]].kanji + "</div>";
+		rewritecards += "<div id = 'front" + wordnumber + "' class = 'front mini2'>" + vocab[randarray[wordnumber]].word + "</div>";
 		rewritecards += "<div id = 'back" + wordnumber + "' class = 'back mini2'></div>";
 		rewritecards += "</div></div></div>";
 	};
@@ -138,7 +138,7 @@ $('#answerinput').keyup(function(event){
 		var textinput = document.getElementById('answerinput');
 		
 		//checks entered word equals the english meaning
-		if(textinput.value.indexOf(vocab[randarray[wordnumber]].english) == -1){
+		if(textinput.value.indexOf(vocab[randarray[wordnumber]].hiragana) == -1){
 			$("#word" + wordnumber).toggleClass("answerbox2");
 			textinput.style.color = "red";
 			window.setTimeout(function(){

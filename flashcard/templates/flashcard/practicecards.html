@@ -71,11 +71,12 @@
 <script>
 var vocab = [];
 
-{% for kanji in kanjis %}
+{% for word in words %}
 
 vocab.push({
-	kanji: '{{ kanji }}',
-	english: '{{ kanji.kanji_meaning }}'
+	word: '{{ word.real_word }}',
+	hiragana: '{{ word.hiragana }}',
+	meaning: '{{ word.meaning}}'
 	});
 
 {% endfor %}

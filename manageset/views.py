@@ -67,13 +67,13 @@ def add_words_to_set(request,full_name):
     chosenwords = request.POST.getlist('chosenwords')
     thechosenwords = []
     
-    for kanji in chosenwords:
-        obj1 = Kanji.objects.get(id = kanji)
+    for words in chosenwords:
+        obj1 = Words.objects.get(id = words)
         thechosenwords.append(obj1)
         
     newset = Sets(name = setname, description = description, pub_date = datetime.now())
     newset.save()
-    newset.kanji.add(*thechosenwords)
+    newset.words.add(*thechosenwords)
     userprofile.user_sets.add(newset)
     return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
     
@@ -94,6 +94,7 @@ def add_known_words(request, full_name):
     userprofile.known_kanji.add(*theknownkanji)    
     #submit known words
     return render(request,"manageset/known-words-page.html", {'full_name': full_name, 'knownkanji': theknownkanji})
+    # return
    
     
 def view_known_words(request):
@@ -104,27 +105,24 @@ def view_known_words(request):
             try:
                 # ordering = request.GET['theorder']
                 # searchword = request.GET['searchword']
-                # words = Words.objects.filter(kanji_meaning__contains = searchword).order_by(ordering, 'grade', 'id')[0:200]
-                #userid = User.objects.get(username = 'min').id
-                #UserProfile.objects.get(id = userid )
-                #this gets all kanji
-                # UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = kanji)
-                # words = Words.objects.exclude(frequency).filter(kanji__in = [1,909]).order_by('frequency')[0:200]
-                i = 12
+               
+                profile = request.user.userprofile
+                profile_known_kanji = profile.known_kanji.all()
+                
                 kanji_in = []
-                while i < 1000:
-                    kanji_in.append(i)
-                    i = i + 1
+                for each in profile_known_kanji:
+                    kanji_in.append(each.id)
+                
+                print kanji_in
+                
+                i = 1
                 kanji_list = []
                 while i < 2417:
                     if i not in kanji_in:
                         kanji_list.append(i)
                     i = i + 1
-                # print kanji_list
-                # words = Words.objects.exclude(~Q(kanji__in = kanji_in)|Q(frequency = 0)).order_by('frequency')[0:200]
-                # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(kanji__in = kanji_list).order_by('frequency')[0:200]
-                words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).order_by('frequency')[0:200]
                 
+                words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).order_by('frequency','pk').distinct()[0:1400]
                 
                 # cursor =  connection.cursor()
   #               sql = '''SELECT p.id, real_word, k.words_id
@@ -141,30 +139,19 @@ def view_known_words(request):
   #               cursor.execute(sql)
 #                 row = cursor.fetchall()
                 data = serializers.serialize("json",words)
-                jsondata = json.loads(data)
+                data = json.loads(data)
                 
-                # testlist = [1,2,3,4,5,6,7,8,9,10]
-#                 checklist = [2,3,4,5,6,11]
-#                 print list(set(checklist)-set(testlist))
-                for each in jsondata:
-                    
+                for each in list(data):
                     thelist = list(set(each[u'fields'][u'kanji'])-set(kanji_in))
                     if thelist:
-                        print thelist, "this exists"
-                    else:
-                        print "doesnt exist"   
-                    # if 2 in each[u'fields'][u'kanji']:
-#                         print each[u'fields'][u'kanji'], "TRUE"
-#                     else:
-#                         print each[u'fields'][u'kanji'], "FALSE"  
-                newlist = [item for item in jsondata]
-                data = serializers.serialize("json",words)
-                # data = simplejson.dumps(data)
+                        data.remove(each)
+                        
+                data = data[:50]
                 data = json.dumps(data)
-
+                
+                     
             except KeyError:
-                return HttpResponse("error")    
-        # dump = simplejson.dumps(kanji)   
+                return HttpResponse("there was an error")       
         return HttpResponse(data, content_type="application/json")
          
     

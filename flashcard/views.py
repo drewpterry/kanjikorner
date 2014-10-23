@@ -15,5 +15,5 @@ def practice_stack(request, full_name, set_name):
     else: 
         userprofiles = User.objects.get(username = full_name).userprofile.id
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-        kanjis = Sets.objects.get(name = set_name, userprofile = userprofiles).kanji.all()  
-        return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'kanjis':kanjis} )
+        words = Sets.objects.get(name = set_name, userprofile = userprofiles).words.all() 
+        return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words} )
