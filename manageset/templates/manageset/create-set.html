@@ -52,6 +52,13 @@
 			</div>
 		</div>
 		
+		<div id = "word-set-nav">
+			<a href = "{% url 'profile:add-known-words' full_name %}"><input type = "button" value = "new words"></input></a>
+			<input type = "button" value = "word bank"></input>
+			<a href = "{% url 'profile:newset' full_name %}"><input type = "button" value = "new kanji"></input></a>
+			<a href = "{% url 'profile:known-kanji' full_name %}" ><input type = "button" value = "kanji bank"></input></a>
+		</div>
+		
 		<div id = "search-area">
 			<span style = "float:left;">Order By:</span>
 			<input type = "button" id = "allwords" class = "filter" value = "All"></input>
@@ -69,6 +76,9 @@
 		<div id = "container">
 				
 				<!-- Where searched words appear -->
+			<div id = "loadingDiv">
+				<img src = "{% static "manageset/ajax-loader.gif" %}">
+			</div>
 		
 	
 		</div>
@@ -80,6 +90,17 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+
+var knowncheck = [];
+	
+{% for kanji in known_kanji %}
+	knowncheck.push('{{ kanji.id }}');
+{% endfor %}
+	
+</script>
+
 <script src = "{% static 'manageset/card-search.js' %}"></script>
+
 	
 {% endblock %}		

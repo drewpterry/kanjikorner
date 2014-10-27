@@ -1,82 +1,9 @@
-{% extends 'overall_site_temp.html' %}
+
+{% extends 'manageset/create-set.html' %}
 {% load staticfiles %}
 {% block pagetitle %}Known Words{% endblock %}
 
-{% block content %}
-		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
-		<br style = "clear:both">
-		<!-- <p> this is your id: {{ userprofileid }}</p> -->
-		<div id = "left-form-outer-container">
-			<div id = "left-form">
-				
-				
-				<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
-				
-					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
-				
-					<br style = "clear:both"/>
-					<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
-					<br style = "clear:both"/>
-					<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
-				</form>
-				
-				
-				
-				
-				<br style = "clear:both;"/>
-				
-				
-				<div id = "wordlist-new">
-					
-					<!-- Where chosen new mini words appear -->
-					
-					
-				</div>
-				
-				<!-- <br style = "clear:both"/> -->
 
-				<span style = "float:left"> Known Words: </span>
-
-				<form id = "known-kanji-form" action = "{% url 'profile:add-known-words' full_name %}" method = "post">{% csrf_token %}
-
-					<input type = "submit" class = "left-margin" value = "Submit Known Words"></input>
-				</form>
-
-
-				<div id = "wordlist-know">
-
-					<!-- Where chosen known mini words appear -->
-
-
-				</div>
-			</div>
-		</div>
-		
-		<div id = "search-area">
-			<span style = "float:left;">Order By:</span>
-			<input type = "button" id = "allwords" class = "filter" value = "All"></input>
-			<input type = "button" id = "gradefilter" class = "filter" value = "Grade"></input>
-			<input type = "button" id = "strokes" class = "filter" value = "Simplicity"></input>
-			<input type = "button" value = "Frequency" class = "filter"></input>
-			<input type = "button" id = "NLPT" value = "NLPT" class = "filter"></input>
-			<br style = "clear:both;">
-			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
-			<input type = "button" id = "searchbox" value = "search" class = "filter"></input>
-		</div>
-		<!-- <br style = "clear:both"/> -->
-	
-		<div id = "container">
-				
-				<!-- Where searched words appear -->
-		
-	
-		</div>
-		
-		
-		
-		
-			
-{% endblock %}
 
 {% block scripts %}
 <script src = "{% static 'manageset/known-kanji-view.js' %}"></script>

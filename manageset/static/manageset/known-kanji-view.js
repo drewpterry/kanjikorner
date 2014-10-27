@@ -8,6 +8,19 @@ var keyword = '';
 
 
 
+// Hides and shows ajax gif
+// $(document).ready(function(){
+//     $("#loadingDiv").on("ajaxSend", function() {
+//         $(this).show();
+//     }).on("ajaxStop", function() {
+//         $(this).hide();
+//     }).on("ajaxError", function() {
+//         $(this).hide();
+//     });
+//
+//      });
+
+
 var search = function(signal){
 	
 	$.ajax({

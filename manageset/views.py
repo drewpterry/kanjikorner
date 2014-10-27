@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 from django.db import connection
 from django.db.models import Q
 import json
-from django.utils import simplejson
 from django.core import serializers
 from datetime import datetime
 from django.core.context_processors import csrf
+from collections import deque
 # import pdb; pdb.set_trace()
 
 # Create your views here.
@@ -21,6 +21,8 @@ def verify_profiles(request,full_name):
             
 not_auth = HttpResponse("you are not authenticated")
 
+
+
 def main_profile(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
@@ -29,14 +31,19 @@ def main_profile(request,full_name):
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':userprofile})
         
+      
         
 def create_new_set(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
     else:
         kanjis = Kanji.objects.all()
-        return render(request, "manageset/create-set.html", {'full_name':full_name, 'kanjis':kanjis})   
+        profile = request.user.userprofile
+        profile_known_kanji = profile.known_kanji.all()
+        print profile_known_kanji
+        return render(request, "manageset/create-set.html", {'full_name':full_name, 'kanjis':kanjis, 'known_kanji': profile_known_kanji})   
         
+
 
 def word_search(request):
     #for some reason this doesnt work when i pass in full_name
@@ -49,11 +56,35 @@ def word_search(request):
                 searchword = request.GET['searchword']
                 kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering, 'grade', 'id')[0:200]
                 data = serializers.serialize("json",kanji)
+                data = json.dumps(data)
             except KeyError:
                 return HttpResponse("error")    
         # dump = simplejson.dumps(kanji)   
-        return HttpResponse(simplejson.dumps(data), content_type="application/json")   
-        # return HttpResponse("hello")
+        return HttpResponse(data, content_type="application/json")
+        
+
+
+def get_known_kanji(request):
+    #for some reason this doesnt work when i pass in full_name
+    if not request.user.is_authenticated():
+        return HttpResponse("You are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+                kanjis = Kanji.objects.all()
+                profile = request.user.userprofile
+                profile_known_kanji = profile.known_kanji.all()[0:200]
+                data = serializers.serialize("json",profile_known_kanji)
+                data = json.dumps(data)
+            except KeyError:
+                return HttpResponse("error")    
+                
+        return HttpResponse(data, content_type="application/json")           
+        
+
+def known_kanji_view(request,full_name):
+    return render(request, "manageset/known_kanji.html", {'full_name':full_name})
+            
         
         
 def add_words_to_set(request,full_name):
@@ -77,6 +108,8 @@ def add_words_to_set(request,full_name):
     userprofile.user_sets.add(newset)
     return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
     
+    
+    
 def add_known_words(request, full_name):    
     c = {}
     c.update(csrf(request))
@@ -94,8 +127,19 @@ def add_known_words(request, full_name):
     userprofile.known_kanji.add(*theknownkanji)    
     #submit known words
     return render(request,"manageset/known-words-page.html", {'full_name': full_name, 'knownkanji': theknownkanji})
-    # return
+    
+
+# def get_known_kanji(request, full_name):
+#     if verify_profiles(request,full_name) == False:
+#             return not_auth
+#     else:
+#         kanjis = Kanji.objects.all()
+#         profile = request.user.userprofile
+#         profile_known_kanji = profile.known_kanji.all()
+#
+#         return render(request, "manageset/known_kanji.html", {'full_name':full_name, 'known_kanji': profile_known_kanji})
    
+    
     
 def view_known_words(request):
     if not request.user.is_authenticated():
@@ -113,43 +157,32 @@ def view_known_words(request):
                 for each in profile_known_kanji:
                     kanji_in.append(each.id)
                 
-                print kanji_in
-                
-                i = 1
-                kanji_list = []
-                while i < 2417:
-                    if i not in kanji_in:
-                        kanji_list.append(i)
-                    i = i + 1
                 
                 words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).order_by('frequency','pk').distinct()[0:1400]
                 
-                # cursor =  connection.cursor()
-  #               sql = '''SELECT p.id, real_word, k.words_id
-  # FROM manageset_words p
-  # LEFT
-  # JOIN ( SELECT j.kanji_id, j.words_id
-  #          FROM manageset_words_kanji j
-  #         WHERE j.kanji_id IN ('287')
-  #      ) k
-  #   ON k.words_id = p.id
-  # WHERE k.words_id IS NOT NULL'''
-  #
-  #
-  #               cursor.execute(sql)
-#                 row = cursor.fetchall()
                 data = serializers.serialize("json",words)
                 data = json.loads(data)
                 
+                
+                new_kanji = [72]
+                words_with_new_kanji = []
+                
+                i = 0
                 for each in list(data):
                     thelist = list(set(each[u'fields'][u'kanji'])-set(kanji_in))
                     if thelist:
                         data.remove(each)
-                        
+                    else:
+                        for kanji in new_kanji:
+                            if kanji in each[u'fields'][u'kanji']:
+                                words_with_new_kanji.append(each)
+                                data.remove(each)
+                                data.insert(i,each)
+                                i = i + 1
+                                                                          
                 data = data[:50]
                 data = json.dumps(data)
-                
-                     
+                               
             except KeyError:
                 return HttpResponse("there was an error")       
         return HttpResponse(data, content_type="application/json")
@@ -164,6 +197,7 @@ def view_stack(request,full_name, set_name):
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         return render(request, "manageset/view_set.html", {'full_name':full_name, 'set_name':set_name})
            
+ 
                 
 def view_stack_search(request):
     if not request.user.is_authenticated():
