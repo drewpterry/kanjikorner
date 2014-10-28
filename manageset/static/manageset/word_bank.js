@@ -1,20 +1,32 @@
-
-
 var filter = "grade";
 
 //addcheck holds the ids so when you search words it knows which ones have been highlighted or not
 var addcheck = [];
 //will hold ids of added words
+var knowncheck = [];
 var keyword = '';
 
+
+
+// Hides and shows ajax gif
+// $(document).ready(function(){
+//     $("#loadingDiv").on("ajaxSend", function() {
+//         $(this).show();
+//     }).on("ajaxStop", function() {
+//         $(this).hide();
+//     }).on("ajaxError", function() {
+//         $(this).hide();
+//     });
+//
+//      });
 
 
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/word-search',
+		url:'http://localhost:8000/profile/new-set/get-word-bank',
 		type:'GET',
-		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}', searchword: keyword},
+		data:{csrfmiddlewaretoken: '{{ csrf_token }}', full_name: '{{ full_name }}'},
 		success: displaySearch, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -143,7 +155,7 @@ $("#search-area").on("click",".filter", function(){
 
 
 var displaySearch = function(data,signal){
-
+			// data = JSON.stringify(data);
 			data = JSON.parse(data);
 
 
@@ -154,27 +166,24 @@ var displaySearch = function(data,signal){
 		
 
 			
-				for(var i=0; i<dataLength; i++){
+				for(var i= 0; i<dataLength; i++){
 					var pk = data[i].pk;
-					var kanjiName = data[i].fields.kanji_name;
-					var kanjiMeaning = data[i].fields.kanji_meaning;
-					
-					if(knowncheck.indexOf(pk.toString()) == -1){
-						
+					var kanjiName = data[i].fields.real_word;
+					var kanjiMeaning = data[i].fields.meaning;
 
 						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
 						content = content + "<div class = 'flipper'><div class = front>";
 						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
 						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+						content = content + "<div id = 'grade'>" + data[i].fields.frequency + "</div>";
 						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
 						//hmmm some people on stackoverflow say inline javascript is bad practice...
 						//also probably the fact that I repeat it 2 times is bad...
 						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
 						content = content + "</div></div>"
 						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
-					}
-				};
+
+					};
 				document.getElementById('container').innerHTML = content;
 
 
@@ -190,26 +199,8 @@ var displaySearch = function(data,signal){
 							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
 						}
 					}
-					
-					
-					
-					
-					// for(var i = 0; i<knowncheck.length; i++){
-// 						if(document.getElementById('answercontainer'+knowncheck[i]) != null){
-//
-// 							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-// 							//add class to div where class = front
-// 							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.className += " outline-2";
-// 							//change add button to a remove button
-// 							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-// 						}
-// 					}
-
-					
-					
 		};
 		
 		
 //so that opening page has all the cards
 search('');
-		

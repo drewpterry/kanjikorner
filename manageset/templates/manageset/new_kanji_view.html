@@ -1,0 +1,30 @@
+{% extends 'manageset/manage_set_template.html' %}
+{% load staticfiles %}
+{% block pagetitle %}New Kanji{% endblock %}
+
+
+
+{% block add-known %}
+				<span style = "float:left"> Known Kanji: </span>
+
+				
+				<form id = "known-kanji-form" action = "{% url 'profile:add-known-kanji' full_name %}" method = "post">{% csrf_token %}
+				
+					<input type = "submit" class = "left-margin" value = "Submit Known Kanji"></input>
+				</form>
+				
+{% endblock %}				
+
+{% block scripts %}
+<script>
+var knowncheck = [];
+	
+{% for kanji in known_kanji %}
+	knowncheck.push('{{ kanji.id }}');
+{% endfor %}
+
+</script>
+
+<script src = "{% static 'manageset/card-search.js' %}"></script>
+	
+{% endblock %}

@@ -1,24 +1,16 @@
 {% extends 'overall_site_temp.html' %}
 {% load staticfiles %}
-{% block pagetitle %}Add Words{% endblock %}
+{% block pagetitle %}New Kanji{% endblock %}
 
 {% block content %}
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
 		<br style = "clear:both">
-		<!-- <p> this is your id: {{ userprofileid }}</p> -->
+		
 		<div id = "left-form-outer-container">
 			<div id = "left-form">
 				
+{% block create-set %}{% endblock %}				
 				
-				<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
-				
-					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>
-				
-					<br style = "clear:both"/>
-					<textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea>
-					<br style = "clear:both"/>
-					<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
-				</form>
 				
 				
 				
@@ -34,13 +26,8 @@
 				</div>
 				
 				<!-- <br style = "clear:both"/> -->
+{% block add-known %}{% endblock %}
 				
-				<span style = "float:left"> Known Words: </span>
-				
-				<form id = "known-kanji-form" action = "{% url 'profile:add-known-words' full_name %}" method = "post">{% csrf_token %}
-				
-					<input type = "submit" class = "left-margin" value = "Submit Known Words"></input>
-				</form>
 				
 				
 				<div id = "wordlist-know">
@@ -53,24 +40,24 @@
 		</div>
 		
 		<div id = "word-set-nav">
-			<a href = "{% url 'profile:add-known-words' full_name %}"><input type = "button" value = "new words"></input></a>
-			<input type = "button" value = "word bank"></input>
-			<a href = "{% url 'profile:newset' full_name %}"><input type = "button" value = "new kanji"></input></a>
+			<a href = "{% url 'profile:new-words' full_name %}"><input type = "button" value = "new words"></input></a>
+			<a href = "{% url 'profile:view_word_bank' full_name %}"><input type = "button" value = "word bank"></input></a>
+			<a href = "{% url 'profile:view_new_kanji' full_name %}"><input type = "button" value = "new kanji"></input></a>
 			<a href = "{% url 'profile:known-kanji' full_name %}" ><input type = "button" value = "kanji bank"></input></a>
 		</div>
 		
-		<div id = "search-area">
+		<!-- <div id = "search-area">
 			<span style = "float:left;">Order By:</span>
 			<input type = "button" id = "allwords" class = "filter" value = "All"></input>
 			<input type = "button" id = "gradefilter" class = "filter" value = "Grade"></input>
 			<input type = "button" id = "strokes" class = "filter" value = "Simplicity"></input>
 			<input type = "button" value = "Frequency" class = "filter"></input>
 			<input type = "button" id = "NLPT" value = "NLPT" class = "filter"></input>
-			<a href = "{% url 'profile:add-known-words' full_name %}"><button type = "button" id = "words-known" value = "Known words" class = "filter"></button></a>
+
 			<br style = "clear:both;">
 			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
 			<input type = "button" id = "searchbox" value = "search" class = "filter"></input>
-		</div>
+		</div> -->
 		<!-- <br style = "clear:both"/> -->
 	
 		<div id = "container">
@@ -90,17 +77,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-
-var knowncheck = [];
-	
-{% for kanji in known_kanji %}
-	knowncheck.push('{{ kanji.id }}');
-{% endfor %}
-	
-</script>
-
-<script src = "{% static 'manageset/card-search.js' %}"></script>
-
 	
 {% endblock %}		
