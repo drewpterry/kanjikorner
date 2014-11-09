@@ -81,6 +81,24 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['userprofile_id', 'sets_id'])
 
+        # Adding M2M table for field known_kanji on 'UserProfile'
+        m2m_table_name = db.shorten_name(u'manageset_userprofile_known_kanji')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('userprofile', models.ForeignKey(orm[u'manageset.userprofile'], null=False)),
+            ('kanji', models.ForeignKey(orm[u'manageset.kanji'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['userprofile_id', 'kanji_id'])
+
+        # Adding M2M table for field known_words on 'UserProfile'
+        m2m_table_name = db.shorten_name(u'manageset_userprofile_known_words')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('userprofile', models.ForeignKey(orm[u'manageset.userprofile'], null=False)),
+            ('words', models.ForeignKey(orm[u'manageset.words'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['userprofile_id', 'words_id'])
+
 
     def backwards(self, orm):
         # Deleting model 'Kanji'
@@ -106,6 +124,12 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field user_sets on 'UserProfile'
         db.delete_table(db.shorten_name(u'manageset_userprofile_user_sets'))
+
+        # Removing M2M table for field known_kanji on 'UserProfile'
+        db.delete_table(db.shorten_name(u'manageset_userprofile_known_kanji'))
+
+        # Removing M2M table for field known_words on 'UserProfile'
+        db.delete_table(db.shorten_name(u'manageset_userprofile_known_words'))
 
 
     models = {
@@ -166,6 +190,8 @@ class Migration(SchemaMigration):
         u'manageset.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'known_kanji': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Kanji']", 'symmetrical': 'False', 'blank': 'True'}),
+            'known_words': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Words']", 'symmetrical': 'False', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
             'user_sets': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Sets']", 'symmetrical': 'False', 'blank': 'True'})
         },

@@ -8,19 +8,31 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding M2M table for field known_kanji on 'UserProfile'
-        m2m_table_name = db.shorten_name(u'manageset_userprofile_known_kanji')
+        # Adding model 'KnownKanji'
+        db.create_table(u'manageset_knownkanji', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('date_added', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('selected_kanji', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('user_profile', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['manageset.UserProfile'], unique=True)),
+        ))
+        db.send_create_signal(u'manageset', ['KnownKanji'])
+
+        # Adding M2M table for field kanji on 'KnownKanji'
+        m2m_table_name = db.shorten_name(u'manageset_knownkanji_kanji')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('userprofile', models.ForeignKey(orm[u'manageset.userprofile'], null=False)),
+            ('knownkanji', models.ForeignKey(orm[u'manageset.knownkanji'], null=False)),
             ('kanji', models.ForeignKey(orm[u'manageset.kanji'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['userprofile_id', 'kanji_id'])
+        db.create_unique(m2m_table_name, ['knownkanji_id', 'kanji_id'])
 
 
     def backwards(self, orm):
-        # Removing M2M table for field known_kanji on 'UserProfile'
-        db.delete_table(db.shorten_name(u'manageset_userprofile_known_kanji'))
+        # Deleting model 'KnownKanji'
+        db.delete_table(u'manageset_knownkanji')
+
+        # Removing M2M table for field kanji on 'KnownKanji'
+        db.delete_table(db.shorten_name(u'manageset_knownkanji_kanji'))
 
 
     models = {
@@ -69,6 +81,14 @@ class Migration(SchemaMigration):
             'readings': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'strokes': ('django.db.models.fields.IntegerField', [], {})
         },
+        u'manageset.knownkanji': {
+            'Meta': {'object_name': 'KnownKanji'},
+            'date_added': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'kanji': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Kanji']", 'symmetrical': 'False'}),
+            'selected_kanji': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'user_profile': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['manageset.UserProfile']", 'unique': 'True'})
+        },
         u'manageset.sets': {
             'Meta': {'object_name': 'Sets'},
             'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
@@ -82,6 +102,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'UserProfile'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'known_kanji': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Kanji']", 'symmetrical': 'False', 'blank': 'True'}),
+            'known_words': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Words']", 'symmetrical': 'False', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
             'user_sets': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['manageset.Sets']", 'symmetrical': 'False', 'blank': 'True'})
         },

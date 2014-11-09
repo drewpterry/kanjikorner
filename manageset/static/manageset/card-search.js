@@ -143,7 +143,7 @@ $("#search-area").on("click",".filter", function(){
 
 
 var displaySearch = function(data,signal){
-
+			data = JSON.stringify(data);
 			data = JSON.parse(data);
 
 
@@ -159,7 +159,7 @@ var displaySearch = function(data,signal){
 					var kanjiName = data[i].fields.kanji_name;
 					var kanjiMeaning = data[i].fields.kanji_meaning;
 					
-					if(knowncheck.indexOf(pk.toString()) == -1){
+					// if(knowncheck.indexOf(pk.toString()) == -1){
 						
 
 						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
@@ -173,7 +173,7 @@ var displaySearch = function(data,signal){
 						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
 						content = content + "</div></div>"
 						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
-					}
+					// }
 				};
 				document.getElementById('container').innerHTML = content;
 

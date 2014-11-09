@@ -16,6 +16,10 @@ class Kanji(models.Model):
         return self.kanji_name
 
 
+    
+            
+
+
 class Words(models.Model):
     real_word = models.CharField(max_length = 200)
     meaning = models.CharField(max_length = 500)
@@ -47,6 +51,13 @@ class UserProfile(models.Model):
     
     def __unicode__(self):
         return unicode(self.user)
+
+
+class KnownKanji(models.Model):
+    kanji = models.ManyToManyField(Kanji)
+    date_added = models.DateTimeField(auto_now = True)
+    selected_kanji = models.BooleanField(default = False)
+    user_profile = models.ManyToManyField(UserProfile)
 
 
             
