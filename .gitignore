@@ -52,5 +52,5 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-kanjisite/settings.py
+/kanjisite/settings.py
 kanjisite/settings.py
