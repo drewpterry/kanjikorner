@@ -13,7 +13,18 @@
 					<input type = "submit" class = "left-margin" value = "Submit Known Kanji"></input>
 				</form>
 				
-{% endblock %}				
+{% endblock %}
+
+{% block words %}
+
+{% include page_template %}
+
+<br style = "clear:both"/>
+<br/>
+
+{% endblock %}
+
+		
 
 {% block scripts %}
 <script>
@@ -24,7 +35,16 @@ var knowncheck = [];
 {% endfor %}
 
 </script>
-
+{% block js %}
+{{ block.super }}
 <script src = "{% static 'manageset/card-search.js' %}"></script>
-	
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate();</script>
+{% endblock %}	
 {% endblock %}
+
+
+    
+    
+	

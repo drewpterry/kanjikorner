@@ -16,10 +16,6 @@ class Kanji(models.Model):
         return self.kanji_name
 
 
-    
-            
-
-
 class Words(models.Model):
     real_word = models.CharField(max_length = 200)
     meaning = models.CharField(max_length = 500)
@@ -45,8 +41,8 @@ class Sets(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     user_sets = models.ManyToManyField(Sets, blank = True)
-    known_kanji = models.ManyToManyField(Kanji, blank = True)
-    known_words = models.ManyToManyField(Words, blank = True)
+    # known_kanji = models.ManyToManyField(Kanji, blank = True)
+    # known_words = models.ManyToManyField(Words, blank = True)
     
     
     def __unicode__(self):
@@ -58,6 +54,14 @@ class KnownKanji(models.Model):
     date_added = models.DateTimeField(auto_now = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
+
+    
+class KnownWords(models.Model):
+    words = models.ForeignKey(Words)
+    date_added = models.DateTimeField(auto_now = True)
+    level = models.IntegerField()
+    last_practiced = DateTimeField()
+    user_profile = models.ForeignKey(UserProfile)    
 
 
             

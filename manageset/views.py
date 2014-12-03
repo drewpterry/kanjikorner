@@ -40,10 +40,19 @@ def new_kanji_view(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
     else:
+        template='manageset/new_kanji_view.html'
+        page_template='manageset/entry_index_page.html'
         # kanjis = Kanji.objects.all()
         profile = request.user.userprofile
-        profile_known_kanji = profile.known_kanji.all()
-        return render(request, "manageset/new_kanji_view.html", {'full_name':full_name, 'known_kanji': profile_known_kanji})
+        known_kanji_list = get_known_kanji_list(request)
+        # print known_kanji_list, "hello"
+        profile_known_kanji = Kanji.objects.all().exclude(pk__in = known_kanji_list).order_by('grade','id')
+        # print profile_known_kanji, "test"
+        if request.is_ajax():
+            template = page_template
+        
+        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template})
+
 
 def word_bank_view(request,full_name):
     if verify_profiles(request,full_name) == False:
@@ -80,10 +89,10 @@ def word_search(request):
                 kanji = Kanji.objects.filter(kanji_meaning__contains = searchword).order_by(ordering,'grade','id')
                 data = serializers.serialize("json",kanji)
                 data = json.loads(data)
-                print len(data)
+                
                 
                 known_kanji_list = get_known_kanji_list(request)
-                
+                print known_kanji_list, "hello"
                 for each in list(data):
                     
                     if each[u'pk'] in known_kanji_list:
@@ -104,15 +113,19 @@ def get_known_kanji_list(request):
     
     known_kanji_list = []
     profile = request.user.userprofile
-    profile_known_kanji = profile.known_kanji.all()
-    
+    print profile.id
+    # profile_known_kanji = profile.known_kanji.all()
+    # profile_known_kanji =  KnownKanji.objects.filter(user_profile = profile.id).kanji.all()
+    profile_known_kanji =  KnownKanji.objects.filter(user_profile = profile.id)
+    # known_kanji_list.append(profile_known_kanji)
     for each in profile_known_kanji:
-        known_kanji_list.append(each.id)
-                  
+        theid = each.kanji.get().id
+        known_kanji_list.append(theid)
+ #        print known_kanji_list
     return known_kanji_list
         
 
-
+#probably should rename
 def get_known_kanji(request):
     
     if not request.user.is_authenticated():
@@ -120,17 +133,36 @@ def get_known_kanji(request):
     else:
         if request.is_ajax():
             try:
+                data = get_the_known_kanji(request)
                 # kanjis = Kanji.objects.all()
-                profile = request.user.userprofile
-                profile_known_kanji = profile.known_kanji.all().order_by('grade', 'id')
-                data = serializers.serialize("json",profile_known_kanji)
+                # data = []
+#                 profile = request.user.userprofile.id
+#                 profile_known_kanji = KnownKanji.objects.filter(user_profile = profile)
+#                 for each in profile_known_kanji:
+#                     kanji_obj = each.kanji.get()
+#                     data.append(kanji_obj)
+                data = serializers.serialize("json",data)
                 data = json.dumps(data)
-                
+
+
             except KeyError:
-                return HttpResponse("error")    
+                return HttpResponse("error")
                 
         return HttpResponse(data, content_type="application/json")
 
+
+
+def get_the_known_kanji(request):
+    data = []
+    profile = request.user.userprofile.id
+    profile_known_kanji = KnownKanji.objects.filter(user_profile = profile)
+    for each in profile_known_kanji:
+        kanji_obj = each.kanji.get()
+        data.append(kanji_obj)
+    # data = serializers.serialize("json",data)
+#     data = json.dumps(data)
+    return data
+    
 
 
 def get_word_bank(request):
@@ -174,7 +206,8 @@ def get_new_words(request):
                 # searchword = request.GET['searchword']
                
                 profile = request.user.userprofile
-                profile_known_kanji = profile.known_kanji.all()
+                # profile_known_kanji = profile.known_kanji.all()
+                profile_known_kanji = get_the_known_kanji(request)
                
                 kanji_in = []
                 
@@ -189,8 +222,9 @@ def get_new_words(request):
                 data = serializers.serialize("json",words)
                 data = json.loads(data)
                 
-                
-                new_kanji = [72,69,207,237,316]
+                #add words with these kanji to front
+                # new_kanji = [72,69,207,237,316]
+                new_kanji = []
                 words_with_new_kanji = []
                 
                 i = 0
@@ -266,27 +300,43 @@ def add_known_kanji(request, full_name):
     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
     knownkanji = request.POST.getlist('known-kanji')
     theknownkanji = []
-    
-    # for kanji in knownkanji:
-#         if UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = kanji).exists() == False:
-#             obj1 = Kanji.objects.get(id = kanji)
-#             theknownkanji.append(obj1)
-
-    # new_known_kanji = KnownKanji()
-#     new_known_kanji.save()
-    # new_known_kanji.kanji.add(Kanji.objects.get(id = 12))
-    # new_known_kanji.user_profile.add(userprofile)
             
-    for kanji in knownkanji:
-        if UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = kanji).exists() == False:
-            obj1 = Kanji.objects.get(id = kanji)
-            theknownkanji.append(obj1)
-             
-    userprofile.known_kanji.add(*theknownkanji)   
+    for kanjis in knownkanji:
+        
+        # if KnownKanji.objects.filter(user_profile = 10).kanji.filter(id = kanjis).exists() == False:
+        obj1 = Kanji.objects.get(id = kanjis)
+        new_known_kanji = KnownKanji(date_added = datetime.now())
+        new_known_kanji.save()
+        new_known_kanji.kanji.add(obj1)
+        new_known_kanji.user_profile.add(userprofile)
+            # KnownKanji.objects.get(user_profile = 10).kanji.add(obj1)
+    
+    print theknownkanji
+    # userprofile.known_kanji.add(*theknownkanji)
+    
     #submit known kanji
     return new_kanji_view(request, full_name)
     
    
+#################################REMOVE WORDS####################################################
+
+def remove_known_kanji(request,full_name):
+    c = {}
+    c.update(csrf(request))
+    userprofiles = User.objects.get(username = full_name).userprofile.id
+    # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+    deletekanji = request.POST.getlist('chosenwords')
+    print deletekanji
+    thedeletekanji = []
+    print KnownKanji.objects.filter(kanji__in = deletekanji, user_profile = userprofiles).delete()
+    print thedeletekanji
+    # profile = request.user.userprofile
+  #   profile_known_kanji = profile.known_kanji.all().order_by('grade', 'id')
+    # print KnownKanji.objects.get(user_profile = 8)
+    # userprofile.known_kanji.filter(id = 116).delete()
+    # print UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = 1126).delete()
+    print "hello"
+    return known_kanji_view(request, full_name)
     
     
 ###################################STACK EDITING#################################

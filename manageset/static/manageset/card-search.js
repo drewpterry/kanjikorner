@@ -38,20 +38,21 @@ var addword = function(idnumber, kanji, meaning, element){
 	minicard = minicard + "</div></div>"
 	minicard = minicard + "<div class = 'back mini'>" + kanji + "</div></div></div>";
 
-	if(element.innerText == "add"){
-		// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
-		var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' name = 'chosenwords' value = '" + idnumber +"' ></input>";
-		
-		$("#create-set-form").prepend(hiddeninput); 
-		$("#wordlist-new").append(minicard);
-		//array that holds ids of selected words
-		addcheck.push(idnumber);
-		// permanently add outline to added card or removes it if remove is clicked
-		element.parentNode.className += " outline";
-		element.innerHTML = "remove";
-		element.previousSibling.disabled = true;
-		
-	}else if (element.innerText == "know it!"){
+	// if(element.innerText == "add"){
+// 		// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+// 		var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+//
+// 		$("#create-set-form").prepend(hiddeninput);
+// 		$("#wordlist-new").append(minicard);
+// 		//array that holds ids of selected words
+// 		addcheck.push(idnumber);
+// 		// permanently add outline to added card or removes it if remove is clicked
+// 		element.parentNode.className += " outline";
+// 		element.innerHTML = "remove";
+// 		element.previousSibling.disabled = true;
+//
+// 	}else
+	if (element.innerText == "know it!"){
 		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
 		
 		$("#wordlist-know").append(minicard);
@@ -142,56 +143,56 @@ $("#search-area").on("click",".filter", function(){
 
 
 
-var displaySearch = function(data,signal){
-			data = JSON.stringify(data);
-			data = JSON.parse(data);
-
-
-			var dataLength = data.length;
-			var foundflag = false;
-			var content = ''
-			var addCheckLength = addcheck.length;
-		
-
-			
-				for(var i=0; i<dataLength; i++){
-					var pk = data[i].pk;
-					var kanjiName = data[i].fields.kanji_name;
-					var kanjiMeaning = data[i].fields.kanji_meaning;
+// var displaySearch = function(data,signal){
+// 			data = JSON.stringify(data);
+// 			data = JSON.parse(data);
+//
+//
+// 			var dataLength = data.length;
+// 			var foundflag = false;
+// 			var content = ''
+// 			var addCheckLength = addcheck.length;
+//
+//
+//
+// 				for(var i=0; i<dataLength; i++){
+// 					var pk = data[i].pk;
+// 					var kanjiName = data[i].fields.kanji_name;
+// 					var kanjiMeaning = data[i].fields.kanji_meaning;
+//
+// 					// if(knowncheck.indexOf(pk.toString()) == -1){
+//
+//
+// 						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
+// 						content = content + "<div class = 'flipper'><div class = front>";
+// 						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
+// 						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
+// 						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+// 						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
+// 						//hmmm some people on stackoverflow say inline javascript is bad practice...
+// 						//also probably the fact that I repeat it 2 times is bad...
+// 						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
+// 						content = content + "</div></div>"
+// 						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
+// 					// }
+// 				};
+// 				document.getElementById('container').innerHTML = content;
+//
+//
+//
+//
+// 					for(var i = 0; i<addCheckLength; i++){
+// 						if(document.getElementById('answercontainer'+addcheck[i]) != null){
+//
+// 							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
+// 							//add class to div where class = front
+// 							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
+// 							//change add button to a remove button
+// 							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
+// 						}
+// 					}
 					
-					// if(knowncheck.indexOf(pk.toString()) == -1){
-						
-
-						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
-						content = content + "<div class = 'flipper'><div class = front>";
-						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
-						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
-						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
-						//hmmm some people on stackoverflow say inline javascript is bad practice...
-						//also probably the fact that I repeat it 2 times is bad...
-						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
-						content = content + "</div></div>"
-						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
-					// }
-				};
-				document.getElementById('container').innerHTML = content;
-
-
-
-
-					for(var i = 0; i<addCheckLength; i++){
-						if(document.getElementById('answercontainer'+addcheck[i]) != null){
-
-							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-							//add class to div where class = front
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
-							//change add button to a remove button
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-						}
-					}
-					
-					
+//UNDO THE DISPLAY SEARCH FROM HERE ON UP!???????????????//////////////////////////////////////////////
 					
 					
 					// for(var i = 0; i<knowncheck.length; i++){
@@ -207,9 +208,9 @@ var displaySearch = function(data,signal){
 
 					
 					
-		};
+		// };
 		
 		
 //so that opening page has all the cards
-search('');
+// search('');
 		

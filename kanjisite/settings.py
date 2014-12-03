@@ -51,7 +51,7 @@ INSTALLED_APPS = (
     'flashcard',
     'south',
     'southtut',    
-    # 'endless_pagination',
+    'endless_pagination',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -3,6 +3,17 @@
 {% block pagetitle %}Kanji Bank{% endblock %}
 
 
+{% block add-known %}
+				<span style = "float:left"> Known Kanji: </span>
+
+				
+				<form id = "remove-kanji-form" action = "{% url 'profile:remove-known-kanji' full_name %}"method = "post">{% csrf_token %}
+				
+					<input type = "submit" class = "left-margin" value = "Remove These Kanji"></input>
+				</form>
+				
+{% endblock %}	
+
 {% block scripts %}
 <script src = "{% static 'manageset/kanji_bank.js' %}"></script>
 	
