@@ -33,6 +33,7 @@ class Sets(models.Model):
     pub_date = models.DateTimeField("pub_date")
     words = models.ManyToManyField(Words, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
+    times_practiced = models.IntegerField()
     # userprofile = models.ForeignKey(UserProfile)
     
     def __unicode__(self):
@@ -54,14 +55,21 @@ class KnownKanji(models.Model):
     date_added = models.DateTimeField(auto_now = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
+    
+    def __unicode__(self):
+        return self.kanji
 
     
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
+    user_profile = models.ForeignKey(UserProfile)
     date_added = models.DateTimeField(auto_now = True)
-    level = models.IntegerField()
-    last_practiced = DateTimeField()
-    user_profile = models.ForeignKey(UserProfile)    
-
+    tier_level = models.IntegerField()
+    last_practiced = models.DateTimeField(blank = True)
+    # remaining_time_review = models.FloatField(null = True)
+    time_until_review = models.FloatField(null = True)
+    
+    def __unicode__(self):
+        return self.words.real_word
 
             

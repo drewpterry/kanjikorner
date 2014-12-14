@@ -2,16 +2,27 @@
 
 {% paginate 100 known_kanji %}
 {% for each in known_kanji %}
-	<div id = 'answercontainer" + pk + "' class = 'answerbox' >
-		<div class = 'flipper'><div class = front>
-			<div id = 'kanji'> {{ each.kanji_name }} </div>
-			<div id = 'meaning'> {{ each.kanji_meaning }} </div>
-			<div id = 'grade'>{{ each.grade }}</div>
-			<button class = 'add-remove' id = 'knowit' onclick = 'addword("{{ each.pk }}"," {{each.kanji_name}}","{{ each.kanji_meaning}}", this)' >know it!</button>
+	<div id = 'answercontainer{{ each.pk }}' class = 'answerbox' >
+		
+		<div class = 'flipper'>
+			<div class = "front">
+				
+				
+				
+				<div id = 'kanji'> {{ each.kanji_name }} </div>
+				<div id = 'meaning'> {{ each.kanji_meaning }} </div>
+				<div id = 'grade'>{{ each.grade }}</div>
+				<button class = 'add-remove' id = 'knowit' onclick = 'addword("{{ each.pk }}"," {{each.kanji_name}}","{{ each.kanji_meaning}}", this)' >know it!</button>
 	
 			<!-- <button class = 'add-remove' onclick = 'addword("{{ each.pk }}","{{each.kanji_name}}","{{ each.kanji_meaning}}", this)'>add</button> -->
-		</div>
-			<div class = 'back'></div>
+			
+			</div>
+			
+			
+			<div class = 'back'>
+				
+			</div>
+			
 		</div>
 	</div>
 {% endfor %}

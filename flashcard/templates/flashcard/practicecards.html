@@ -3,8 +3,8 @@
 {% block pagetitle %}Profile{% endblock %}
 
 {% block content %}
-
-	
+	<input id = "set-name" type = "hidden" value = "{{ set_name }}"></>
+	<div id = "set-name-title">{{ set_name }}</div>
 		<!-- <div id = "unanswered" class = "sidebar">
 			<div class = "preview">neko</div>
 			<div class = "preview">neko</div>
@@ -13,20 +13,20 @@
 		<div id = "middle">
 			<br/>
 			<div id = "scoreholder">
-		
+
 				<div class = "scorebox">
 					<div class = "title">Remaining</div>
 					<div id = "highscore" class = "score">0</div>
 				</div>
-		
+
 				<div class = "scorebox right">
 					<div class = "title">Trouble Words</div>
 					<div id = "currentscore" class = "score">0</div>
 				</div>
-		
+
 			</div>
 		<div id = "center">
-			<div id = "cardhold1" class = "cardhold">	
+			<!-- <div id = "cardhold1" class = "cardhold">
 				<div id = "word1" class = "answerbox mini left">
 					<div class = "flipper">
 						<div id = "front1"class = "front mini2"></div>
@@ -34,27 +34,23 @@
 					</div>
 				</div>
 		    </div>
-			<div id = "cardhold2" class = "cardhold">	
+			<div id = "cardhold2" class = "cardhold">
 				<div id = "word0" class = "answerbox left">
 					<div class = "flipper">
 						<div id = "front0" class = "front"></div>
 						<div id = "back0" class = "back"></div>
 					</div>
 				</div>
-			</div>	
-				
-				<!-- <div class = "answerbox mini left">
-					<div class = "flipper">
-						<div class = "front mini2"></div>
-						<div class = "back mini2"></div>
-					</div>
-				</div> -->
-				
+			</div> -->
+
+
+
 		</div>
 			
 			
 				<br style = "clear:both;"/>
-			<input type = "text" id = "answerinput" autofocus></input>
+				<!-- <input autocapitalize="off" autocomplete="off" autocorrect="off" id="user-response" name="user-response" placeholder="答え" type="text" lang="ja"> -->
+			<input type = "text" id = "answerinput"　lang = "ja" placeholder = "ひらがな" autofocus></input>
 			<!-- <div id = "result">X</div> -->
 		</div>
 	
@@ -74,9 +70,11 @@ var vocab = [];
 {% for word in words %}
 
 vocab.push({
+	//I need to fix this so it works under all circumstances, both practice and reviews
 	word: '{{ word.real_word }}',
 	hiragana: '{{ word.hiragana }}',
-	meaning: '{{ word.meaning}}'
+	meaning: '{{ word.meaning}}',
+	know_word_object_id: {{ word.id }} 
 	});
 
 {% endfor %}
@@ -84,4 +82,16 @@ vocab.push({
 </script>
 
 <script src = "{% static 'flashcard/practicecard.js' %}"></script>
+<script src = "{% static 'flashcard/wanakana.min.js' %}"></script>
+<script>
+//binds IME to answer input
+(function(wk) {
+				
+				inputIME = document.getElementById('answerinput');
+
+				wk.bind(inputIME);
+	
+				}
+			)(window.wanakana);
+</script>
 {% endblock %}		

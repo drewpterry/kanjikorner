@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     
     
     
+    
     url(r'^new-set/view-known-words$', views.get_new_words, name='view_known_words'),
     url(r'^new-set/word-search$', views.word_search, name='wordsearch'),    
     url(r'^new-set/get-known-kanji$', views.get_known_kanji, name='get-known-kanji'),

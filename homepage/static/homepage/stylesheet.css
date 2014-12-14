@@ -355,12 +355,14 @@ header {
 	
 	#middle #center {
 		//border-style:solid;
-		height:210px;
+/*		height:250px;*/
+		height:200px;
 		//overflow:auto;
 	} 
 	 
 	#middle .cardhold {
-		height:210px;
+/*		height:250px;*/
+		height:220px;
 		width:33.3%;
 		overflow:auto;
 		//border-style:solid;
@@ -377,6 +379,7 @@ header {
       perspective: 1000;
       width: 90%;
       height: 200px; 
+/*	  height: 250px;*/
       background-color: #86e7fc;
       /*margin-left: auto;
       margin-top: 12px;*/
@@ -398,7 +401,10 @@ header {
       -moz-transform: rotateY(180deg);
       -o-transform: rotateY(180deg);
       transform: rotateY(180deg);
-  height:200px; }
+/*  	height:240px;*/
+	height:200px;
+
+}
 	  
 	  
     #middle .flipper {
@@ -816,6 +822,23 @@ canvas {
 
 	  
 	  
+
+
+  ::-webkit-input-placeholder {
+     color: rgba(230,230,230,1);
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+     color: rgba(240,240,240,1);  
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+     color: rgba(240,240,240,1);  
+  }
+
+  :-ms-input-placeholder {  
+     color: rgba(240,240,240,1);  
+  }
 	  
 	  
 	  

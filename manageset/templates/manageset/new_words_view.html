@@ -26,7 +26,20 @@
 				
 {% endblock %}	
 
+{% block words %}
+
+{% include page_template %}
+
+{% endblock %}
+
 {% block scripts %}
-<script src = "{% static 'manageset/known-kanji-view.js' %}"></script>
-	
+<script src = "{% static 'manageset/new-words-view.js' %}"></script>
+
+{% block js %}
+{{ block.super }}
+<!-- <script src = "{% static 'manageset/card-search.js' %}"></script> -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate();</script>
+{% endblock %}	
 {% endblock %}	

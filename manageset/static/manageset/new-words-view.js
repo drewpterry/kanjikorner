@@ -90,6 +90,7 @@ var removeWord = function(idnumber, kanji, meaning, element){
 	
 	var wordCard = document.getElementById('answercontainer'+idnumber).firstChild.firstChild;
 	document.getElementById('answercontainerdif'+idnumber).remove();
+	document.getElementById('chosenwords'+idnumber).remove();
 	//removes hidden field
 	if (wordCard.lastChild.disabled == false){
 		document.getElementById('chosenwords'+idnumber).remove();
@@ -163,9 +164,9 @@ var displaySearch = function(data,signal){
 			var foundflag = false;
 			var content = ''
 			var addCheckLength = addcheck.length;
-		
 
-			
+
+
 				for(var i= 0; i<dataLength; i++){
 					var pk = data[i].pk;
 					var kanjiName = data[i].fields.real_word;
@@ -200,8 +201,8 @@ var displaySearch = function(data,signal){
 						}
 					}
 		};
-		
-		
+
+
 //so that opening page has all the cards
-search('');
+// search('');
 		

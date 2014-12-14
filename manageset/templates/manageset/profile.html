@@ -13,12 +13,14 @@
 					<div>+</div><!-- <p>+</p> -->
 				</div>
 			</a>
+				
 		
 			<div class = "set-list"><div class = "overlay"> 
 					<div id = "set-description">This has all the words in all of your sets combined</div></br>
-					<a href = "#"><div class = "set-option">Practice</div></a>
+					<a href = "{% url 'flashcard:srs_review_words' full_name %}"><div class = "set-option">Practice</div></a>
 					<!-- <a href = "#"><div class = "set-option">Edit</div></a> -->
-				</div>Master Set
+				</div>
+				<div>Master Set</div><div>{{ review_number }}</div>
 			</div>
 		{% for name in usersets.user_sets.all %}
 			<div class = "set-list">
