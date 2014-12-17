@@ -57,7 +57,7 @@ class KnownKanji(models.Model):
     user_profile = models.ManyToManyField(UserProfile)
     
     def __unicode__(self):
-        return self.kanji
+        return unicode(self.kanji)
 
     
 class KnownWords(models.Model):

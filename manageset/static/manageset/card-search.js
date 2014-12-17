@@ -12,7 +12,7 @@ var keyword = '';
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/word-search',
+		url:'/profile/new-set/word-search',
 		type:'GET',
 		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}', searchword: keyword},
 		success: displaySearch, 

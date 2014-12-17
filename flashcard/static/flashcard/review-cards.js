@@ -1,15 +1,16 @@
-
 var troublewords = [];
 var wordnumber = 0;
 var remaining = vocab.length;
 var randarray = [];
-var sets_until_complete = 1;
+// not being used now
+var vocab_object = vocab[randarray[wordnumber]]
+var sets_until_complete = 2;
+//type_flag --- probably change false and true to hiragana or english, will make it easier to read
 var type_flag = false;
 var both_right = true;
 
 //creates array of random uniques
 var randomarray = function(){
- randarray = [];
 
 	while(randarray.length < vocab.length){
   	  	var randomnumber=Math.floor(Math.random() * vocab.length)
@@ -25,11 +26,13 @@ var randomarray = function(){
 	// console.log("this is the randarray " + randarray);
 }
 
+
+
 //generates new center card
 var startpage = function(){
 	type_flag = false;
 	randomarray();
-	var randvocabword = vocab[randarray[wordnumber]];
+	// var randvocabword = vocab[randarray[wordnumber]];
 	
 	// initial_cards = '<div id = "center">';
 	initial_cards = "";
@@ -67,9 +70,30 @@ var startpage = function(){
 //animates cards to the right
 var nextset = function(){
 	
+	word_object = vocab[randarray[wordnumber]];
+	//if answered correctly on first try
+	if(word_object.correct == true){
+		//update word
+		update_word_object(word_object.know_word_object_id, 1);
+		// console.log("correct updated");
+	}else{
+		if(word_object.first_time == true){
+			update_word_object(word_object.know_word_object_id, 0);
+			word_object.first_time = false;
+			// console.log("first time incorrect " + word_object.first_time)
+			
+			
+		};
+	};
+	
+	
+	
+	
+	animate_speed = 300;
+	
 	if(both_right == false){
 		
-		console.log(randarray.length);
+		// console.log(randarray.length);
 		if(randarray.length - wordnumber > 7){
 			randarray.splice(wordnumber + 7, 0,card_user_is_on)
 		}else{
@@ -82,41 +106,43 @@ var nextset = function(){
 	};
 	
 	
+	
+	
 	var addone = wordnumber + 1;
 	var addtwo = wordnumber + 2;
 	
 	$(".cardhold").animate({
 		"left":"33.3%"
-	},300);
+	},animate_speed);
 
 	$("#word" + wordnumber).animate({
 		"height":"133px",
 		"width":"45%",
 		"margin-top":"40px",
-	},300);
+	},animate_speed);
 	
 	$("#front" + wordnumber).animate({
 		"line-height":"133px",
 		"font-size":"20px"
-	},300);
+	},animate_speed);
 	
 //animate to the middle card
 	$("#word" +addone).animate({
 		"height":"200px",
 		"width":"90%",
 		"margin-top":"0px",
-	},300);
+	},animate_speed);
 	
 	$("#front" +addone).animate({
 		"line-height":"200px",
 		"font-size":"60px"
-	},300);
+	},animate_speed);
 	
 	
 	if(wordnumber+1 == randarray.length){ 
 		document.getElementById('answerinput').value = 'finished';
 		document.getElementById('answerinput').style.color = "grey";
-		reset();
+		// reset();
 	}else{
 		document.getElementById('answerinput').value = '';
 		document.getElementById('answerinput').style.color = "grey";
@@ -167,6 +193,16 @@ var nextset = function(){
 		
 	};
 	
+	
+	//if both right and this is the first time it should update
+	
+	
+	
+	
+	
+	
+	
+	
 	wordnumber += 1;
 	type_flag = false;
 	
@@ -177,14 +213,35 @@ var nextset = function(){
 		$("#cardhold"+addtwo).hide().fadeIn();
 	},500);
 	
+	
+	
 	// creates list of words missed in the first round
-	if(troublewords.indexOf(card_user_is_on) == -1){
-		troublewords.push(card_user_is_on);
-		
-		console.log("troubleword  " + troublewords);
-		};	
+	// if(troublewords.indexOf(card_user_is_on) == -1){
+// 		troublewords.push(card_user_is_on);
+//
+// 		console.log("troubleword  " + troublewords);
+// 	};	
 	
 };
+
+
+var update_word_object = function(object_id, increase_level){
+
+	$.ajax({
+		// need to pass variable to template that I can grab with javascript to replace this url
+		// need to pass csrf_token
+		
+		url:'/profile/samir/tier-level-update',
+		type:'GET',
+		data:{ csrfmiddlewaretoken: '{{ csrf_token }}', known_object_id: object_id, increase_level: increase_level},
+		success: update_words_success, 
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+		
+};
+
 
 
 //on enter of text checks if correct answer, currently must be exact match but should change
@@ -208,7 +265,7 @@ $('#answerinput').keyup(function(event){
 		};
 		
 			
-		//checks entered word equals the english meaning
+		//checks entered word equals the hiragana or english reading
 		if(textinput.value.indexOf(thing_to_check) == -1){
 			
 			if(type_flag == true){
@@ -219,7 +276,7 @@ $('#answerinput').keyup(function(event){
 			$("#word" + wordnumber).toggleClass("answerbox2");
 			textinput.style.color = "red";
 			
-			
+			vocab[randarray[wordnumber]].correct = false;
 			
 			window.setTimeout(function(){
 				$("#word" + wordnumber).toggleClass("answerbox2")
@@ -229,7 +286,7 @@ $('#answerinput').keyup(function(event){
 			},3000);
 			
 			
-			console.log("wronglasdf");
+			console.log("wrong answer");
 		
 			both_right = false;		
 			textinput.style.color = "red";
@@ -309,7 +366,6 @@ var update_words = function(signal){
 	console.log()
 	$.ajax({
 		// need to pass variable to template that I can grab with javascript to replace this url
-		// will not work on other profiles
 		url:'/profile/samir/Drew/complete-stack',
 		type:'GET',
 		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: '{{ csrf_token }}', set_name: set_name},
@@ -342,12 +398,3 @@ document.getElementById('currentscore').onclick = function(){console.log(trouble
 document.getElementById('highscore').onclick = function(){
 	reset();
 };
-
-
-
-
-
-
-
-
-

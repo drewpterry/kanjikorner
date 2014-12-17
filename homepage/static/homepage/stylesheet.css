@@ -496,13 +496,16 @@ font-size: 40px; }
 }
 
 #set-preview{
-	float:left;
-	width:28%;
+/*	float:left;*/
+	width:1062px;
 	height:auto;
-	margin:5%;
+	/*margin-left:5%;
+	margin-right:5%;*/
+	margin:auto;
 	margin-top:0px;
 	overflow:auto;
-	//border-style:solid;
+	text-align:middle;
+/*	border-style:solid;*/
 }	
 
 .set-list, .overlay {
@@ -564,11 +567,12 @@ font-size: 40px; }
 	
 }
 
-canvas {
-	float:left;
+#stats {
+/*	float:left;*/
 	background-color:grey;
 	height:400px;
-	width:60%;
+	width:90%;
+	margin:auto;
 }
 
 

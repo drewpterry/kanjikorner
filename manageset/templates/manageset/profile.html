@@ -4,7 +4,9 @@
 
 {% block content %}
 		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
-		<br style = "clear:both">
+		<br style = "clear:both"/>
+		<div id = "stats"></div>
+		<br style = "clear:both"/>
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
 		<div id = "set-preview">
 	
@@ -34,7 +36,7 @@
 		{% endfor %}
 		</div>
 		
-		<canvas></canvas>
+		
 		
 		
 		<script src = "{% static 'manageset/main_profile.js' %}"></script>

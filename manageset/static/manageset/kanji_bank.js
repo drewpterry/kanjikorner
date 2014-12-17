@@ -12,7 +12,7 @@ var keyword = '';
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/get-known-kanji',
+		url:'/profile/new-set/get-known-kanji',
 		type:'GET',
 		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}', searchword: keyword},
 		success: displaySearch, 

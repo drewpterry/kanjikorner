@@ -5,10 +5,12 @@ from django.contrib.auth.models import User
 from django.utils import simplejson
 from django.core import serializers
 import json
+import random
 from datetime import datetime, timedelta, time
 from django.core.context_processors import csrf
 # import pytz
 from django.utils.timezone import utc
+from django.db.models import F
 
 
 # Create your views here.
@@ -52,7 +54,7 @@ def complete_stack(request, full_name, set_name):
                         
                         
                         
-                    KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 2).total_seconds())
+                    KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 5).total_seconds())
                     
                     the_set_object.save()
                     data = json.dumps(words)
@@ -74,7 +76,7 @@ def srs_review_words(request, full_name):
         
             words_list = srs_get_and_update(request, full_name)
                
-    return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words_list})
+    return render(request, 'flashcard/review-cards.html', {'full_name':full_name, 'words':words_list})
     
 
 def srs_get_and_update(request, full_name):
@@ -95,30 +97,80 @@ def srs_get_and_update(request, full_name):
         
         time_remaining = word.time_until_review - difference
         
-        
-        print time_remaining
-        print word.tier_level
-        if time_remaining >= 0:
-            word.time_until_review = time_remaining
-            word.save()
-            print word.time_until_review
-            print "not ready to review"
-        else: 
+        # print "now: ", now
+ #        print "last practiced ", last_practiced
+ #        print "difference: ", difference
+ #        print "time remaining: ", time_remaining
+ #        print "tier level: ", word.tier_level
+        word.time_until_review = time_remaining
+        word.last_practiced = now
+        word.save()
+        if time_remaining <= 0:
             word.words.id = word.id
             words_list.append(word.words)
-            # known_word_id.append(word.id)
             
-            #change this so it doesn't update database every single time even when it is already 0
-            word.time_until_review = time_remaining
-            word.save()
-            print "ready to review"
+            
+            
     
     return words_list 
 
 
 
-def tier_level_update(request):
-    return
+def tier_level_update(request, full_name):
+  
+    if not request.user.is_authenticated() or request.user.username != full_name:
+        return HttpResponse("you are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+
+                userprofiles = User.objects.get(username = full_name).userprofile.id
+                known_id = request.GET['known_object_id']
+                increase_level = int(request.GET['increase_level'])
+                
+                options = {     0 : 0,
+                                1 : 5,
+                                2 : 24,
+                                3 : 96,
+                                4 : 216,
+                                5 : 504,
+                                6 : 1176,
+                                7 : 3360,
+                                8 : None
+                }
+                
+                selected_word = KnownWords.objects.get(id = known_id)
+                selected_word_tier = KnownWords.objects.get(id = known_id).tier_level
+                selected_word.last_practiced = datetime.now()
+                
+                print "this is the increase level flag :", type(increase_level), increase_level  
+                print "original level: ", selected_word_tier
+                if increase_level == 1:
+                    print "hello" 
+                    if selected_word_tier <8:
+                        selected_word.tier_level = selected_word_tier + 1
+                        
+                elif selected_word_tier != 1:
+                    selected_word.tier_level = selected_word_tier - 1
+                    
+                            
+                
+                new_hours = options[selected_word.tier_level]
+                
+                random_multiplier = random.uniform(.85, 1.15)
+                
+                selected_word.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
+                
+                print "this is the new level: ", selected_word.tier_level
+                print selected_word.time_until_review, "this is the time added"
+                
+                selected_word.save()
+                
+                data = 1
+
+            except KeyError:
+                return HttpResponse("there was an error")
+            return HttpResponse(data, content_type="application/json")
 
 
 
