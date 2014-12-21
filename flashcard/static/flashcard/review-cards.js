@@ -266,7 +266,7 @@ $('#answerinput').keyup(function(event){
 		
 			
 		//checks entered word equals the hiragana or english reading
-		if(textinput.value.indexOf(thing_to_check) == -1){
+		if(textinput.value.toLowerCase().indexOf(thing_to_check.toLowerCase()) == -1){
 			
 			if(type_flag == true){
 				

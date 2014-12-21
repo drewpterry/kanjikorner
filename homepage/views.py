@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.context_processors import csrf
 from django.contrib import auth
-from django.contrib.auth.forms import UserCreationForm
+from forms import UserCreateForm
 from manageset.models import UserProfile
 
 
@@ -44,14 +44,14 @@ def logout(request):
     
 def create_account(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             p = UserProfile(user = new_user)
             p.save()
             return HttpResponseRedirect('/create-account/success')
     else:
-        form = UserCreationForm()
+        form = UserCreateForm()
     
     return render(request, 'homepage/create-account.html', {'form':form})  
     

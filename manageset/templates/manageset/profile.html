@@ -5,7 +5,45 @@
 {% block content %}
 		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
 		<br style = "clear:both"/>
-		<div id = "stats"></div>
+		<!-- <div id = "stats"></div> -->
+		<div id = "progress-chart">
+			<div id = "progress-chart-inner">
+				<div class = "level-indicator">
+					
+					<h2>{{ the_count.0 }}</h2>
+					<span>0</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.1 }}</h2>
+					<span>1</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.2 }}</h2>
+					<span>2</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.3 }}</h2>
+					<span>3</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.4 }}</h2>
+					<span>4</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.5 }}</h2>
+					<span>5</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.6 }}</h2>
+					<span>6</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.10 }}</h2>
+					<span>10</span>
+				</div>
+			</div>
+		</div>
+		<br style = "clear:both"/>
 		<br style = "clear:both"/>
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
 		<div id = "set-preview">

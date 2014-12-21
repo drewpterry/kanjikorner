@@ -20,7 +20,7 @@ class Words(models.Model):
     real_word = models.CharField(max_length = 200)
     meaning = models.CharField(max_length = 500)
     hiragana = models.CharField(max_length = 200)
-    frequency = models.IntegerField()
+    frequency = models.IntegerField(db_index = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     
     def __unicode__(self):
@@ -63,6 +63,7 @@ class KnownKanji(models.Model):
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
     user_profile = models.ForeignKey(UserProfile)
+    #last_checked -- need to add real date_added field and rename this one
     date_added = models.DateTimeField(auto_now = True)
     tier_level = models.IntegerField()
     last_practiced = models.DateTimeField(blank = True)

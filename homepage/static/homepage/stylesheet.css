@@ -495,9 +495,29 @@ font-size: 40px; }
 	color:white;
 }
 
-#set-preview{
+#progress-chart{
+	height:150px;
+	background-color:white;
+}
+#progress-chart-inner{
+	height:150px;
+	background-color:white;
+	margin-left:5%;
+	width:90%;
+/*	border-style:solid;*/
+}
+
+.level-indicator{
+	width:12.5%;
+	height:100%;
+	float:left;
+/*	border-style:solid;*/
+}
+
+
+#outercontainer #set-preview{
 /*	float:left;*/
-	width:1062px;
+	width:1063px;
 	height:auto;
 	/*margin-left:5%;
 	margin-right:5%;*/
@@ -507,6 +527,15 @@ font-size: 40px; }
 	text-align:middle;
 /*	border-style:solid;*/
 }	
+
+
+/*#outercontainer #progress-chart{
+	height:100px;
+	width:80%;
+	background-color:white;
+};*/
+
+
 
 .set-list, .overlay {
 	color:grey;
@@ -806,10 +835,6 @@ font-size: 40px; }
 	
   }
   
-  #container #meaning{
-  	
-	
-  }
   
   #container #grade{
 	  margin-top:10px;

@@ -27,7 +27,6 @@ var search = function(signal){
 
 var addword = function(idnumber, kanji, meaning, element){
 	
-	// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
 	
 	var minicard =''; 
 	minicard = minicard + "<div id = 'answercontainerdif" + idnumber + "' class = 'answerbox mini'>";
@@ -39,7 +38,7 @@ var addword = function(idnumber, kanji, meaning, element){
 	minicard = minicard + "<div class = 'back mini'>" + kanji + "</div></div></div>";
 
 	if(element.innerText == "Remove"){
-		// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+
 		var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' name = 'chosenwords' value = '" + idnumber +"' ></input>";
 
 		$("#remove-kanji-form").prepend(hiddeninput);
@@ -51,16 +50,7 @@ var addword = function(idnumber, kanji, meaning, element){
 		element.innerHTML = "undo";
 		element.previousSibling.disabled = true;
 
-	// }else
-// 	if (element.innerText == "Remove"){
-// 		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
-//
-// 		$("#wordlist-know").append(minicard);
-// 		$("#known-kanji-form").prepend(hiddeninput);
-// 		knowncheck.push(idnumber);
-// 		element.parentNode.className += " outline-2";
-// 		element.innerHTML = "remove";
-// 		// element.nextSibling.disabled = true;
+
 		
 	}else{
 		
@@ -74,13 +64,11 @@ var addword = function(idnumber, kanji, meaning, element){
 
 var removeWord = function(idnumber, kanji, meaning, element){
 	
-	// element.innerHTML = "add";
-	// element.parentNode.className = "front";
+
 	
 	var wordCard = document.getElementById('answercontainer'+idnumber).firstChild.firstChild;
 	document.getElementById('answercontainerdif'+idnumber).remove();
-	//removes hidden field
-	// if (wordCard.lastChild.disabled == false){
+	
 		document.getElementById('chosenwords'+idnumber).remove();
 		wordCard.lastChild.innerHTML = "add";
 		wordCard.children[3].disabled = false;
@@ -88,11 +76,7 @@ var removeWord = function(idnumber, kanji, meaning, element){
 		var position = addcheck.indexOf(idnumber);
 		addcheck.splice(position,1);
 
-	// }else{
-// 		document.getElementById('knownwords'+idnumber).remove();
-// 		var position = knowncheck.indexOf(idnumber);
-// 		knowncheck.splice(position,1);
-// 	}
+
 	wordCard.className = "front";
 	wordCard.children[3].innerHTML = "Remove";
 	wordCard.lastChild.disabled = false;

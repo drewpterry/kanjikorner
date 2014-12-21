@@ -1,6 +1,6 @@
 #overall site
 from django.conf.urls import patterns, include, url
-
+from manageset import views
 from django.contrib import admin
 admin.autodiscover()
 
@@ -16,4 +16,7 @@ urlpatterns = patterns('',
     url(r'^profile/', include('flashcard.urls', namespace = "flashcard")),
     # url(r'^polls/', include('polls.urls', namespace="polls")),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    # url(r'^accounts/profile', views.main_profile)
+                       
 )
