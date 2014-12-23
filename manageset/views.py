@@ -52,16 +52,8 @@ def main_profile(request,full_name):
         
         print count_dict
         
-            # print each['tier_level'], each['count']
-#         for each in known_words:
-#             if each['tier_level'] == i:
-#                 count_list.append(each['count'])
-                
-        # for each in known_words:
-#             print each.tier_level
-#         print known_words
         number_of_reviews = len(srs_get_and_update(request, full_name))
-        # print len(number_of_reviews)
+ 
         
         return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':userprofile, 'review_number': number_of_reviews, 'the_count':count_dict})
  
@@ -98,8 +90,22 @@ def word_bank_view(request,full_name):
         profile_known_words = 2
         return render(request, "manageset/known_word_bank.html", {'full_name':full_name, 'known_kanji': profile_known_words})           
 
+
+
 def known_kanji_view(request,full_name):
-    return render(request, "manageset/known_kanji_bank.html", {'full_name':full_name})
+    profile = request.user.userprofile
+    known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
+    
+    known_kanji_list = []
+    for each in known_kanji:
+        known_kanji_list.append(each.kanji.get().id)
+        
+    print known_kanji_list    
+    # print known_kanji
+    return render(request, "manageset/known_kanji_bank.html", {'full_name':full_name, 'known_kanji_list':known_kanji_list})
+ 
+ 
+ 
     
 def new_words_view(request, full_name):
     
@@ -173,9 +179,16 @@ def new_words_view(request, full_name):
     
     # all lot faster in general but only gives small subset of results, not effective for finding words with specific kanji because only pulls from returned number...as long as their are not too many kanji it happens quickly, no problem with 90 kanji after that time starts rising considerably
     words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
-    # print words.query
-    new_kanji = [1153, 1071, 1069, 995, 984]
-    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).prefetch_related('kanji').order_by('frequency')
+    
+    selected_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True).prefetch_related('kanji')
+    print "this is the selected kanji: ", selected_kanji
+    new_kanji = []
+    for each in selected_kanji:
+        new_kanji.append(each.kanji.get().id)
+    
+    # print new_kanji
+    # new_kanji = [1153, 1071, 1069, 995, 984]
+    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('frequency')
     special_words = list(special_words)
     for each in list(special_words):
         kanji = each.kanji.all()
@@ -349,7 +362,7 @@ def get_the_known_kanji(request):
     data = []
     profile = request.user.userprofile.id
     profile_known_kanji = KnownKanji.objects.filter(user_profile = profile).prefetch_related('kanji').order_by('date_added').reverse()
-    print profile_known_kanji
+    # print profile_known_kanji
     # print profile_known_kanji
     for each in profile_known_kanji:
         kanji_obj = each.kanji.get()
@@ -369,12 +382,6 @@ def get_word_bank(request):
     else:
         if request.is_ajax():
             try:
-                # kanjis = Kanji.objects.all()
-                # profile = request.user.userprofile
- #                profile_known_words = profile.known_words.all().order_by('frequency', 'id')[0:200]
- #                data = serializers.serialize("json",profile_known_words)
- #                data = json.dumps(data)
- #                print data
                 
                 data = get_known_word_list(request, False)
                 
@@ -386,20 +393,14 @@ def get_word_bank(request):
         return HttpResponse(data, content_type="application/json")                   
             
 
+
+
 def get_known_word_list(request, withid):
     
-    # known_word_list = []
-#     profile = request.user.userprofile
-#     profile_known_words = profile.known_words.all()
-#
-#     for each in profile_known_words:
-#         known_word_list.append(each.id)
-        
     known_word_list = []
     profile = request.user.userprofile.id
     profile_known_kanji = KnownWords.objects.filter(user_profile = profile).order_by('date_added')
-    # print profile_known_kanji
-    # print profile_known_kanji
+ 
     if withid == False:
         for each in profile_known_kanji:
             # print each.date_added, each.words
@@ -410,11 +411,13 @@ def get_known_word_list(request, withid):
             # print each.date_added
             kanji_obj = each.words.id
             known_word_list.append(kanji_obj)
-            
-                  
+                            
     return known_word_list
     
-
+    
+    
+    
+# i dont think this currently does anything
 def get_new_words(request):
     if not request.user.is_authenticated():
         return HttpResponse("You are not authenticated")
@@ -490,8 +493,18 @@ def update_knownkanji_special(request):
         if request.is_ajax():
             try:
                 profile = request.user.userprofile.id
-                data = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
-                print data
+                theid = request.GET['theid']
+                
+                data = KnownKanji.objects.filter(user_profile = profile, kanji = theid)
+                # data = list(data)
+                for each in data:
+                    if each.selected_kanji == False:
+                        each.selected_kanji = True
+                    else:
+                        each.selected_kanji = False    
+                    each.save()        
+                
+                
                 # data = get_known_word_list(request, False)
                 
                 data = serializers.serialize("json",data)

@@ -127,67 +127,102 @@ $("#search-area").on("click",".filter", function(){
 
 
 
+
+
 var displaySearch = function(data,signal){
 
-			data = JSON.parse(data);
+	data = JSON.parse(data);
 
 
-			var dataLength = data.length;
-			var foundflag = false;
-			var content = ''
-			var addCheckLength = addcheck.length;
+	var dataLength = data.length;
+	var foundflag = false;
+	var content = ''
+	var addCheckLength = addcheck.length;
 		
 
-			
-				for(var i= 0; i<dataLength; i++){
-					var pk = data[i].pk;
-					var kanjiName = data[i].fields.kanji_name;
-					var kanjiMeaning = data[i].fields.kanji_meaning;
+	
+	for(var i= 0; i<dataLength; i++){
+		var pk = data[i].pk;
+		var kanjiName = data[i].fields.kanji_name;
+		var kanjiMeaning = data[i].fields.kanji_meaning;
 
-						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
-						content = content + "<div class = 'flipper'><div class = front>";
-						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
-						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
-						// content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >Remove</button>";
-						//hmmm some people on stackoverflow say inline javascript is bad practice...
-						//also probably the fact that I repeat it 2 times is bad...
-						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>Remove</button>";
-						content = content + "</div></div>"
-						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
+			content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' data-id = '"+ pk +"' >";
+			content = content + "<div class = 'flipper'><div class = front><button class = 'special-kanji-switch'>✓</button>";
+			content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
+			content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
+			content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+			//hmmm some people on stackoverflow say inline javascript is bad practice...
+			//also probably the fact that I repeat it 2 times is bad...
+			content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>Remove</button>";
+			content = content + "</div></div>"
+			content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
 
-					};
-				document.getElementById('container').innerHTML = content;
-
-
-
-
-					for(var i = 0; i<addCheckLength; i++){
-						if(document.getElementById('answercontainer'+addcheck[i]) != null){
-
-							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-							//add class to div where class = front
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
-							//change add button to a remove button
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-						}
-					}
-					
-					for(var i = 0; i<knowncheck.length; i++){
-						if(document.getElementById('answercontainer'+knowncheck[i]) != null){
-
-							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-							//add class to div where class = front
-							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.className += " outline-2";
-							//change add button to a remove button
-							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-						}
-					}
-					
-					
 		};
+	document.getElementById('container').innerHTML = content;
+	
+	for (var i = 0; i <= selected_kanji_list.length; i++){
+		console.log(i)
+		$('#answercontainer'+selected_kanji_list[i]).find('div .special-kanji-switch').addClass("selected-kanji");
+	};	
+
+
+
+		for(var i = 0; i<addCheckLength; i++){
+			if(document.getElementById('answercontainer'+addcheck[i]) != null){
+
+				//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
+				//add class to div where class = front
+				document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
+				//change add button to a remove button
+				document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
+			}
+		}
+		
+		for(var i = 0; i<knowncheck.length; i++){
+			if(document.getElementById('answercontainer'+knowncheck[i]) != null){
+
+				//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
+				//add class to div where class = front
+				document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.className += " outline-2";
+				//change add button to a remove button
+				document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
+			}
+		}
+		
+					
+};
 		
 		
 //so that opening page has all the cards
 search('');
-		
+
+$("#container").on("click", ".special-kanji-switch", function(){
+	// console.log("clicking this button worked");
+	theclass = this.className;
+	if (theclass == "special-kanji-switch"){
+		this.classList.add("selected-kanji");
+	}else{
+		this.classList.remove("selected-kanji");
+	};
+	
+	kanji_id = this.parentNode.parentNode.parentNode.dataset.id
+	console.log(kanji_id)
+	$.ajax({
+		url:'/profile/upate-knownkanji-special',
+	//need to make this a post request
+		type:'GET',
+		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
+		success: function(data){
+			
+	console.log(data);
+},
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+});		
+
+$('#answercontainer26').find('div .special-kanji-switch').addClass("selected-kanji")
+// $('#answercontainer26').childNode.childNode
+
+

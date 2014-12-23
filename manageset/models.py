@@ -52,19 +52,22 @@ class UserProfile(models.Model):
 
 class KnownKanji(models.Model):
     kanji = models.ManyToManyField(Kanji)
-    date_added = models.DateTimeField(auto_now = True)
+    date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
     
     def __unicode__(self):
         return unicode(self.kanji)
+        
+    def display_kanji(self):
+        return unicode(self.kanji)   
 
     
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
     user_profile = models.ForeignKey(UserProfile)
     #last_checked -- need to add real date_added field and rename this one
-    date_added = models.DateTimeField(auto_now = True)
+    date_added = models.DateTimeField(auto_now_add = True)
     tier_level = models.IntegerField()
     last_practiced = models.DateTimeField(blank = True)
     # remaining_time_review = models.FloatField(null = True)

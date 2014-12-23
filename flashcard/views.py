@@ -129,14 +129,15 @@ def tier_level_update(request, full_name):
                 increase_level = int(request.GET['increase_level'])
                 
                 options = {     0 : 0,
-                                1 : 5,
-                                2 : 24,
-                                3 : 96,
-                                4 : 216,
-                                5 : 504,
-                                6 : 1176,
-                                7 : 3360,
-                                8 : None
+                                1 : 4,
+                                2 : 22,
+                                3 : 75,
+                                4 : 185,
+                                5 : 450,
+                                6 : 1050,
+                                7 : 2500,
+                                8 : 6200,
+                                9 : 15000
                 }
                 
                 selected_word = KnownWords.objects.get(id = known_id)
@@ -147,7 +148,7 @@ def tier_level_update(request, full_name):
                 print "original level: ", selected_word_tier
                 if increase_level == 1:
                     print "hello" 
-                    if selected_word_tier <8:
+                    if selected_word_tier <10:
                         selected_word.tier_level = selected_word_tier + 1
                         
                 elif selected_word_tier != 1:
@@ -157,7 +158,7 @@ def tier_level_update(request, full_name):
                 
                 new_hours = options[selected_word.tier_level]
                 
-                random_multiplier = random.uniform(.85, 1.15)
+                random_multiplier = random.uniform(.90, 1.10)
                 
                 selected_word.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
                 

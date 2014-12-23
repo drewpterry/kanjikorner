@@ -15,6 +15,16 @@
 {% endblock %}	
 
 {% block scripts %}
+
+<script>
+
+var selected_kanji_list = {{ known_kanji_list }};
+
+
+</script>
+
 <script src = "{% static 'manageset/kanji_bank.js' %}"></script>
+
+
 	
 {% endblock %}
