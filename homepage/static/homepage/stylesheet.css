@@ -1,6 +1,8 @@
 colors{
 	red: #e65555; rgba(230, 85, 85, 1)
 	blue: #86e7fc;
+	grey:#d2d2d2;;
+	green:rgba(66,235,89,1);
 }
 
 body {
@@ -177,15 +179,36 @@ header {
       font-size: 1.1em;
       font-weight: none; }
 	  
+	#account-create {
+        height: 35px;
+        width: 200px;
+        margin-top: 10px;
+        background-color: #d2d2d2;
+		margin-left:2%;
+        border-style: none;
+        border-radius: 5px;
+		line-height:35px;
+        font-weight: bold;
+		font-size: .8em;
+        color: #828282;
+        cursor: pointer;
+        text-align: center;
+		text-decoration:none; 
+	}  
+	
+	a {
+		text-decoration:none;
+	}
+	  
     #outercontainer form .button {
-      height: 20px;
-      width: 100px;
+      height: 35px;
+      width: 200px;
       margin-top: 10px;
-      background-color: #d2d2d2;
+      background-color: rgba(66,235,89,1);
       border-style: none;
       border-radius: 5px;
       font-weight: bold;
-      color: #828282;
+      color: white;
       cursor: pointer;
       text-align: center; }
 	 

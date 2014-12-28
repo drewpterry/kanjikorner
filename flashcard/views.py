@@ -82,8 +82,10 @@ def srs_review_words(request, full_name):
 def srs_get_and_update(request, full_name):
     
     # words = [2,3,4,5]
-    userprofiles = User.objects.get(username = full_name).userprofile.id
-    userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+    userprofiles = User.objects.get(username = full_name).id
+    # print "srs update; ", userprofiles
+    userprofile = UserProfile.objects.get(user = userprofiles) 
+    
     # words = Sets.objects.get(name = "Drew", userprofile = userprofiles).words.all()
     words = KnownWords.objects.filter(user_profile = userprofiles, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
     words_list = []

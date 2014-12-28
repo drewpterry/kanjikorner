@@ -10,7 +10,7 @@
 		<div class = "header">Hi, {{ full_name }}.</div>
 		
 		{% else %}
-		<div class = "header"> Take control of your learning. </div>
+		<div class = "header"> A Kanji and Japanese Vocabulary App </div>
 		{% endif %}
 		
 		<br/>
@@ -31,6 +31,20 @@
 				</div>
 			</div>
 			
+			<div id = "answerbox">
+				<div class = "flipper">
+					<div id = "front">歓迎</div>
+					<div id = "back">Welcome</div>
+				</div>
+			</div>
+			
+			<div id = "answerbox">
+				<div class = "flipper">
+					<div id = "front">歓迎</div>
+					<div id = "back">Welcome</div>
+				</div>
+			</div>
+			
 		</div>
 		
 	</section>
@@ -38,8 +52,8 @@
 	<section id = "signin" class = "section">
 		{% if not full_name %}
 		<form id = "login-form" action = "/login/auth/" method = "POST">{% csrf_token %}
-			<input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
-			<br/>
+			<!-- <input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
+			<br/> -->
 			<input type = "text" class = "login" name = "username" placeholder = "username"></input>
 			<br>
 	
@@ -48,12 +62,13 @@
 			<br/>
 			<input type = "submit" class = "button" value = "login"></input>
 			<br/>
-			<br/>
-			or
-			<br/>
+			
+			
+			
 		</form>
-		<a href = "/create-account/"><button class = "button">create account</button></a>
-		<a href = "/logout/complete/"><button class = "button">logout</button></a>
+		<p style = "float:left; margin-left:24%">or</p>
+		<br style = "clear:both"/>
+		<a href = "/create-account/"><div id = "account-create" class = "button">create account</div></a>
 		{% else %}
 		{% endif %}
 		

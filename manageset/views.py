@@ -30,12 +30,15 @@ def main_profile(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
     else:
-        userprofiles = User.objects.get(username = full_name).userprofile.id
-        userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+        userprofiles = User.objects.get(username = full_name).id
+        userprofile = UserProfile.objects.get(user = userprofiles)
+        
+        # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         known_words = KnownWords.objects.filter(user_profile = userprofiles).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         
+        print "hello"
         print known_words
-        print known_words[0]['tier_level']
+        # print known_words[0]['tier_level']
         
         count_dict = {}
         
@@ -53,7 +56,8 @@ def main_profile(request,full_name):
         print count_dict
         
         number_of_reviews = len(srs_get_and_update(request, full_name))
- 
+        
+        print "fails"
         
         return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':userprofile, 'review_number': number_of_reviews, 'the_count':count_dict})
  
