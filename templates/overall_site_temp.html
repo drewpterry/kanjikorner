@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src = "{% static 'homepage/jquery-2.0.3.min.js' %}"></script>
+<script src = "{% static 'homepage/jquery.cookie.js' %}"></script>
 <title>Kanji Corner - {% block pagetitle %}{% endblock %}</title>
 
 
@@ -13,23 +14,7 @@
 
 <body>
 
-<header>
-	<div id = "navigation">
-		<div id ="logo">Kanji Corner</div>
-		<ul>
-			<li><a href = "/">Home</a></li>
-			<li><a href = "languages.html">Language</a></li>
-			<li><a href = "about.html">About</a></li>
-	{% if full_name %}		
-			<li><a href = "/logout/complete/">Logout</a></li>
-			<li><a href = "{% url 'profile:index' full_name %}">Profile</a></li>
-	{% else %}
-			<li><a href = "/">Placehold</a></li>		
-		</ul>
-	{% endif %}	
-		
-	</div>
-</header>	
+
 	
 	
 
@@ -41,12 +26,7 @@
 </div>
 
 <br style = "clear:both"/>
-<footer>
-	<div id = "footermain">
-		Drew Terry
-	</div>
-	
-</footer>
+
 
 
 

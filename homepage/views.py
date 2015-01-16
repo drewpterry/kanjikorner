@@ -4,6 +4,7 @@ from django.core.context_processors import csrf
 from django.contrib import auth
 from forms import UserCreateForm
 from manageset.models import UserProfile
+from manageset.views import main_profile
 
 
 # Create your views here.
@@ -12,7 +13,11 @@ def index(request):
     full_name = request.user.username
     c = {}
     c.update(csrf(request))
-    return render(request, 'homepage/index.html', {'full_name':full_name})
+    template = 'homepage/index.html'
+    if request.user.is_authenticated():
+        template = 'manageset/profile.html'
+        return main_profile(request,full_name)
+    return render(request, template, {'full_name':full_name})
      
 
 def auth_view(request):
@@ -40,7 +45,7 @@ def invalid_login(request):
     
 def logout(request):
     auth.logout(request)
-    return HttpResponse("you are logged out")    
+    return index(request)    
     
 def create_account(request):
     if request.method == 'POST':

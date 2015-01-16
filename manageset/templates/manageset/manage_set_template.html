@@ -3,6 +3,7 @@
 {% block pagetitle %}New Kanji{% endblock %}
 
 {% block content %}
+{% include "nav_bar.html" %}
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
 		<br style = "clear:both">
 		
@@ -12,9 +13,7 @@
 {% block create-set %}{% endblock %}				
 				
 				
-				
-				
-				
+							
 				<br style = "clear:both;"/>
 				
 				
@@ -73,12 +72,16 @@
 	
 		</div>
 		
-		
-		
-		
+<br style = "clear:both"/>
+
+{% include "footer.html" %}		
+	
+	
 			
 {% endblock %}
-
+	
 {% block scripts %}
 	
-{% endblock %}		
+{% endblock %}	
+	
+	

@@ -519,11 +519,11 @@ font-size: 40px; }
 }
 
 #progress-chart{
-	height:150px;
+	height:auto;
 	background-color:white;
 }
 #progress-chart-inner{
-	height:150px;
+	height:115px;
 	background-color:white;
 	margin-left:5%;
 	width:90%;
@@ -531,7 +531,7 @@ font-size: 40px; }
 }
 
 .level-indicator{
-	width:11%;
+	width:10%;
 	height:100%;
 	float:left;
 /*	border-style:solid;*/
@@ -929,7 +929,7 @@ footer {
   background-color: white;
   color: black; }
   footer #footermain {
-    width: 100%;
+    width: 95%;
     height: 70px;
     border-top: 2px solid #eaeaea;
     margin: auto;

@@ -4,6 +4,7 @@
 {% block pagetitle %}New Words{% endblock %}
 
 {% block create-set %}
+
 				<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
 				
 					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" autofocus></input>

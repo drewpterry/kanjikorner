@@ -32,6 +32,12 @@ var randomarray = function(){
 var startpage = function(){
 	type_flag = false;
 	randomarray();
+	try {
+		vocab[randarray[1]].word
+		var vocab_word = vocab[randarray[1]].word
+	}catch(err){
+		var vocab_word = "finish"
+	};
 	// var randvocabword = vocab[randarray[wordnumber]];
 	
 	// initial_cards = '<div id = "center">';
@@ -40,7 +46,7 @@ var startpage = function(){
 	initial_cards += "<div id = 'cardhold1' class = 'cardhold'>";            
 	initial_cards +=			'<div id = "word1" class = "answerbox mini left">';
 	initial_cards +=				'<div class = "flipper">';
-	initial_cards +=					'<div id = "front1"class = "front mini2"><div>' + vocab[randarray[1]].word + '</div></div>';
+	initial_cards +=					'<div id = "front1"class = "front mini2"><div>' + vocab_word + '</div></div>';
 	// initial_cards +=					'<div id = "back1" class = "back mini2">' + vocab[randarray[1]].hiragana + '</div>';
 	initial_cards +=				'</div>';
 	initial_cards +=			'</div>';
@@ -226,14 +232,15 @@ var nextset = function(){
 
 
 var update_word_object = function(object_id, increase_level){
-
+	
+	user_name = document.getElementById('user-name').value;
 	$.ajax({
-		// need to pass variable to template that I can grab with javascript to replace this url
+		
 		// need to pass csrf_token
 		
-		url:'/profile/samir/tier-level-update',
+		url:'/profile/' + user_name + '/tier-level-update',
 		type:'GET',
-		data:{ csrfmiddlewaretoken: '{{ csrf_token }}', known_object_id: object_id, increase_level: increase_level},
+		data:{ csrfmiddlewaretoken: csrftoken, known_object_id: object_id, increase_level: increase_level},
 		success: update_words_success, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -243,6 +250,56 @@ var update_word_object = function(object_id, increase_level){
 };
 
 
+var levenshteinenator = (function () {
+
+	/**
+	 * @param String a
+	 * @param String b
+	 * @return Array
+	 */
+	function levenshteinenator(a, b) {
+		var cost;
+		var m = a.length;
+		var n = b.length;
+
+		// make sure a.length >= b.length to use O(min(n,m)) space, whatever that is
+		if (m < n) {
+			var c = a; a = b; b = c;
+			var o = m; m = n; n = o;
+		}
+
+		var r = []; r[0] = [];
+		for (var c = 0; c < n + 1; ++c) {
+			r[0][c] = c;
+		}
+
+		for (var i = 1; i < m + 1; ++i) {
+			r[i] = []; r[i][0] = i;
+			for ( var j = 1; j < n + 1; ++j ) {
+				cost = a.charAt( i - 1 ) === b.charAt( j - 1 ) ? 0 : 1;
+				r[i][j] = minimator( r[i-1][j] + 1, r[i][j-1] + 1, r[i-1][j-1] + cost );
+			}
+		}
+
+		return r[r.length-1][r[r.length-1].length-1];
+	}
+
+	/**
+	 * Return the smallest of the three numbers passed in
+	 * @param Number x
+	 * @param Number y
+	 * @param Number z
+	 * @return Number
+	 */
+	function minimator(x, y, z) {
+		if (x < y && x < z) return x;
+		if (y < x && y < z) return y;
+		return z;
+	}
+
+	return levenshteinenator;
+
+}());
 
 //on enter of text checks if correct answer, currently must be exact match but should change
 $('#answerinput').keyup(function(event){
@@ -252,21 +309,31 @@ $('#answerinput').keyup(function(event){
 		var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
 		var english_def = vocab[randarray[wordnumber]].meaning;
 		card_user_is_on = randarray[wordnumber];
-		
+		var correct_check = '';
 			
 		if(type_flag == false){
 			thing_to_check = hiragana_reading;
 			wanakana.unbind(inputIME);
 			document.getElementById('answerinput').placeholder = "meaning";
+			correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
 		} else{
 			thing_to_check = english_def;
+			var clean_thing_to_check = thing_to_check.replace(/ *\([^)]*\) */g, "");
+			
 			wanakana.bind(inputIME)
 			document.getElementById('answerinput').placeholder = "ひらがな";
+			var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
+			var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
+			console.log(levenshteinenator_value_compare);
+			console.log(levenshteinenator_value);
+			correct_check = levenshteinenator_value_compare > .32;
+		
 		};
 		
+		console.log("this is the length" + thing_to_check.length);
 			
 		//checks entered word equals the hiragana or english reading
-		if(textinput.value.toLowerCase().indexOf(thing_to_check.toLowerCase()) == -1){
+		if(correct_check){
 			
 			if(type_flag == true){
 				
@@ -361,20 +428,21 @@ var reset = function(){
 
 
 
-var update_words = function(signal){
-	set_name = document.getElementById('set-name').value
-	console.log()
-	$.ajax({
-		// need to pass variable to template that I can grab with javascript to replace this url
-		url:'/profile/samir/Drew/complete-stack',
-		type:'GET',
-		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: '{{ csrf_token }}', set_name: set_name},
-		success: update_words_success, 
-		failure: function(data){
-			alert("Sorry got an error on the AJAX")
-		}
-	});
-};
+// var update_words = function(signal){
+// 	set_name = document.getElementById('set-name').value
+// 	user_name = document.getElementById('user-name').value
+// 	console.log(set_name, user_name)
+// 	$.ajax({
+// 		// need to pass variable to template that I can grab with javascript to replace this url
+// 		url:'/profile/' + user_name + '/' + set_name + '/complete-stack',
+// 		type:'GET',
+// 		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: '{{ csrf_token }}', set_name: set_name},
+// 		success: update_words_success,
+// 		failure: function(data){
+// 			alert("Sorry got an error on the AJAX")
+// 		}
+// 	});
+// };
 
 
 var update_words_success = function(data){
@@ -384,7 +452,19 @@ var update_words_success = function(data){
 
 
 
+var csrftoken = $.cookie('csrftoken');
 
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 
 
 

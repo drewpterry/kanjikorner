@@ -5,6 +5,7 @@
 
 {% block pagetitle%}Home{% endblock %}
 {% block content %}
+{% include "../../kanjisite/templates/nav_bar.html" %}
 	<section id = "featured" class = "section">
 		{% if full_name %}
 		<div class = "header">Hi, {{ full_name }}.</div>
@@ -83,4 +84,9 @@
 	<div id = "resources" class = "section">
 		<div class = "header">Resources</div>
 	</div>
+	
+	<br style = "clear:both"/>
+	
+	{% include "../../kanjisite/templates/footer.html" %}
+	
 {% endblock %}

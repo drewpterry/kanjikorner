@@ -17,20 +17,31 @@ class Kanji(models.Model):
 
 
 class Words(models.Model):
-    real_word = models.CharField(max_length = 200)
+    real_word = models.CharField(max_length = 300)
     meaning = models.CharField(max_length = 500)
-    hiragana = models.CharField(max_length = 200)
+    hiragana = models.CharField(max_length = 301)
     frequency = models.IntegerField(db_index = True)
+    frequency_two = models.IntegerField(db_index = True, null = True)
+    part_of_speech = models.CharField(max_length = 200, null = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
+    duplicate_word = models.BooleanField(default = False)
+    published = models.BooleanField(default = True)
     
     def __unicode__(self):
         return self.real_word
+
+class WordMeanings(models.Model):
+    word = models.ForeignKey(Words)
+    meaning = models.CharField(max_length = 500)
+    
+    def __unicode__(self):
+        return self.meaning
     
 
 class Sets(models.Model):
     name = models.CharField(max_length = 50)
     description = models.CharField(max_length = 200)
-    pub_date = models.DateTimeField("pub_date")
+    pub_date = models.DateTimeField("pub_date", auto_now_add = True)
     words = models.ManyToManyField(Words, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     times_practiced = models.IntegerField()

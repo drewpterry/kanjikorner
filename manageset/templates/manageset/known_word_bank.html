@@ -2,6 +2,17 @@
 {% load staticfiles %}
 {% block pagetitle %}Word Bank{% endblock %}
 
+{% block add-known %}
+				<span style = "float:left"> Known Words: </span>
+
+				
+				<form id = "remove-kanji-form" action = "{% url 'profile:remove-known-kanji' full_name %}"method = "post">{% csrf_token %}
+				
+					<input type = "submit" class = "left-margin" value = "Remove These Words"></input>
+				</form>
+				
+{% endblock %}				
+
 
 {% block scripts %}
 <script src = "{% static 'manageset/word_bank.js' %}"></script>

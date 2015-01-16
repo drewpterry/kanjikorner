@@ -31,17 +31,15 @@ def complete_stack(request, full_name, set_name):
         if request.is_ajax():
             try:
                 
-                theset = request.GET['set_name']
+                theset = request.POST['set_name']
                 the_set_object = Sets.objects.get(name = theset)
                 if the_set_object.times_practiced == 0:
                     
                     the_set_object.times_practiced = 1
                     
                     userprofiles = User.objects.get(username = full_name).userprofile.id
-                    words = request.GET['wordlist']
+                    words = request.POST['wordlist']
                     
-                    
-                    # data = serializers.serialize("json",words)
                     data = json.loads(words)
                     
                     
@@ -61,6 +59,7 @@ def complete_stack(request, full_name, set_name):
                     
                     
                 else:
+                    #doesnt mean anything just to show ajax response worked
                     data = 1    
                 
             except KeyError:
@@ -81,13 +80,15 @@ def srs_review_words(request, full_name):
 
 def srs_get_and_update(request, full_name):
     
+    print "srs update"
+    print full_name
     # words = [2,3,4,5]
     userprofiles = User.objects.get(username = full_name).id
     # print "srs update; ", userprofiles
     userprofile = UserProfile.objects.get(user = userprofiles) 
     
     # words = Sets.objects.get(name = "Drew", userprofile = userprofiles).words.all()
-    words = KnownWords.objects.filter(user_profile = userprofiles, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
+    words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
     words_list = []
     known_word_id = []
     
@@ -131,15 +132,19 @@ def tier_level_update(request, full_name):
                 increase_level = int(request.GET['increase_level'])
                 
                 options = {     0 : 0,
-                                1 : 4,
-                                2 : 22,
-                                3 : 75,
-                                4 : 185,
-                                5 : 450,
-                                6 : 1050,
-                                7 : 2500,
-                                8 : 6200,
-                                9 : 15000
+                                1 : 3.5,
+                                2 : 23,
+                                3 : 70,
+                                # 7.7 days (multiply by 2.4)
+                                4 : 180,
+                                5 : 432,
+                                # 1.5 months
+                                6 : 1036,
+                                # 3.4 months
+                                7 : 2488,
+                                # 8 months
+                                8 : 5820,
+                                9 : None,
                 }
                 
                 selected_word = KnownWords.objects.get(id = known_id)
@@ -150,7 +155,7 @@ def tier_level_update(request, full_name):
                 print "original level: ", selected_word_tier
                 if increase_level == 1:
                     print "hello" 
-                    if selected_word_tier <10:
+                    if selected_word_tier <9:
                         selected_word.tier_level = selected_word_tier + 1
                         
                 elif selected_word_tier != 1:
@@ -160,7 +165,7 @@ def tier_level_update(request, full_name):
                 
                 new_hours = options[selected_word.tier_level]
                 
-                random_multiplier = random.uniform(.90, 1.10)
+                random_multiplier = random.uniform(.90, 1.05)
                 
                 selected_word.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
                 

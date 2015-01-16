@@ -6,10 +6,10 @@
 		<div class = 'flipper'><div class = "front">
 			<div id = 'kanji'> {{ each.real_word }} </div>
 			<div id = 'meaning'> {{ each.meaning|slice:":40" }} </div>
-			<div id = 'grade'>{{ each.frequency }}</div>
+			<div id = 'grade'>{{ each.frequency_two }} - {{ each.frequency }}</div>
 			<button class = 'add-remove' id = 'knowit' onclick = 'addword("{{ each.pk }}"," {{ each.real_word }}","{{ each.meaning }}", this)' >know it!</button>
 	
-			<button class = 'add-remove' onclick = 'addword("{{ each.pk }}","{{ each.real_word }}","{{ each.meaning }}", this)'>add</button>
+			<button class = 'add-remove' id = 'addit' onclick = 'addword("{{ each.pk }}","{{ each.real_word }}","{{ each.meaning }}", this)'>add</button>
 		</div>
 			<div class = 'back'></div>
 		</div>

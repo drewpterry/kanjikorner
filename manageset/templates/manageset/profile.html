@@ -2,7 +2,11 @@
 {% load staticfiles %}
 {% block pagetitle %}Profile{% endblock %}
 
+
+
 {% block content %}
+{% include "nav_bar.html" %}
+
 		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
 		<br style = "clear:both"/>
 		<!-- <div id = "stats"></div> -->
@@ -11,40 +15,48 @@
 				<div class = "level-indicator">
 					
 					<h2>{{ the_count.0 }}</h2>
-					<span>0</span>
+					<span>零</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.1 }}</h2>
-					<span>1</span>
+					<span>一</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.2 }}</h2>
-					<span>2</span>
+					<span>二</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.3 }}</h2>
-					<span>3</span>
+					<span>三</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.4 }}</h2>
-					<span>4</span>
+					<span>四</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.5 }}</h2>
-					<span>5</span>
+					<span>五</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.6 }}</h2>
-					<span>6</span>
+					<span>六</span>
 				</div>
 				<div class = "level-indicator">
 					<h2>{{ the_count.7 }}</h2>
-					<span>7</span>
+					<span>七</span>
 				</div>
 				<div class = "level-indicator">
+					<h2>{{ the_count.8 }}</h2>
+					<span>八</span>
+				</div>
+				<div class = "level-indicator">
+					<h2>{{ the_count.9 }}</h2>
+					<span>九</span>
+				</div>
+				<!-- <div class = "level-indicator">
 					<h2>{{ the_count.10 }}</h2>
 					<span>10</span>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<br style = "clear:both"/>
@@ -64,21 +76,31 @@
 					<a href = "{% url 'flashcard:srs_review_words' full_name %}"><div class = "set-option">Practice</div></a>
 					<!-- <a href = "#"><div class = "set-option">Edit</div></a> -->
 				</div>
-				<div>Master Set</div><div>{{ review_number }}</div>
+				<div>Reviews</div><div>{{ review_number }}</div>
 			</div>
-		{% for name in usersets.user_sets.all %}
+		{% for each in usersets %}
 			<div class = "set-list">
 				<div class = "overlay"> 
-					<div id = "set-description">{{ name.description }}</div></br>
-					<a href = "{% url 'flashcard:practice-stack' full_name name %}"><div class = "set-option">Practice</div></a>
-					<a href = "{% url 'profile:view_stack' full_name  name %}"><div class = "set-option">Edit</div></a>
+					<div id = "set-description">{{ each.description }}</div></br>
+					
+					<a href = "{% url 'flashcard:practice-stack' full_name each %}"><div class = "set-option">Practice</div></a>
+				
 				</div>
-				<p>{{ name }}</p>
+				<p>{{ each }}</p>
+				<p>Words: {{ each.words.count }}</p>
+				{% if each.times_practiced == 1 %}
+				<p style = "color:green;">complete</p>
+				{% else %}
+				<p></p>
+				
+				{% endif %}
+				
+				
 			</div>
 		{% endfor %}
 		</div>
 		
-		
+{% include "footer.html" %}		
 		
 		
 		<script src = "{% static 'manageset/main_profile.js' %}"></script>

@@ -13,6 +13,8 @@ from datetime import datetime
 import time
 from django.core.context_processors import csrf
 from collections import deque
+from django.core.urlresolvers import reverse
+from django.views.decorators.cache import cache_control
 # import pdb; pdb.set_trace()
 
 # Create your views here.
@@ -25,19 +27,24 @@ def verify_profiles(request,full_name):
 not_auth = HttpResponse("you are not authenticated")
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def main_profile(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
     else:
+        
         userprofiles = User.objects.get(username = full_name).id
+       
         userprofile = UserProfile.objects.get(user = userprofiles)
+        usersets = userprofile.user_sets.all().order_by('pub_date')
+        
+        print "usersets:", usersets
+        
         
         # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-        known_words = KnownWords.objects.filter(user_profile = userprofiles).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+        known_words = KnownWords.objects.filter(user_profile = userprofile).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         
-        print "hello"
-        print known_words
+        
         # print known_words[0]['tier_level']
         
         count_dict = {}
@@ -53,13 +60,13 @@ def main_profile(request,full_name):
                 count_dict[each] = 0
                 
         
-        print count_dict
+       
         
         number_of_reviews = len(srs_get_and_update(request, full_name))
         
-        print "fails"
         
-        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':userprofile, 'review_number': number_of_reviews, 'the_count':count_dict})
+        
+        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict})
  
  
  
@@ -138,10 +145,21 @@ def new_words_view(request, full_name):
     # start = time.clock()
     
 #--------------------------------1st way-------------------------------------------------------------------------------------------------------    
-    #executing this query will take a long long time...only works if it gets sent straight to browser...very slow until you add enough kanji...
-    # profile_known_kanji = KnownWords.objects.filter(user_profile = profile)
-    exclude_kanji = Kanji.objects.values('id').exclude(id__in = kanji_in)
- #    words = Words.objects.exclude(kanji__in = exclude_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency')
+    #executing this query will take a long long time...only works if it gets sent straight to browser...very slow until you add enough kanji...4s if you add 410 but slows down after that, which means works best when you have a lot of kanji in your bank
+   
+    # exclude_kanji = Kanji.objects.values('id').exclude(id__in = kanji_in)
+ #    print "the length of exclude kanji", len(exclude_kanji)
+ #    exclude_kanji = []
+ #
+ #    i = 20
+ #    for each in range(1,200):
+ #        exclude_kanji.append(each)
+ #        i + 1
+ #
+ #    print "----------------------------------------------------------------------------- ", exclude_kanji
+ #    words = Words.objects.exclude(kanji__in = exclude_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency')[0:100]
+ #
+ #    data = words
  #--------------------------------end 1st way-------------------------------------------------------------------------------------------------------
  #    data = words
     
@@ -168,31 +186,36 @@ def new_words_view(request, full_name):
     # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
     # print Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:100].query
     # words = Words.objects.exclude(frequency = 0).exclude(kanji__in = exclude_kanji).exclude(id__in = known_word_list).order_by('frequency').distinct()[0:1000]
+    # print "all words : ", words
     # print Words.objects.exclude(frequency = 0).exclude(kanji__in = exclude_kanji).exclude(id__in = known_word_list).order_by('frequency').distinct()[0:1000]
     # print words
     # print words
     # elapsed = (time.clock() - start)
     # print "database query time: ", elapsed
     
-    words =[]
-    #attempt to isolate only words that dont contain these two kanji and kanji in kanji bank...exclude makes it slow
-    words = Words.objects.filter(kanji__in = [109,1323]).exclude(kanji__in = exclude_kanji).exclude(id__in = known_word_list).exclude(frequency = 0).order_by('frequency').distinct()
-    data = words
-    # print words
+    
+    
+
+    
+    
+    
     #start different way -------------------------------------------------------------
     
     # all lot faster in general but only gives small subset of results, not effective for finding words with specific kanji because only pulls from returned number...as long as their are not too many kanji it happens quickly, no problem with 90 kanji after that time starts rising considerably
-    words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
+    # kanji_in = []
+#     for each in range(20,600):
+#         kanji_in.append(each)
     
+    
+
     selected_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True).prefetch_related('kanji')
-    print "this is the selected kanji: ", selected_kanji
+    
     new_kanji = []
     for each in selected_kanji:
         new_kanji.append(each.kanji.get().id)
-    
-    # print new_kanji
-    # new_kanji = [1153, 1071, 1069, 995, 984]
-    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('frequency')
+
+    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('-frequency_two')
+    # special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('frequency')
     special_words = list(special_words)
     for each in list(special_words):
         kanji = each.kanji.all()
@@ -204,18 +227,14 @@ def new_words_view(request, full_name):
 
         if the_list:
             special_words.remove(each)
-            
-    print len(special_words), "words with these 5 kanji"
-    # print special_words
 
-    start = time.clock()
+
+
+
+    words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
+    # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
     words_list = list(words)
-    elapsed = (time.clock() - start)
-    print "query ", elapsed
-    # new_kanji = [1153, 1071, 1069, 995, 984]
-    # new_kanji = [109,1323]
-    words_with_new_kanji = []
-
+   
     i = 0
     for each in list(words):
 
@@ -223,65 +242,21 @@ def new_words_view(request, full_name):
         id_list = set()
         for kanji_id in kanji:
             id_list.add(kanji_id.id)
-            
+
 
         the_one_list = list(id_list - set(kanji_in))
-       
+
         if the_one_list:
             words_list.remove(each)
-        # else:
-#             for kanji in new_kanji:
-#                 if kanji in id_list:
-#                     words_with_new_kanji.append(each)
-#                     words_list.remove(each)
-#                     words_list.insert(i,each)
-#                     i = i + 1
 
 
-    
+
+
+
+
     data = special_words + words_list
-    # print len(data)
-    elapsed = (time.clock() - start)
-    print "query ", elapsed
+
     
- 
- 
- 
-#     print "---------"
-    # end different way -----------------------------------------------------------------------
-    #this takes the longest
-    # data = serializers.serialize("json",words)
-#     start = time.clock()
-#     data = json.loads(data)
-#     elapsed = (time.clock() - start)
-#     print elapsed
-#
-#     start = time.clock()
-#     #add words with these kanji to front
-#     # new_kanji = [72,69,207,237,316]
-#     new_kanji = []
-#     words_with_new_kanji = []
-#
-#     i = 0
-#     for each in list(data):
-#         kanji_in_words = set(each[u'fields'][u'kanji'])
-#         thelist = list(kanji_in_words-set(kanji_in))
-#         # print set(each[u'fields'][u'kanji'])
-#
-#         if thelist:
-#             data.remove(each)
-#             # i = i + 1
-#         else:
-#             for kanji in new_kanji:
-#                 if kanji in each[u'fields'][u'kanji']:
-#                     # words_with_new_kanji.append(each)
-#                     data.remove(each)
-#                     data.insert(i,each)
-#                     i = i + 1
-#
-#     elapsed = (time.clock() - start)
-#     print elapsed
-    # print data
     
     
     if request.is_ajax():
@@ -546,7 +521,8 @@ def add_words_to_set(request,full_name):
     newset.save()
     newset.words.add(*thechosenwords)
     userprofile.user_sets.add(newset)
-    return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
+    return HttpResponseRedirect(reverse('profile:index', kwargs = {'full_name':full_name}))
+    # return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
 
 
 def add_known_words(request, full_name):    
