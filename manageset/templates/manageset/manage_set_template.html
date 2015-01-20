@@ -2,11 +2,17 @@
 {% load staticfiles %}
 {% block pagetitle %}New Kanji{% endblock %}
 
-{% block content %}
+{% block header%}
+
 {% include "nav_bar.html" %}
+
+{% endblock%}
+
+{% block content %}
+
 		<!-- <h1 id = "dashboard-title"> {{ full_name }}'s new stack</h1></br> -->
 		<br style = "clear:both">
-		
+		<input id = "user-name" type = "hidden" value = "{{ full_name }}"></>
 		<div id = "left-form-outer-container">
 			<div id = "left-form">
 				
@@ -39,11 +45,12 @@
 		</div>
 		
 		<div id = "word-set-nav">
-			<a href = "{% url 'profile:new-words' full_name %}"><input type = "button" value = "new words"></input></a>
-			<a href = "{% url 'profile:view_word_bank' full_name %}"><input type = "button" value = "word bank"></input></a>
-			<a href = "{% url 'profile:view_new_kanji' full_name %}"><input type = "button" value = "new kanji"></input></a>
-			<a href = "{% url 'profile:known-kanji' full_name %}" ><input type = "button" value = "kanji bank"></input></a>
+			<a href = "{% url 'profile:new-words' full_name %}"><div class = "manageset-nav" id = "new-words" value = "new words">New Words</div></a>
+			<a href = "{% url 'profile:known-kanji' full_name %}" ><div class = "manageset-nav" id = "kanji-bank" value = "kanji bank">Kanji Bank</div></a>
+			<a href = "{% url 'profile:view_new_kanji' full_name %}"><div class = "manageset-nav" id = "new-kanji" value = "new kanji">Kanji</div></a>
+			<a href = "{% url 'profile:view_word_bank' full_name %}"><div class = "manageset-nav" id = "word-bank" value = "word bank">Word Bank</div></a>
 		</div>
+		
 		
 		<!-- <div id = "search-area">
 			<span style = "float:left;">Order By:</span>
@@ -74,11 +81,12 @@
 		
 <br style = "clear:both"/>
 
-{% include "footer.html" %}		
-	
-	
+
 			
 {% endblock %}
+{% block footer%}
+ {% include "../../kanjisite/templates/footer.html" %}
+{% endblock%}
 	
 {% block scripts %}
 	

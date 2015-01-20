@@ -11,6 +11,7 @@ from django.core.context_processors import csrf
 # import pytz
 from django.utils.timezone import utc
 from django.db.models import F
+from django.views.decorators.cache import cache_control
 
 
 # Create your views here.
@@ -67,7 +68,7 @@ def complete_stack(request, full_name, set_name):
         return HttpResponse(data, content_type="application/json")
         
         
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def srs_review_words(request, full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("you are not authenticated")
@@ -165,7 +166,7 @@ def tier_level_update(request, full_name):
                 
                 new_hours = options[selected_word.tier_level]
                 
-                random_multiplier = random.uniform(.90, 1.05)
+                random_multiplier = random.uniform(.95, 1.05)
                 
                 selected_word.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
                 

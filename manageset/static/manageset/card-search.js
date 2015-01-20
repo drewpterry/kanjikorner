@@ -1,4 +1,4 @@
-
+$('#new-kanji').addClass('manageset-nav-selected');
 
 var filter = "grade";
 

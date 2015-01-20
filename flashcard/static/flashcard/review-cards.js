@@ -23,7 +23,7 @@ var randomarray = function(){
   	  if(!found)randarray[randarray.length]=randomnumber;
 	
 	};
-	// console.log("this is the randarray " + randarray);
+	
 }
 
 
@@ -59,7 +59,7 @@ var startpage = function(){
 	// initial_cards +=						'<div>' + vocab[randarray[0]].hiragana + '</div>';
 	// initial_cards +=						'<div>' + vocab[randarray[0]].meaning + '</div>';
 	initial_cards +=					'</div>';
-	initial_cards +=					'<div id = "back0" class = "back">' + vocab[randarray[0]].hiragana + '</div>';
+	initial_cards +=					'<div id = "back0" class = "back back-multi"><span>' + vocab[randarray[0]].hiragana + '</span></div>';
 	initial_cards +=				'</div>';
 	initial_cards +=			'</div>';
 	initial_cards +=	'</div>'	;
@@ -81,12 +81,11 @@ var nextset = function(){
 	if(word_object.correct == true){
 		//update word
 		update_word_object(word_object.know_word_object_id, 1);
-		// console.log("correct updated");
+		
 	}else{
 		if(word_object.first_time == true){
 			update_word_object(word_object.know_word_object_id, 0);
 			word_object.first_time = false;
-			// console.log("first time incorrect " + word_object.first_time)
 			
 			
 		};
@@ -168,7 +167,7 @@ var nextset = function(){
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
 		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back back-multi'><span>" + vocab[randarray[addone]].hiragana + "</span></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
@@ -180,14 +179,14 @@ var nextset = function(){
 		rewritecards += "<div id = 'cardhold" + addtwo + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addtwo + "' class = 'answerbox mini left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'> 2 more</div>";
+		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'> Finish</div>";
 		rewritecards += "<div id = 'back" + addtwo + "' class = 'back mini2'></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + addone + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
 		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back back-multi'><span>" + vocab[randarray[addone]].hiragana + "</span></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
@@ -330,14 +329,14 @@ $('#answerinput').keyup(function(event){
 		
 		};
 		
-		console.log("this is the length" + thing_to_check.length);
+		
 			
 		//checks entered word equals the hiragana or english reading
 		if(correct_check){
 			
 			if(type_flag == true){
 				
-				document.getElementById('back' + wordnumber).innerHTML = vocab[randarray[wordnumber]].meaning
+				document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
 			}
 			
 			$("#word" + wordnumber).toggleClass("answerbox2");
@@ -353,7 +352,7 @@ $('#answerinput').keyup(function(event){
 			},3000);
 			
 			
-			console.log("wrong answer");
+			
 		
 			both_right = false;		
 			textinput.style.color = "red";
@@ -380,7 +379,7 @@ $('#answerinput').keyup(function(event){
 			}
 			
 		}else {
-			// console.log("this is correct");
+			
 			textinput.style.color = "rgba(66,235,89,1)";
 			
 			if(type_flag == false){
@@ -397,7 +396,7 @@ $('#answerinput').keyup(function(event){
 			};		
 			
 		}	
-		// console.log(randarray);
+		
 	};
 });
 

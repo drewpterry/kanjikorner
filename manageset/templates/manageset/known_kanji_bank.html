@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block pagetitle %}Kanji Bank{% endblock %}
 
-
+				
 {% block add-known %}
 				<span style = "float:left"> Known Kanji: </span>
 
@@ -12,7 +12,11 @@
 					<input type = "submit" class = "left-margin" value = "Remove These Kanji"></input>
 				</form>
 				
+				
+				
 {% endblock %}	
+
+			
 
 {% block scripts %}
 
@@ -28,3 +32,5 @@ var selected_kanji_list = {{ known_kanji_list }};
 
 	
 {% endblock %}
+
+				

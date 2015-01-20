@@ -1,3 +1,5 @@
+$('#word-bank').addClass('manageset-nav-selected');
+
 var filter = "grade";
 
 //addcheck holds the ids so when you search words it knows which ones have been highlighted or not

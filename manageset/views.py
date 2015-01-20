@@ -9,7 +9,7 @@ from django.db.models import Q
 import json
 from flashcard.views import srs_get_and_update
 from django.core import serializers
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 from django.core.context_processors import csrf
 from collections import deque
@@ -43,6 +43,8 @@ def main_profile(request,full_name):
         
         # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         known_words = KnownWords.objects.filter(user_profile = userprofile).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+        total_word_count = KnownWords.objects.filter(user_profile = userprofile).exclude(tier_level__in = [0,10]).count()
+        print total_word_count, "ehll" 
         
         
         # print known_words[0]['tier_level']
@@ -59,14 +61,29 @@ def main_profile(request,full_name):
             except KeyError:
                 count_dict[each] = 0
                 
-        
+        number_of_added_kanji = KnownKanji.objects.filter(user_profile = userprofile).count()
+        print number_of_added_kanji
        
         
         number_of_reviews = len(srs_get_and_update(request, full_name))
+        next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
+        due_tomorrow = len(next_review) + number_of_reviews
+        if number_of_reviews == 0:
+            # next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
+            if next_review.exists():
+                next_review = next_review[0]
+                print next_review
+                next_review = next_review['time_until_review']
+
+                next_review = str(timedelta(seconds = next_review)).split('.')[0]
+        else:
+            next_review = "Now"
+            
+            
         
         
         
-        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict})
+        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji, 'word_count':total_word_count})
  
  
  
@@ -127,7 +144,7 @@ def new_words_view(request, full_name):
     # profile_known_kanji = profile.known_kanji.all()
     # these two callbacks also add like half a second
     
-    
+    usersets = profile.user_sets.all().count()
     kanji_in = get_known_kanji_list(request)
 
     known_word_list = get_known_word_list(request, True)
@@ -229,26 +246,28 @@ def new_words_view(request, full_name):
             special_words.remove(each)
 
 
+    if len(special_words) == 0:        
 
-
-    words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
-    # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
-    words_list = list(words)
-   
-    i = 0
-    for each in list(words):
-
-        kanji = each.kanji.all()
-        id_list = set()
-        for kanji_id in kanji:
-            id_list.add(kanji_id.id)
-
-
-        the_one_list = list(id_list - set(kanji_in))
-
-        if the_one_list:
-            words_list.remove(each)
-
+        words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
+        # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
+        words_list = list(words)
+     
+        i = 0
+        for each in list(words):
+        
+            kanji = each.kanji.all()
+            id_list = set()
+            for kanji_id in kanji:
+                id_list.add(kanji_id.id)
+        
+        
+            the_one_list = list(id_list - set(kanji_in))
+        
+            if the_one_list:
+                words_list.remove(each)
+        
+    else:
+        words_list = []
 
 
 
@@ -261,7 +280,7 @@ def new_words_view(request, full_name):
     
     if request.is_ajax():
         template = page_template               
-    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template})        
+    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets})        
 
 
 
@@ -506,7 +525,8 @@ def add_words_to_set(request,full_name):
     userprofiles = User.objects.get(username = full_name).userprofile.id
     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
     setname = request.POST['title']
-    description = request.POST['description']
+    # description = request.POST['description']
+    description = ''
     
     chosenwords = request.POST.getlist('chosenwords')
     thechosenwords = []
@@ -525,34 +545,62 @@ def add_words_to_set(request,full_name):
     # return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
 
 
-def add_known_words(request, full_name):    
+# def add_known_words(request, full_name):
+#     c = {}
+#     c.update(csrf(request))
+#     userprofiles = User.objects.get(username = full_name).userprofile.id
+#     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+#     knownkanji = request.POST.getlist('known-kanji')
+#     theknownkanji = []
+#
+#     # for words in knownkanji:
+#  #        if UserProfile.objects.get(id = userprofiles).known_words.filter(id = words).exists() == False:
+#  #            obj1 = Words.objects.get(id = words)
+#  #            theknownkanji.append(obj1)
+#  #
+#  #    userprofile.known_words.add(*theknownkanji)
+#     #submit known kanji
+#
+#     print knownkanji
+#
+#     for wordss in knownkanji:
+#
+#         # if KnownKanji.objects.filter(user_profile = 10).kanji.filter(id = kanjis).exists() == False:
+#         obj1 = Words.objects.get(id = wordss)
+#         new_known_kanji = KnownWords(words = obj1, user_profile = userprofile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
+#         new_known_kanji.save()
+#         # new_known_kanji.words.add(obj1)
+# #         new_known_kanji.user_profile.add(userprofile)
+#
+#
+#
+#     return new_words_view(request, full_name)
+    
+
+def add_known_word(request, full_name):    
     c = {}
     c.update(csrf(request))
-    userprofiles = User.objects.get(username = full_name).userprofile.id
-    userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-    knownkanji = request.POST.getlist('known-kanji')
-    theknownkanji = []
     
-    # for words in knownkanji:
- #        if UserProfile.objects.get(id = userprofiles).known_words.filter(id = words).exists() == False:
- #            obj1 = Words.objects.get(id = words)
- #            theknownkanji.append(obj1)
- #
- #    userprofile.known_words.add(*theknownkanji)  
-    #submit known kanji
+    if not request.user.is_authenticated():
+        return HttpResponse("You are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+                profile = request.user.userprofile
+                word_id = request.POST['word_id']
+                obj1 = Words.objects.get(id = word_id)
+                new_known_word = KnownWords(words = obj1, user_profile = profile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
+                # print "hello"
+                new_known_word.save()
+                data = 1
+            except KeyError:
+                return HttpResponse("error")    
+                
+        return HttpResponse(data, content_type="application/json")
     
-    print knownkanji
-    
-    for wordss in knownkanji:
-        
-        # if KnownKanji.objects.filter(user_profile = 10).kanji.filter(id = kanjis).exists() == False:
-        obj1 = Words.objects.get(id = wordss)
-        new_known_kanji = KnownWords(words = obj1, user_profile = userprofile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
-        new_known_kanji.save()
-        # new_known_kanji.words.add(obj1)
-#         new_known_kanji.user_profile.add(userprofile)
-    
-    return new_words_view(request, full_name)
+    return    
+
+
 
 
 
@@ -587,19 +635,37 @@ def remove_known_kanji(request,full_name):
     c = {}
     c.update(csrf(request))
     userprofiles = User.objects.get(username = full_name).userprofile.id
-    # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
+
     deletekanji = request.POST.getlist('chosenwords')
-    print deletekanji
+ 
     thedeletekanji = []
-    print KnownKanji.objects.filter(kanji__in = deletekanji, user_profile = userprofiles).delete()
-    print thedeletekanji
-    # profile = request.user.userprofile
-  #   profile_known_kanji = profile.known_kanji.all().order_by('grade', 'id')
-    # print KnownKanji.objects.get(user_profile = 8)
-    # userprofile.known_kanji.filter(id = 116).delete()
-    # print UserProfile.objects.get(id = userprofiles).known_kanji.filter(id = 1126).delete()
-    print "hello"
+    
     return known_kanji_view(request, full_name)
+    
+
+def remove_known_word(request, full_name):    
+    c = {}
+    c.update(csrf(request))
+    
+    if not request.user.is_authenticated():
+        return HttpResponse("You are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+                profile = request.user.userprofile
+                word_id = request.POST['word_id']
+                the_word = Words.objects.get(id = word_id)
+                obj1 = KnownWords.objects.get(user_profile = profile, words = the_word)
+                obj1.delete()
+                # print "hello"
+                
+                data = 1
+            except KeyError:
+                return HttpResponse("error")    
+                
+        return HttpResponse(data, content_type="application/json")
+    
+    return    
     
     
 ###################################STACK EDITING#################################

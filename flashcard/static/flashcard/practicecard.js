@@ -55,7 +55,7 @@ var startpage = function(){
 	// initial_cards +=						'<div>' + vocab[randarray[0]].hiragana + '</div>';
 	// initial_cards +=						'<div>' + vocab[randarray[0]].meaning + '</div>';
 	initial_cards +=					'</div>';
-	initial_cards +=					'<div id = "back0" class = "back">' + vocab[randarray[0]].hiragana + '</div>';
+	initial_cards +=					'<div id = "back0" class = "back back-multi"><span>' + vocab[randarray[0]].hiragana + '</span></div>';
 	initial_cards +=				'</div>';
 	initial_cards +=			'</div>';
 	initial_cards +=	'</div>'	;
@@ -75,8 +75,8 @@ var nextset = function(){
 	if(both_right == false){
 		
 		console.log(randarray.length);
-		if(randarray.length - wordnumber > 5){
-			randarray.splice(wordnumber + 5, 0,card_user_is_on)
+		if(randarray.length - wordnumber > 4){
+			randarray.splice(wordnumber + 4, 0,card_user_is_on)
 		}else{
 			randarray.push(card_user_is_on)
 		};
@@ -141,7 +141,7 @@ var nextset = function(){
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
 		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back back-multi'><span>" + vocab[randarray[addone]].hiragana + "</span></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
@@ -160,7 +160,7 @@ var nextset = function(){
 		rewritecards += "<div id = 'word" + addone + "' class = 'answerbox left'>";
 		rewritecards += "<div class = 'flipper'>";
 		rewritecards += "<div id = 'front" + addone + "' class = 'front'>" + vocab[randarray[addone]].word + "</div>";
-		rewritecards += "<div id = 'back" + addone + "' class = 'back'>" + vocab[randarray[addone]].hiragana + "</div>";
+		rewritecards += "<div id = 'back" + addone + "' class = 'back back-multi'><span>" + vocab[randarray[addone]].hiragana + "</span></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + wordnumber + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + wordnumber + "' class = 'answerbox mini left'>";
@@ -281,7 +281,7 @@ $('#answerinput').keyup(function(event){
 			
 			if(type_flag == true){
 				
-				document.getElementById('back' + wordnumber).innerHTML = vocab[randarray[wordnumber]].meaning
+				document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
 			}
 			
 			$("#word" + wordnumber).toggleClass("answerbox2");

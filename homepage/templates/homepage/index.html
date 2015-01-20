@@ -4,8 +4,13 @@
 
 
 {% block pagetitle%}Home{% endblock %}
+
+{% block header%}
+	{% include "nav_bar.html" %}
+{% endblock%}
+
 {% block content %}
-{% include "../../kanjisite/templates/nav_bar.html" %}
+
 	<section id = "featured" class = "section">
 		{% if full_name %}
 		<div class = "header">Hi, {{ full_name }}.</div>
@@ -69,7 +74,7 @@
 		</form>
 		<p style = "float:left; margin-left:24%">or</p>
 		<br style = "clear:both"/>
-		<a href = "/create-account/"><div id = "account-create" class = "button">create account</div></a>
+		<a href = "{% url 'registration_register' %}"><div id = "account-create" class = "button">create account</div></a>
 		{% else %}
 		{% endif %}
 		
@@ -77,16 +82,20 @@
 		
 	</section>
 	
-	<hr/>
+	<!-- <hr/>
 	<div id = "articles" class = "section">
 		<div class = "header">Articles</div>
 	</div>
 	<div id = "resources" class = "section">
 		<div class = "header">Resources</div>
-	</div>
-	
+	</div> -->
+
 	<br style = "clear:both"/>
 	
-	{% include "../../kanjisite/templates/footer.html" %}
+	
 	
 {% endblock %}
+
+{% block footer%}
+ {% include "../../kanjisite/templates/footer.html" %}
+{% endblock%}

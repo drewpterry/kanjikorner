@@ -1,3 +1,4 @@
+$('#kanji-bank').addClass('manageset-nav-selected');
 
 
 var filter = "grade";
@@ -23,6 +24,7 @@ var search = function(signal){
 };
 
 
+$('#loadingDiv').hide()
 
 
 var addword = function(idnumber, kanji, meaning, element){

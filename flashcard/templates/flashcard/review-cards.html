@@ -2,8 +2,11 @@
 {% load staticfiles %}
 {% block pagetitle %}Profile{% endblock %}
 
+{% block header%}
+	{% include "nav_bar.html" %}
+{% endblock%}
+
 {% block content %}
-{% include "../../kanjisite/templates/nav_bar.html" %}
 	<input id = "set-name" type = "hidden" value = "{{ set_name }}"></>
 	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></>
 	<div id = "set-name-title">{{ set_name }}</div>

@@ -28,8 +28,11 @@ urlpatterns = patterns('',
  
     
     url(r'^(?P<full_name>\w*)/new-set/add-known-kanji$', views.add_known_kanji, name='add-known-kanji'),
-    url(r'^(?P<full_name>\w*)/new-set/add-known-words$', views.add_known_words, name='add-known-words'),
+    #not being used
+    # url(r'^(?P<full_name>\w*)/new-set/add-known-words$', views.add_known_words, name='add-known-words'),
+    url(r'^(?P<full_name>\w*)/new-set/add-known-word$', views.add_known_word, name='add-known-word'),
     
+     url(r'^(?P<full_name>\w*)/new-set/remove-known-word$', views.remove_known_word, name='remove-known-word'),
     url(r'^(?P<full_name>\w*)/new-set/remove-known-kanji$', views.remove_known_kanji, name='remove-known-kanji'),
     url(r'^upate-knownkanji-special$', views.update_knownkanji_special, name='update-knownkanji-special'),
 

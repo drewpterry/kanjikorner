@@ -49,6 +49,9 @@ class Sets(models.Model):
     
     def __unicode__(self):
         return self.name
+        
+        
+      
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
@@ -61,11 +64,18 @@ class UserProfile(models.Model):
         return unicode(self.user)
 
 
+from registration.signals import user_registered
+def createUserProfile(sender, user, request, **kwargs):
+    UserProfile.objects.get_or_create(user=user)
+
+user_registered.connect(createUserProfile)
+
 class KnownKanji(models.Model):
     kanji = models.ManyToManyField(Kanji)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
+    number_of_chosen_words = models.IntegerField(null = True)
     
     def __unicode__(self):
         return unicode(self.kanji)

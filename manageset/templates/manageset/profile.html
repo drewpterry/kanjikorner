@@ -2,14 +2,116 @@
 {% load staticfiles %}
 {% block pagetitle %}Profile{% endblock %}
 
+{% block header%}
 
+{% include "nav_bar.html" %}
+
+{% endblock%}
 
 {% block content %}
-{% include "nav_bar.html" %}
+
 
 		<h1 id = "dashboard-title"> {{ full_name }}'s dashboard</h1></br>
 		<br style = "clear:both"/>
 		<!-- <div id = "stats"></div> -->
+		
+		
+		
+		{% if review_number == 0 %}	
+		<div id = "review-indicator-no-click" style = "cursor:not-allowed;">
+			<div class = "overlay-reviews">
+				<p>Next Review</p>
+				<span>{{ next_review }}</span>
+			</div>
+			<p>Reviews</p>
+			<span>0</span>
+			<p>Due Now</p>
+			<!-- <p>Next in: {{ next_review }}</p> -->
+		</div>
+		
+		{% else %}
+		
+		<a href = "{% url 'flashcard:srs_review_words' full_name %}"><div id = "review-indicator">
+			<!-- <div class = "overlay-reviews">
+				<p>Next Review</p>
+				<span>{{ next_review }}</span>
+			</div> -->
+			<p>Reviews</p>
+			<span>{{ review_number }}</span>
+			<p>Due Now</p>
+			<!-- <p>Next in: {{ next_review }}</p> -->
+		</div></a>
+		
+		{% endif %}
+		
+		
+		
+		<a href = "{% url 'profile:new-words' full_name %}"><div id = "lesson-create">
+			<div class = "overlay-reviews">
+				<p>Add Words and Create Lessons</p>
+				<span style = "font-size:2em;">+</span>
+			</div>
+			<p>Words In Progress</p>
+			<span>{{ word_count }}</span>
+			<!-- <p>Next in: {{ next_review }}</p> -->
+		</div></a>
+		
+		
+		
+		<a href = "{% url 'profile:view_new_kanji' full_name %}"><div id = "kanji-indicator">
+			<div class = "overlay-reviews">
+				<p style = 'font-size:1.2em; margin-top:40px'>Add and Manage Kanji</p>
+				
+			</div>
+			<p>Kanji Progress</p>
+			<span>{{ added_kanji_count }}</span>
+			<!-- <p>Due Now</p> -->
+			<!-- <p>Next in: {{ next_review }}</p> -->
+		</div></a>
+		
+		
+		
+		
+		<div id = "stat-box-area">
+			<div class = "module">
+				<span>Reviews Next 24 Hours<span>
+				<p>{{ due_tomorrow }}</p>
+				
+			</div>		
+			<div class = "module">
+				<span>Total Words in Progress<span>
+				<p>{{ word_count }}</p>
+				
+					
+			</div>
+			<div class = "module">
+				<p>test</p>
+				<span>Words Reviewed Today<span>
+					
+			</div>
+			<div class = "module">
+				<p>test</p>
+				<span>New Words Added Today<span>
+					
+			</div>
+			
+			<!-- <p>Due Now</p> -->
+			<!-- <p>Next in: {{ next_review }}</p> -->
+		</div>
+		
+		
+		
+		
+		<!-- <div id = "review-indicator-no-click">
+			<p>No Reviews!</p>
+			<p>Next Reviews In:</p>
+			<span>{{ next_review }}</span>
+
+		</div> -->
+		
+		
+		
+		<br style = "clear:both;">
 		<div id = "progress-chart">
 			<div id = "progress-chart-inner">
 				<div class = "level-indicator">
@@ -65,19 +167,14 @@
 		<div id = "set-preview">
 	
 			<a href = "{% url 'profile:new-words' full_name %}">	
-				<div class = "set-list">Create a new set
-					<div>+</div><!-- <p>+</p> -->
+				<div id = "primary-set-list" class = "set-list-no-hover">
+					<p>Create New Lessons</p>
+					<span style = "font-size:2em;">+</span><!-- <p>+</p> -->
 				</div>
 			</a>
 				
 		
-			<div class = "set-list"><div class = "overlay"> 
-					<div id = "set-description">This has all the words in all of your sets combined</div></br>
-					<a href = "{% url 'flashcard:srs_review_words' full_name %}"><div class = "set-option">Practice</div></a>
-					<!-- <a href = "#"><div class = "set-option">Edit</div></a> -->
-				</div>
-				<div>Reviews</div><div>{{ review_number }}</div>
-			</div>
+			
 		{% for each in usersets %}
 			<div class = "set-list">
 				<div class = "overlay"> 
@@ -89,7 +186,7 @@
 				<p>{{ each }}</p>
 				<p>Words: {{ each.words.count }}</p>
 				{% if each.times_practiced == 1 %}
-				<p style = "color:green;">complete</p>
+				<p style = "color:rgba(66,235,89,1);">complete</p>
 				{% else %}
 				<p></p>
 				
@@ -100,12 +197,16 @@
 		{% endfor %}
 		</div>
 		
-{% include "footer.html" %}		
+
 		
 		
 		<script src = "{% static 'manageset/main_profile.js' %}"></script>
 <!-- <script src = "manageset/main_profile.js"></script> -->
 {% endblock %}
+
+{% block footer%}
+ {% include "../../kanjisite/templates/footer.html" %}
+{% endblock%}
 
 
 

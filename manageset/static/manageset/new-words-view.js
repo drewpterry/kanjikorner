@@ -1,3 +1,7 @@
+$('#new-words').addClass('manageset-nav-selected');
+
+
+
 var filter = "grade";
 
 //addcheck holds the ids so when you search words it knows which ones have been highlighted or not
@@ -20,6 +24,9 @@ var keyword = '';
 //
 //      });
 
+$('#loadingDiv').hide()
+
+
 
 var search = function(signal){
 	
@@ -34,6 +41,38 @@ var search = function(signal){
 	});
 };
 
+
+var indicate_as_known = function(word_id){
+	
+	user_name = document.getElementById('user-name').value;
+	$.ajax({
+		// need to pass variable to template that I can grab with javascript to replace this url
+		// will not work on other profiles
+		url:'/profile/' + user_name + '/new-set/add-known-word',
+		type:'POST',
+		data:{word_id: word_id, csrfmiddlewaretoken: csrftoken},
+		success: console.log('worked1'), 
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+};
+
+var undo_indicate_as_known = function(word_id){
+	
+	user_name = document.getElementById('user-name').value;
+	$.ajax({
+		// need to pass variable to template that I can grab with javascript to replace this url
+		// will not work on other profiles
+		url:'/profile/' + user_name + '/new-set/remove-known-word',
+		type:'POST',
+		data:{word_id: word_id, csrfmiddlewaretoken: csrftoken},
+		success: console.log('worked2'), 
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+};
 
 
 
@@ -64,24 +103,48 @@ var addword = function(idnumber, kanji, meaning, element){
 		element.previousSibling.previousSibling.disabled = true;
 		console.log(element.previousSibling.previousSibling);
 		
-	}else if (element.innerText == "know it!"){
-		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
-		
-		$("#wordlist-know").append(minicard);
-		$("#known-kanji-form").prepend(hiddeninput);
-		knowncheck.push(idnumber);
-		element.parentNode.className += " outline-2";
-		element.innerHTML = "remove";
-		element.nextSibling.nextSibling.disabled = true;
-		
-	}else{
-		
+	}
+	// else if (element.innerText == "know it!"){
+// 		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
+//
+// 		$("#wordlist-know").append(minicard);
+// 		$("#known-kanji-form").prepend(hiddeninput);
+// 		knowncheck.push(idnumber);
+// 		element.parentNode.className += " outline-2";
+// 		element.innerHTML = "remove";
+// 		element.nextSibling.nextSibling.disabled = true;
+//
+// 	}
+else{
+
 		removeWord(idnumber, kanji, meaning, this)
-		
+
 	};
 };
 
 
+
+var know_it = function(idnumber, kanji, meaning, element){
+	the_card = $('#answercontainer'+idnumber);
+	the_card.find('.front').css('opacity',.4);
+	element.disabled = true;
+	element.nextSibling.nextSibling.disabled = true;
+	the_card.find('.undo').css('visibility','visible');
+	indicate_as_known(idnumber);
+	
+	
+	
+};
+
+var undo = function(idnumber, kanji, meaning, element){
+	the_card = $('#answercontainer'+idnumber);
+	the_card.find('.front').css('opacity',1);
+	the_card.find('#knowit').removeAttr('disabled');
+	the_card.find('#addit').removeAttr('disabled');
+	the_card.find('.undo').css('visibility','hidden');
+	the_card.css('cursor','auto');
+	undo_indicate_as_known(idnumber)
+};
 
 
 var removeWord = function(idnumber, kanji, meaning, element){
@@ -163,6 +226,23 @@ $("#search-area").on("click",".filter", function(){
 	};
 });
 
+
+
+
+
+var csrftoken = $.cookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 
 // not used since I removed ajax
 // var displaySearch = function(data,signal){
