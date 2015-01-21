@@ -1,16 +1,17 @@
 {% load i18n %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
+    <link rel="stylesheet" href="{% static 'homepage/stylesheet.css' %}" />
     <title>{% block title %}User test{% endblock %}</title>
 </head>
 
 <body>
     <div id="header">
     {% block header %}
-    <a href="/index.html">{% trans "Home" %}</a> | 
+    <a href="{% url 'home' %}">{% trans "Home" %}</a> | 
 
     {% if user.is_authenticated %}
         {% trans "Logged in" %}: {{ user.username }} 

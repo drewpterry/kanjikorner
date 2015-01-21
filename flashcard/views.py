@@ -81,14 +81,12 @@ def srs_review_words(request, full_name):
 
 def srs_get_and_update(request, full_name):
     
-    print "srs update"
-    print full_name
-    # words = [2,3,4,5]
+   
     userprofiles = User.objects.get(username = full_name).id
     # print "srs update; ", userprofiles
     userprofile = UserProfile.objects.get(user = userprofiles) 
     
-    # words = Sets.objects.get(name = "Drew", userprofile = userprofiles).words.all()
+    
     words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
     words_list = []
     known_word_id = []
@@ -101,11 +99,6 @@ def srs_get_and_update(request, full_name):
         
         time_remaining = word.time_until_review - difference
         
-        # print "now: ", now
- #        print "last practiced ", last_practiced
- #        print "difference: ", difference
- #        print "time remaining: ", time_remaining
- #        print "tier level: ", word.tier_level
         word.time_until_review = time_remaining
         word.last_practiced = now
         word.save()
@@ -132,47 +125,9 @@ def tier_level_update(request, full_name):
                 known_id = request.GET['known_object_id']
                 increase_level = int(request.GET['increase_level'])
                 
-                options = {     0 : 0,
-                                1 : 3.5,
-                                2 : 23,
-                                3 : 70,
-                                # 7.7 days (multiply by 2.4)
-                                4 : 180,
-                                5 : 432,
-                                # 1.5 months
-                                6 : 1036,
-                                # 3.4 months
-                                7 : 2488,
-                                # 8 months
-                                8 : 5820,
-                                9 : None,
-                }
                 
                 selected_word = KnownWords.objects.get(id = known_id)
-                selected_word_tier = KnownWords.objects.get(id = known_id).tier_level
-                selected_word.last_practiced = datetime.now()
-                
-                print "this is the increase level flag :", type(increase_level), increase_level  
-                print "original level: ", selected_word_tier
-                if increase_level == 1:
-                    print "hello" 
-                    if selected_word_tier <9:
-                        selected_word.tier_level = selected_word_tier + 1
-                        
-                elif selected_word_tier != 1:
-                    selected_word.tier_level = selected_word_tier - 1
-                    
-                            
-                
-                new_hours = options[selected_word.tier_level]
-                
-                random_multiplier = random.uniform(.95, 1.05)
-                
-                selected_word.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
-                
-                print "this is the new level: ", selected_word.tier_level
-                print selected_word.time_until_review, "this is the time added"
-                
+                selected_word.update_tier_and_review_time(increase_level)
                 selected_word.save()
                 
                 data = 1
