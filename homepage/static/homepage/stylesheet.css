@@ -12,7 +12,10 @@ body {
 /*  text-align:center;*/
  }
 
-
+ input {
+   outline-color: transparent;
+   outline-style: none;
+ }
 
 header {
   width: 100%;

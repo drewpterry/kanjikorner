@@ -10,12 +10,13 @@ from datetime import datetime, timedelta, time
 class Kanji(models.Model):
     kanji_name = models.CharField(max_length = 50)
     kanji_meaning = models.CharField(max_length = 200)
-    readings = models.CharField(max_length = 200)
+    readings = models.CharField(max_length = 200, null = True)
     on_kun_readings = models.CharField(max_length = 200, null = True)
     strokes = models.IntegerField(null = True)
     grade = models.IntegerField(null = True)
     newspaper_frequency = models.IntegerField(null = True)
     jlpt_level = models.IntegerField(null = True)
+    jinmeiyo = models.BooleanField(default = False)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
     
     def __unicode__(self):
@@ -81,6 +82,8 @@ class KnownKanji(models.Model):
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
+    
+    #im not sure what this is for....
     number_of_chosen_words = models.IntegerField(null = True)
     
     def __unicode__(self):
@@ -99,6 +102,7 @@ class KnownWords(models.Model):
     last_practiced = models.DateTimeField(blank = True)
     # remaining_time_review = models.FloatField(null = True)
     time_until_review = models.FloatField(null = True)
+    
     
     def update_tier_and_review_time(self, correct):
         options = {     0 : None,

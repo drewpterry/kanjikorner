@@ -75,8 +75,8 @@ var nextset = function(){
 	if(both_right == false){
 		
 		console.log(randarray.length);
-		if(randarray.length - wordnumber > 4){
-			randarray.splice(wordnumber + 4, 0,card_user_is_on)
+		if(randarray.length - wordnumber > 3){
+			randarray.splice(wordnumber + 3, 0,card_user_is_on)
 		}else{
 			randarray.push(card_user_is_on)
 		};

@@ -231,7 +231,7 @@ def new_words_view(request, full_name):
     for each in selected_kanji:
         new_kanji.append(each.kanji.get().id)
 
-    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('-frequency_two')
+    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).exclude(frequency_two__lte = 300, frequency = 0).prefetch_related('kanji').order_by('-frequency_two')
     # special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('frequency')
     special_words = list(special_words)
     for each in list(special_words):
@@ -248,7 +248,7 @@ def new_words_view(request, full_name):
 
     if len(special_words) == 0:        
 
-        words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
+        words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 200), Q(frequency = 0)|Q(frequency__gte = 40)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
         words_list = list(words)
      
@@ -637,8 +637,11 @@ def remove_known_kanji(request,full_name):
     userprofiles = User.objects.get(username = full_name).userprofile.id
 
     deletekanji = request.POST.getlist('chosenwords')
- 
-    thedeletekanji = []
+    # print deletekanji, "not work"
+    for each in deletekanji:
+        the_kanji_object = Kanji.objects.get(id = each)
+        print the_kanji_object
+        KnownKanji.objects.get(user_profile = userprofiles, kanji = the_kanji_object).delete()
     
     return known_kanji_view(request, full_name)
     
