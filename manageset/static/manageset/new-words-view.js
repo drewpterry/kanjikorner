@@ -78,7 +78,7 @@ var undo_indicate_as_known = function(word_id){
 
 var addword = function(idnumber, kanji, meaning, element){
 	
-	// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+	
 	
 	var minicard =''; 
 	minicard = minicard + "<div id = 'answercontainerdif" + idnumber + "' class = 'answerbox mini'>";
@@ -90,7 +90,7 @@ var addword = function(idnumber, kanji, meaning, element){
 	minicard = minicard + "<div class = 'back mini'>" + kanji + "</div></div></div>";
 
 	if(element.innerText == "add"){
-		// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+			
 		var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' name = 'chosenwords' value = '" + idnumber +"' ></input>";
 		
 		$("#create-set-form").prepend(hiddeninput); 
@@ -101,23 +101,37 @@ var addword = function(idnumber, kanji, meaning, element){
 		element.parentNode.className += " outline";
 		element.innerHTML = "remove";
 		element.previousSibling.previousSibling.disabled = true;
-		console.log(element.previousSibling.previousSibling);
+		selected_word = $('#answercontainer'+idnumber).find('#kanji').text()
+		console.log(selected_word)
+		for(var i = 0; i <= the_selected_kanji.length; i++){
+			
+			
+			if(selected_word.indexOf(the_selected_kanji[i]) != -1){
+				console.log('got here');
+				var kanji_used_count = $('#filter-' + the_selected_kanji[i]).data("count");
+				var new_count = kanji_used_count + 1
+				$('#filter-' + the_selected_kanji[i]).data("count", new_count);
+				$('#filter-' + the_selected_kanji[i]).find(".kanji-count").text(new_count);
+			};
+				
+		};
 		
-	}
-	// else if (element.innerText == "know it!"){
-// 		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
-//
-// 		$("#wordlist-know").append(minicard);
-// 		$("#known-kanji-form").prepend(hiddeninput);
-// 		knowncheck.push(idnumber);
-// 		element.parentNode.className += " outline-2";
-// 		element.innerHTML = "remove";
-// 		element.nextSibling.nextSibling.disabled = true;
-//
-// 	}
-else{
-
+	}else{
+		//i think i still need this
 		removeWord(idnumber, kanji, meaning, this)
+		for(var i = 0; i <= the_selected_kanji.length; i++){
+			
+			
+			if(selected_word.indexOf(the_selected_kanji[i]) != -1){
+				console.log('got here');
+				var kanji_used_count = $('#filter-' + the_selected_kanji[i]).data("count");
+				var new_count = kanji_used_count - 1
+				$('#filter-' + the_selected_kanji[i]).data("count", new_count);
+				$('#filter-' + the_selected_kanji[i]).find(".kanji-count").text(new_count);
+			};
+				
+		};
+		
 
 	};
 };
@@ -243,6 +257,15 @@ $.ajaxSetup({
         }
     }
 });
+
+
+
+
+
+
+
+
+
 
 // not used since I removed ajax
 // var displaySearch = function(data,signal){

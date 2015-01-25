@@ -1,4 +1,5 @@
 $('#new-kanji').addClass('manageset-nav-selected');
+$('#loadingDiv').hide()
 
 var filter = "grade";
 

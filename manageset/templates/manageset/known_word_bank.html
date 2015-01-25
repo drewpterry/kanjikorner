@@ -3,15 +3,20 @@
 {% block pagetitle %}Word Bank{% endblock %}
 
 {% block add-known %}
-				<span style = "float:left"> Known Words: </span>
+				<!-- <span style = "float:left"> Known Words: </span> -->
 
 				
-				<form id = "remove-kanji-form" action = "{% url 'profile:remove-known-kanji' full_name %}"method = "post">{% csrf_token %}
-				
+				<!-- <form id = "remove-kanji-form" action = "{% url 'profile:remove-known-kanji' full_name %}"method = "post">{% csrf_token %}
+
 					<input type = "submit" class = "left-margin" value = "Remove These Words"></input>
-				</form>
+				</form> -->
 				
-{% endblock %}				
+{% endblock %}		
+
+{% block instructions %}
+This shows all the words that you are learning or have indicated as known.
+
+{% endblock %}		
 
 
 {% block scripts %}

@@ -45,31 +45,41 @@
 		</div>
 		
 		<div id = "word-set-nav">
-			<a href = "{% url 'profile:new-words' full_name %}"><div class = "manageset-nav" id = "new-words" value = "new words">New Words</div></a>
-			<a href = "{% url 'profile:known-kanji' full_name %}" ><div class = "manageset-nav" id = "kanji-bank" value = "kanji bank">Kanji Bank</div></a>
-			<a href = "{% url 'profile:view_new_kanji' full_name %}"><div class = "manageset-nav" id = "new-kanji" value = "new kanji">Kanji</div></a>
+			<a href = "{% url 'profile:new-words' full_name %}"><div class = "manageset-nav" id = "new-words" value = "new words">Add Words</div></a>
+			<a href = "{% url 'profile:known-kanji' full_name %}" ><div class = "manageset-nav" id = "kanji-bank" value = "kanji bank">Kanji In Progress</div></a>
+			<a href = "{% url 'profile:view_new_kanji' full_name %}"><div class = "manageset-nav" id = "new-kanji" value = "new kanji">Unknown Kanji</div></a>
 			<a href = "{% url 'profile:view_word_bank' full_name %}"><div class = "manageset-nav" id = "word-bank" value = "word bank">Word Bank</div></a>
 		</div>
 		
 		
-		<!-- <div id = "search-area">
-			<span style = "float:left;">Order By:</span>
-			<input type = "button" id = "allwords" class = "filter" value = "All"></input>
-			<input type = "button" id = "gradefilter" class = "filter" value = "Grade"></input>
-			<input type = "button" id = "strokes" class = "filter" value = "Simplicity"></input>
-			<input type = "button" value = "Frequency" class = "filter"></input>
-			<input type = "button" id = "NLPT" value = "NLPT" class = "filter"></input>
-
-			<br style = "clear:both;">
-			<input type = "text" id = "searchbox" class = "text-area" placeholder = "Search by meaning, hirigana, or keyword" autofocus></input>
-			<input type = "button" id = "searchbox" value = "search" class = "filter"></input>
-		</div> -->
-		<!-- <br style = "clear:both"/> -->
+		<div class = 'manageset-instructions'>
+			{%block instructions%}
+			{% endblock %}
+			
+		</div>
+		
+		
+			{% if selected_kanji %}
+			<div id = "kanji-filter-container">
+			<div>Kanji in Filter</div>			
+				{% for each in selected_kanji %}
+						{% for the_kanji in each.kanji.all %}
+						<div id = "filter-{{ the_kanji.kanji_name }}" data-count='0' class = 'filter-kanji'>
+							<div class = "kanji-word">{{ the_kanji.kanji_name }}</div>
+							<div class = "kanji-meaning">{{ the_kanji.kanji_meaning }}</div>
+							<div class = "kanji-count"></div>
+						</div>
+						{% endfor %}
+				{% endfor %}
+			</div>	
+			{% endif %}
+		
+		
 	
 		<div id = "container">
 			
-			{% block words%}
-			{% endblock%}	
+			{% block words %}
+			{% endblock %}	
 				
 				<!-- Where searched words appear -->
 			<div id = "loadingDiv">

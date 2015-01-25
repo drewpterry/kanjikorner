@@ -24,7 +24,7 @@ var search = function(signal){
 };
 
 
-$('#loadingDiv').hide()
+
 
 
 var addword = function(idnumber, kanji, meaning, element){
@@ -132,11 +132,16 @@ $("#search-area").on("click",".filter", function(){
 
 
 var displaySearch = function(data,signal){
+	
 
 	data = JSON.parse(data);
 
 
 	var dataLength = data.length;
+	if(dataLength == 0){
+		$('#container').html("You have indicated any kanji you know or are learning! Got to the unknown kanji tab to add some.");
+		return;
+	}
 	var foundflag = false;
 	var content = ''
 	var addCheckLength = addcheck.length;
@@ -163,7 +168,7 @@ var displaySearch = function(data,signal){
 	document.getElementById('container').innerHTML = content;
 	
 	for (var i = 0; i <= selected_kanji_list.length; i++){
-		console.log(i)
+		
 		$('#answercontainer'+selected_kanji_list[i]).find('div .special-kanji-switch').addClass("selected-kanji");
 	};	
 
@@ -224,7 +229,7 @@ $("#container").on("click", ".special-kanji-switch", function(){
 	});
 });		
 
-$('#answercontainer26').find('div .special-kanji-switch').addClass("selected-kanji")
+// $('#answercontainer26').find('div .special-kanji-switch').addClass("selected-kanji")
 // $('#answercontainer26').childNode.childNode
 
 

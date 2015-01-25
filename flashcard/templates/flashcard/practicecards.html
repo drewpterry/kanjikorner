@@ -2,7 +2,17 @@
 {% load staticfiles %}
 {% block pagetitle %}Profile{% endblock %}
 
+
+
 {% block content %}
+<a id = 'home-button' href = '/'><div>Home</div></a>
+<div id = "end-of-practice">
+	<div id = "words-added-message">
+		Awesome you've just added <span id = "words-added-count"></span> words to your review queue!
+		</div>
+	<a href = '/'><div id = "back-to-profile-button">Back to profile</div></a>
+		
+</div>
 	<input id = "set-name" type = "hidden" value = "{{ set_name }}">
 	<input id = "user-name" type = "hidden" value = "{{ full_name }}">
 	<div id = "set-name-title">{{ set_name }}</div>
@@ -20,10 +30,7 @@
 					<div id = "highscore" class = "score">0</div>
 				</div>
 
-				<div class = "scorebox right">
-					<div class = "title">Trouble Words</div>
-					<div id = "currentscore" class = "score">0</div>
-				</div>
+				
 
 			</div>
 		<div id = "center">
@@ -54,9 +61,37 @@
 			<input type = "text" id = "answerinput"　lang = "ja" placeholder = "ひらがな" autofocus></input>
 			<!-- <div id = "result">X</div> -->
 		</div>
-	
+	</br>
 		<!-- <div id = "answered" class = "sidebar"></div> -->
-		
+		<div class = "word-info-box">
+			<div class = "left-box">
+				<div class = "inner-info-box">
+					<div class = "title">Reading</div>
+					<div id = "word-reading"class = "information">ひらがな</div>
+				</div>
+				<div class = "inner-info-box">
+					<div class = "title">Part of Speech</div>
+					<div id = "word-pos" class = "information">adjective - na</div>
+				</div>
+				<div class = "inner-info-box" >
+					<div class = "title">Kanji</div>
+					<div class = "kanji-info">
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class = "word-defintions">
+				<div class = "title">Definitions</div>
+				<div class = "list-definitions">
+					<ol>
+						<li>First defintion</li>
+						<li>the second defintion is this and it is a lot longer ljsdf  lkjasd f </li>
+						<li>one more def example</li>
+					</ol>
+				</div>	
+			</div>
+		</div>
 		
 		
 		
@@ -68,14 +103,23 @@
 <script>
 var vocab = [];
 
-{% for word in words %}
 
+// var kanjiss = JSON.stringify({{kanji_names}});
+//
+// var kanjis = {{kanji_names | safe}}
+
+
+{% for word in words %}
+var kanjis = [];
 vocab.push({
 	//I need to fix this so it works under all circumstances, both practice and reviews
 	word: '{{ word.real_word }}',
 	hiragana: '{{ word.hiragana }}',
 	meaning: '{{ word.meaning}}',
-	know_word_object_id: {{ word.id }} 
+	know_word_object_id: {{ word.id }},
+	kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
+	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
+	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
 	});
 
 {% endfor %}

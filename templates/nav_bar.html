@@ -2,14 +2,14 @@
 	<div id = "navigation">
 		<div id ="logo">Kanji Corner</div>
 		<ul>
-			<li><a href = "/">Home</a></li>
+			<!-- <li><a href = "/">Home</a></li>
 			<li><a href = "languages.html">Language</a></li>
-			<li><a href = "about.html">About</a></li>
+			<li><a href = "about.html">About</a></li> -->
 	{% if full_name %}		
 			<li><a href = "/logout/complete/">Logout</a></li>
 			<li><a href = "{% url 'profile:index' full_name %}">Profile</a></li>
 	{% else %}
-			<li><a href = "/">Placehold</a></li>		
+			<li><a href = "/">Login</a></li>
 		</ul>
 	{% endif %}	
 		

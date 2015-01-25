@@ -1,4 +1,3 @@
-
 var troublewords = [];
 var wordnumber = 0;
 var remaining = vocab.length;
@@ -6,6 +5,8 @@ var randarray = [];
 var sets_until_complete = 1;
 var type_flag = false;
 var both_right = true;
+
+$('#words-added-count').html(remaining);
 
 //creates array of random uniques
 var randomarray = function(){
@@ -29,20 +30,25 @@ var randomarray = function(){
 var startpage = function(){
 	type_flag = false;
 	randomarray();
-	var randvocabword = vocab[randarray[wordnumber]];
 	try {
 		vocab[randarray[1]].word
 		var vocab_word = vocab[randarray[1]].word
 	}catch(err){
-		var vocab_word = "finish"
+		if(sets_until_complete == 1){
+			var vocab_word = "One more time!";
+		}else{
+			var vocab_word = "finish"
+		};
 	};
+	// var randvocabword = vocab[randarray[wordnumber]];
+	
 	// initial_cards = '<div id = "center">';
 	initial_cards = "";
 	// initial_cards += "hello";
 	initial_cards += "<div id = 'cardhold1' class = 'cardhold'>";            
 	initial_cards +=			'<div id = "word1" class = "answerbox mini left">';
 	initial_cards +=				'<div class = "flipper">';
-	initial_cards +=					'<div id = "front1"class = "front mini2"><div>' + vocab[randarray[1]].word + '</div></div>';
+	initial_cards +=					'<div id = "front1"class = "front mini2"><div>' + vocab_word + '</div></div>';
 	// initial_cards +=					'<div id = "back1" class = "back mini2">' + vocab[randarray[1]].hiragana + '</div>';
 	initial_cards +=				'</div>';
 	initial_cards +=			'</div>';
@@ -62,11 +68,37 @@ var startpage = function(){
 	
 	document.getElementById('center').innerHTML = initial_cards;
 	
-	// for(var i = 0; i<2; i++){
-// 		document.getElementById('front' + i).innerHTML = vocab[randarray[i]].word;
-// 		document.getElementById('back' + i).innerHTML = vocab[randarray[i]].hiragana;
-// 	}
-}
+	if(sets_until_complete == 1){
+		definition_info = '';
+		for(var i = 0; i<3; i++){
+			if(vocab[randarray[0]].definitions[i]){
+				definition_info += '<li>' + vocab[randarray[0]].definitions[i] + '</li>';
+			}	
+		};
+		
+		kanji_symbols = '';
+		for(var i = 0; i<=vocab[randarray[0]].kanjis.length; i++){
+			if(vocab[randarray[0]].kanjis[i]){
+				
+				kanji_symbols += 			'<div class = "each-kanji">';
+				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[0]].kanjis[i] + '</div>';
+				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[0]].kanji_meanings[i] +'</div>';
+				kanji_symbols +=			'</div>';
+				
+			}	
+		};
+		
+		$('#word-reading').html(vocab[randarray[0]].hiragana);
+		$('#word-pos').html('coming soon');
+		$('.list-definitions > ol').html(definition_info);
+		$('.kanji-info').html(kanji_symbols);
+	
+	}else{
+		$('.word-info-box').hide();
+	};
+	
+
+};
 
 
 //animates cards to the right
@@ -127,8 +159,7 @@ var nextset = function(){
 		document.getElementById('answerinput').style.color = "grey";
 	}
 	
-	// console.log(wordnumber+2);
-	// console.log(randarray.length);
+
 	var rewritecards = '';
 	if(wordnumber+2 < randarray.length){
 		rewritecards += "<div id = 'cardhold" + addtwo + "' class = 'cardhold'>";	
@@ -182,6 +213,35 @@ var nextset = function(){
 		$("#cardhold"+addtwo).hide().fadeIn();
 	},500);
 	
+	
+	
+	if(sets_until_complete == 1){
+		definition_info = '';
+		for(var i = 0; i<3; i++){
+			if(vocab[randarray[wordnumber]].definitions[i]){
+				definition_info += '<li>' + vocab[randarray[wordnumber]].definitions[i] + '</li>';
+			}	
+		};
+		
+		kanji_symbols = '';
+		for(var i = 0; i<=vocab[randarray[wordnumber]].kanjis.length; i++){
+			if(vocab[randarray[wordnumber]].kanjis[i]){
+				
+				kanji_symbols += 			'<div class = "each-kanji">';
+				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber]].kanjis[i] + '</div>';
+				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber]].kanji_meanings[i] +'</div>';
+				kanji_symbols +=			'</div>';
+				
+			}	
+		};
+		
+		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
+		$('#word-pos').html('coming soon');
+		$('.list-definitions > ol').html(definition_info);
+		$('.kanji-info').html(kanji_symbols);
+	}else{
+		$('.word-info-box').hide();
+	};
 		
 	
 };
@@ -354,7 +414,8 @@ var reset = function(){
 	
 	if(sets_until_complete == 0){
 		update_words();
-		alert("you did it!");
+		$('#end-of-practice').fadeIn();
+		console.log("woooork")
 		
 		
 	} else {
@@ -367,6 +428,7 @@ var reset = function(){
 		startpage();
 	}
 }
+
 
 
 

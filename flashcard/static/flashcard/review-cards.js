@@ -33,10 +33,10 @@ var startpage = function(){
 	type_flag = false;
 	randomarray();
 	try {
-		vocab[randarray[1]].word
-		var vocab_word = vocab[randarray[1]].word
+		vocab[randarray[1]].word;
+		var vocab_word = vocab[randarray[1]].word;
 	}catch(err){
-		var vocab_word = "finish"
+		var vocab_word = "finish";
 	};
 	// var randvocabword = vocab[randarray[wordnumber]];
 	

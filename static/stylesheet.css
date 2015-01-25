@@ -69,6 +69,12 @@ header {
     font-weight: bold;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: white; }
+	
+#home-button{
+	color:green;
+	float:left;
+	font-size:2em;
+}	
 
 #introduction {
   width: 50%;
@@ -375,12 +381,14 @@ display: table-cell;
       margin-bottom: 10px; }
 	  
     .scorebox {
-      width: 47%;
+      width: 46%;
       height: auto;
-      float: left;
+/*      float: left;*/
       background-color: gainsboro;
       border-radius: 5px;
-      padding-top: 3px; }
+      padding-top: 3px;
+  	 margin:auto;
+ }
 	  
     .title {
       width: 100%;

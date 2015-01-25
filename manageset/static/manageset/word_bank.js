@@ -167,7 +167,7 @@ var displaySearch = function(data,signal){
 						// content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
 						//hmmm some people on stackoverflow say inline javascript is bad practice...
 						//also probably the fact that I repeat it 2 times is bad...
-						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>Remove</button>";
+						// content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>Remove</button>";
 						content = content + "</div></div>"
 						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
 

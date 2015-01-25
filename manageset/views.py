@@ -275,12 +275,14 @@ def new_words_view(request, full_name):
 
     data = special_words + words_list
 
-    
+    for each in selected_kanji.all():
+        for kanji in each.kanji.all():
+            print kanji
     
     
     if request.is_ajax():
         template = page_template               
-    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets})        
+    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets, 'selected_kanji':selected_kanji})        
 
 
 
@@ -589,6 +591,7 @@ def add_known_word(request, full_name):
                 profile = request.user.userprofile
                 word_id = request.POST['word_id']
                 obj1 = Words.objects.get(id = word_id)
+                
                 new_known_word = KnownWords(words = obj1, user_profile = profile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
                 # print "hello"
                 new_known_word.save()

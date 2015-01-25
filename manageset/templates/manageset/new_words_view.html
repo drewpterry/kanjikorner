@@ -7,27 +7,56 @@
 
 				<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
 				
-					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" value = "Stack {{ usersets }}" onfocus="this.value = this.value;" autofocus></input>
+					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" value = "Lesson {{ usersets }}" onfocus="this.value = this.value;" autofocus></input>
 				
 					<br style = "clear:both"/>
 					<!-- <textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea> -->
 					<br style = "clear:both"/>
 					<input type = "submit" id = "create-set-button" class = "left-margin" value = "Create Stack"></input>
 				</form>
+				
+				
+				
+				
+				<br style = "clear:both;"/>
+				
+			
 {% endblock %}
+
+				{% block instructions %}
+				This area shows words only using kanji that you know or are learning.</br>
+				Add words to create lessons for you to review.</br>
+				Click the Know It! button and it will be removed so you dont have to see it anymore.
+				{% endblock %}
+
 
 {% block add-known %}
 				
 				
 {% endblock %}	
 
+
 {% block words %}
 
+{% if data %}
 {% include page_template %}
+{% else %}
+<div>Oops there aren't any words available! Go to the Unknown Kanji tab to start adding kanjia and words will start appearing.</div>
+
+{% endif %}
 
 {% endblock %}
 
 {% block scripts %}
+<script>
+var the_selected_kanji = [];
+		{% for each in selected_kanji %}
+				{% for the_kanji in each.kanji.all %}
+				the_selected_kanji.push('{{the_kanji.kanji_name}}')
+				
+				{% endfor %}
+		{% endfor %}	
+</script>
 <script src = "{% static 'manageset/new-words-view.js' %}"></script>
 
 {% block js %}

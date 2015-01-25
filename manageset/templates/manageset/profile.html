@@ -16,8 +16,20 @@
 		<!-- <div id = "stats"></div> -->
 		
 		
+		{% if usersets.count == 0 and the_count.0 == 0  %}
 		
-		{% if review_number == 0 %}	
+		<div id = "review-indicator-no-click" style = "cursor:not-allowed;">
+			<div class = "overlay-reviews">
+				<p></p>
+				<span style = "font-size:1.2em">Oops, you haven't added any words!</span>
+			</div>
+			<p>Reviews</p>
+			<span>0</span>
+			<p>Due Now</p>
+		
+		</div>
+		
+		{% elif review_number == 0 %}	
 		<div id = "review-indicator-no-click" style = "cursor:not-allowed;">
 			<div class = "overlay-reviews">
 				<p>Next Review</p>
@@ -162,9 +174,14 @@
 			</div>
 		</div>
 		<br style = "clear:both"/>
-		<br style = "clear:both"/>
+		
 		<!-- <p> this is your id: {{ userprofileid }}</p> -->
 		<div id = "set-preview">
+			
+			<div id = "lesson-instruction">Create and complete lessons to add words into the study queue.</div>
+			<br style = "clear:both;"/>
+			<br/>
+			
 	
 			<a href = "{% url 'profile:new-words' full_name %}">	
 				<div id = "primary-set-list" class = "set-list-no-hover">
@@ -180,7 +197,7 @@
 				<div class = "overlay"> 
 					<div id = "set-description">{{ each.description }}</div></br>
 					
-					<a href = "{% url 'flashcard:practice-stack' full_name each %}"><div class = "set-option">Practice</div></a>
+					<a href = "{% url 'flashcard:practice-stack' full_name each %}"><div class = "set-option">Review Lesson</div></a>
 				
 				</div>
 				<p>{{ each }}</p>
