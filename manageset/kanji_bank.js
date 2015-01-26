@@ -1,3 +1,4 @@
+$('#kanji-bank').addClass('manageset-nav-selected');
 
 
 var filter = "grade";
@@ -12,7 +13,7 @@ var keyword = '';
 var search = function(signal){
 	
 	$.ajax({
-		url:'http://localhost:8000/profile/new-set/word-search',
+		url:'/profile/new-set/get-known-kanji',
 		type:'GET',
 		data:{theorder: filter , csrfmiddlewaretoken: '{{ csrf_token }}', searchword: keyword},
 		success: displaySearch, 
@@ -25,9 +26,9 @@ var search = function(signal){
 
 
 
+
 var addword = function(idnumber, kanji, meaning, element){
 	
-	// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
 	
 	var minicard =''; 
 	minicard = minicard + "<div id = 'answercontainerdif" + idnumber + "' class = 'answerbox mini'>";
@@ -38,28 +39,20 @@ var addword = function(idnumber, kanji, meaning, element){
 	minicard = minicard + "</div></div>"
 	minicard = minicard + "<div class = 'back mini'>" + kanji + "</div></div></div>";
 
-	if(element.innerText == "add"){
-		// var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' class = 'text-area left-margin' name = 'chosenwords' value = '" + idnumber +"' ></input>";
+	if(element.innerText == "Remove"){
+
 		var hiddeninput = "<input type = 'hidden' id = 'chosenwords" + idnumber + "' name = 'chosenwords' value = '" + idnumber +"' ></input>";
-		
-		$("#create-set-form").prepend(hiddeninput); 
-		$("#wordlist-new").append(minicard);
+
+		$("#remove-kanji-form").prepend(hiddeninput);
+		$("#wordlist-know").append(minicard);
 		//array that holds ids of selected words
 		addcheck.push(idnumber);
 		// permanently add outline to added card or removes it if remove is clicked
 		element.parentNode.className += " outline";
-		element.innerHTML = "remove";
+		element.innerHTML = "undo";
 		element.previousSibling.disabled = true;
-		
-	}else if (element.innerText == "know it!"){
-		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
-		
-		$("#wordlist-know").append(minicard);
-		$("#known-kanji-form").prepend(hiddeninput);
-		knowncheck.push(idnumber);
-		element.parentNode.className += " outline-2";
-		element.innerHTML = "remove";
-		element.nextSibling.disabled = true;
+
+
 		
 	}else{
 		
@@ -73,27 +66,21 @@ var addword = function(idnumber, kanji, meaning, element){
 
 var removeWord = function(idnumber, kanji, meaning, element){
 	
-	// element.innerHTML = "add";
-	// element.parentNode.className = "front";
+
 	
 	var wordCard = document.getElementById('answercontainer'+idnumber).firstChild.firstChild;
 	document.getElementById('answercontainerdif'+idnumber).remove();
-	//removes hidden field
-	if (wordCard.lastChild.disabled == false){
+	
 		document.getElementById('chosenwords'+idnumber).remove();
 		wordCard.lastChild.innerHTML = "add";
 		wordCard.children[3].disabled = false;
 		//removing id from array
 		var position = addcheck.indexOf(idnumber);
 		addcheck.splice(position,1);
-		
-	}else{
-		document.getElementById('knownwords'+idnumber).remove();
-		var position = knowncheck.indexOf(idnumber);
-		knowncheck.splice(position,1);
-	}
+
+
 	wordCard.className = "front";
-	wordCard.children[3].innerHTML = "know it!";
+	wordCard.children[3].innerHTML = "Remove";
 	wordCard.lastChild.disabled = false;
 	
 	
@@ -103,11 +90,11 @@ var removeWord = function(idnumber, kanji, meaning, element){
 
 
 //add remov red x on hover
-$("#wordlist-new").on("mouseover",".front", function(){
+$("#wordlist-know").on("mouseover",".front", function(){
 	$(this).children("#red-ex").show();
 });
 
-$("#wordlist-new").on("mouseout",".front", function(){
+$("#wordlist-know").on("mouseout",".front", function(){
 	$(this).children("#red-ex").hide();
 });
 
@@ -142,67 +129,107 @@ $("#search-area").on("click",".filter", function(){
 
 
 
+
+
 var displaySearch = function(data,signal){
+	
 
-			data = JSON.parse(data);
+	data = JSON.parse(data);
 
 
-			var dataLength = data.length;
-			var foundflag = false;
-			var content = ''
-			var addCheckLength = addcheck.length;
+	var dataLength = data.length;
+	if(dataLength == 0){
+		$('#container').html("You have indicated any kanji you know or are learning! Got to the unknown kanji tab to add some.");
+		return;
+	}
+	var foundflag = false;
+	var content = ''
+	var addCheckLength = addcheck.length;
 		
 
-			
-				for(var i= 0; i<dataLength; i++){
-					var pk = data[i].pk;
-					var kanjiName = data[i].fields.kanji_name;
-					var kanjiMeaning = data[i].fields.kanji_meaning;
+	
+	for(var i= 0; i<dataLength; i++){
+		var pk = data[i].pk;
+		var kanjiName = data[i].fields.kanji_name;
+		var kanjiMeaning = data[i].fields.kanji_meaning;
 
-						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
-						content = content + "<div class = 'flipper'><div class = front>";
-						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
-						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-						content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
-						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
-						//hmmm some people on stackoverflow say inline javascript is bad practice...
-						//also probably the fact that I repeat it 2 times is bad...
-						content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
-						content = content + "</div></div>"
-						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
+			content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' data-id = '"+ pk +"' >";
+			content = content + "<div class = 'flipper'><div class = front><button class = 'special-kanji-switch'>✓</button>";
+			content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
+			content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
+			content = content + "<div id = 'grade'>" + data[i].fields.grade + "</div>";
+			//hmmm some people on stackoverflow say inline javascript is bad practice...
+			//also probably the fact that I repeat it 2 times is bad...
+			content = content + "<button class = 'add-remove' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>Remove</button>";
+			content = content + "</div></div>"
+			content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
 
-					};
-				document.getElementById('container').innerHTML = content;
-
-
-
-
-					for(var i = 0; i<addCheckLength; i++){
-						if(document.getElementById('answercontainer'+addcheck[i]) != null){
-
-							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-							//add class to div where class = front
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
-							//change add button to a remove button
-							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-						}
-					}
-					
-					for(var i = 0; i<knowncheck.length; i++){
-						if(document.getElementById('answercontainer'+knowncheck[i]) != null){
-
-							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-							//add class to div where class = front
-							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.className += " outline-2";
-							//change add button to a remove button
-							document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-						}
-					}
-					
-					
 		};
+	document.getElementById('container').innerHTML = content;
+	
+	for (var i = 0; i <= selected_kanji_list.length; i++){
+		
+		$('#answercontainer'+selected_kanji_list[i]).find('div .special-kanji-switch').addClass("selected-kanji");
+	};	
+
+
+
+		for(var i = 0; i<addCheckLength; i++){
+			if(document.getElementById('answercontainer'+addcheck[i]) != null){
+
+				//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
+				//add class to div where class = front
+				document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
+				//change add button to a remove button
+				document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
+			}
+		}
+		
+		for(var i = 0; i<knowncheck.length; i++){
+			if(document.getElementById('answercontainer'+knowncheck[i]) != null){
+
+				//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
+				//add class to div where class = front
+				document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.className += " outline-2";
+				//change add button to a remove button
+				document.getElementById('answercontainer'+knowncheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
+			}
+		}
+		
+					
+};
 		
 		
 //so that opening page has all the cards
 search('');
-		
+
+$("#container").on("click", ".special-kanji-switch", function(){
+	// console.log("clicking this button worked");
+	theclass = this.className;
+	if (theclass == "special-kanji-switch"){
+		this.classList.add("selected-kanji");
+	}else{
+		this.classList.remove("selected-kanji");
+	};
+	
+	kanji_id = this.parentNode.parentNode.parentNode.dataset.id
+	console.log(kanji_id)
+	$.ajax({
+		url:'/profile/upate-knownkanji-special',
+	//need to make this a post request
+		type:'GET',
+		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
+		success: function(data){
+			
+	console.log(data);
+},
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+});		
+
+// $('#answercontainer26').find('div .special-kanji-switch').addClass("selected-kanji")
+// $('#answercontainer26').childNode.childNode
+
+

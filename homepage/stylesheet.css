@@ -12,7 +12,10 @@ body {
 /*  text-align:center;*/
  }
 
-
+ input {
+   outline-color: transparent;
+   outline-style: none;
+ }
 
 header {
   width: 100%;
@@ -69,12 +72,6 @@ header {
     font-weight: bold;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: white; }
-	
-#home-button{
-	color:green;
-	float:left;
-	font-size:2em;
-}	
 
 #introduction {
   width: 50%;
@@ -330,6 +327,44 @@ display: table-cell;
     border-color: #969696;
     border-radius: 5px; }
 	
+	#home-button{
+		float:left;
+	}
+	
+	#set-name-title{
+		float:right;
+	}
+	
+	#end-of-practice {
+		display:none;
+		height:350px;
+		width:600px;
+		background-color:white;
+		border-radius:10px;
+		position:absolute;
+		margin-left:25%;
+		margin-top:5%;
+		z-index:5;
+	}
+  
+	#words-added-message{
+		font-size:2.2em;
+		margin-top:15%;
+		margin-bottom:4%;
+	}
+	
+	#back-to-profile-button{
+		background-color: rgba(66,235,89,1);
+		font-size:1.5em;
+		color:white;
+		width:170px;
+		height:50px;
+		line-height:50px;
+		border-radius:5px;
+		margin:auto;
+		cursor:pointer;
+	}
+  
   #unanswered {
     float: left; }
 	
@@ -381,14 +416,13 @@ display: table-cell;
       margin-bottom: 10px; }
 	  
     .scorebox {
-      width: 46%;
-      height: auto;
+      width: 40%;
+      height: 45px;
 /*      float: left;*/
       background-color: gainsboro;
       border-radius: 5px;
       padding-top: 3px;
-  	 margin:auto;
- }
+  margin:auto; }
 	  
     .title {
       width: 100%;
@@ -404,6 +438,98 @@ display: table-cell;
       float: left;
       font-size: 1.5em;
       color: #969696; }
+	  
+	  .word-info-box{
+		  width:50%;
+		  min-height:240px;
+		  overflow:auto;
+		  margin:auto;
+		  background-color:white;
+		  border-radius:20px;
+		  text-align:left;
+		  padding:20px;
+		  
+	  }
+	  
+	 .word-info-box .title {
+		  font-size:1.3em;
+		  color:grey;
+		  font-weight:bold;
+/*		  border-style:solid;*/
+	  }
+	  
+	  .word-info-box .left-box{
+/*		  border-style:solid;*/
+		  width:50%;
+		  float:left;
+	  }
+	  
+	  .word-info-box .inner-info-box{
+		  height:60px;
+/*		  border-style:solid;*/
+	  }
+	  
+	  .word-info-box .information{
+		  height:35px;
+		  width:100%;
+		  margin-top:10px;
+/*		  border-style:solid;*/
+		  float:left;
+	  }
+	  
+	  .word-info-box .kanji-info{
+/*		  border-style:solid;*/
+		  margin-top:10px;
+		  height:80px;
+		  width:100%;
+		  float:left;
+	  }
+	  
+	  .word-info-box .each-kanji{
+/*		  border-style:solid;*/
+		  height:100%;
+		  width:70px;
+		  float:left;
+		  text-align:center;
+	  }
+	  
+	  .word-info-box .actual-kanji{
+		  font-size:1.5em;
+	  }
+	  
+	  .word-info-box .kanji-meaning{
+		  padding-left:2px;
+		  padding-right:2px;
+		  font-size:.8em;
+		  width:100%;
+/*		  border-style:solid;*/
+	  }
+	  
+	  
+	  .word-info-box .word-defintions {
+		  width:50%;
+		  float:left;
+/*		  border-style:solid;*/
+	  }
+	  
+	  .word-info-box .list-definitions {
+		  margin-top:10px;
+	  }
+	  
+	  .word-info-box ol{
+/*		  border-style:solid;*/
+		  padding-left:25px;
+		  margin-top:30px;
+		 
+	  	
+	  }
+	  
+	  .word-info-box ol li{
+/*		  border-style:solid;*/
+		  margin-top:10px;
+	  }
+	  
+	  
 	  
     .right {
       float: right; }
@@ -684,6 +810,47 @@ font-size: 40px; }
 	  
 }
 
+#kanji-filter-container {
+	width:700px;
+/*	border-style:solid;*/
+	float:left;
+	margin-left:4%;
+}
+
+.filter-kanji {
+	float:left;
+	width:50px;
+	height:50px;
+	font-size:.5em;
+/*	border-style:solid;*/
+	background-color:white;
+	margin-right:10px;
+	margin-bottom:10px;
+	border-radius:5px;
+}
+
+
+
+.kanji-word {
+	font-size:1.8em;
+	margin-bottom:-5px;
+}
+
+.kanji-count {
+	font-size:1.2em;
+}
+
+.manageset-instructions{
+	background-color:white;
+	width:770px;
+	height:auto;
+	float:right;
+	margin-right:5%;
+	border-radius:10px;
+	text-align:left;
+	padding:10px;
+}
+
 #kanji-indicator {
 	height:140px;
 	width:140px;
@@ -787,6 +954,19 @@ font-size: 40px; }
 /*	border-style:solid;*/
 }
 
+#lesson-instruction{
+	width:370px;
+	float:left;
+	background-color:#3ED4F9;
+	border-color:#3ED4F9;
+	border-style:solid;
+	color:white;
+	border-radius:5px;
+	font-size:1.3em;
+	text-align:left;
+	padding-left:10px;
+/*	padding-right:10px;*/
+}
 
 #outercontainer #set-preview{
 /*	float:left;*/
@@ -884,6 +1064,8 @@ font-size: 40px; }
 
 
 /*Create new set page ---------------------------------------------------------*/
+
+
 
 #word-set-nav {
 	padding-left:4%;
@@ -1092,7 +1274,8 @@ font-size: 40px; }
   -o-perspective: 1000;
   perspective: 1000;
   background-color: #86e7fc;
-  margin-top: 12px;
+  margin-top: 5px;
+  margin-bottom:5px;
   //line-height: 160px;
   float: left; }
 
@@ -1183,7 +1366,7 @@ font-size: 40px; }
   
   #container{
 	  width:70%;
-	  margin-top:10px;
+/*	  margin-top:5px;*/
 	  float:left;
 	  margin-left:4%;
 	 /* margin-left:5%;
