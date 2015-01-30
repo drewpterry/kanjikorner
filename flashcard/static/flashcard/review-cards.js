@@ -196,6 +196,9 @@ var nextset = function(){
 		rewritecards += "</div></div></div>";
 		
 		
+		
+		
+		
 	};
 	
 	
@@ -218,14 +221,35 @@ var nextset = function(){
 		$("#cardhold"+addtwo).hide().fadeIn();
 	},500);
 	
-	
-	
-	// creates list of words missed in the first round
-	// if(troublewords.indexOf(card_user_is_on) == -1){
-// 		troublewords.push(card_user_is_on);
+	// if(sets_until_complete == 1){
+// 		definition_info = '';
+// 		for(var i = 0; i<3; i++){
+// 			if(vocab[randarray[wordnumber]].definitions[i]){
+// 				definition_info += '<li>' + vocab[randarray[wordnumber]].definitions[i] + '</li>';
+// 			}
+// 		};
 //
-// 		console.log("troubleword  " + troublewords);
-// 	};	
+// 		kanji_symbols = '';
+// 		for(var i = 0; i<=vocab[randarray[wordnumber]].kanjis.length; i++){
+// 			if(vocab[randarray[wordnumber]].kanjis[i]){
+//
+// 				kanji_symbols += 			'<div class = "each-kanji">';
+// 				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber]].kanjis[i] + '</div>';
+// 				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber]].kanji_meanings[i] +'</div>';
+// 				kanji_symbols +=			'</div>';
+//
+// 			}
+// 		};
+//
+// 		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
+// 		$('#word-pos').html('coming soon');
+// 		$('.list-definitions > ol').html(definition_info);
+// 		$('.kanji-info').html(kanji_symbols);
+// 	}else{
+// 		$('.word-info-box').hide();
+// 	};
+	
+
 	
 };
 

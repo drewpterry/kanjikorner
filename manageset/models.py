@@ -102,6 +102,9 @@ class KnownWords(models.Model):
     last_practiced = models.DateTimeField(blank = True)
     # remaining_time_review = models.FloatField(null = True)
     time_until_review = models.FloatField(null = True)
+    time_answered_correct = models.IntegerField(default = 0)
+    times_answered_wrong = models.IntegerField(default = 0)
+    correct_percentage = models.FloatField(null = True)
     
     
     def update_tier_and_review_time(self, correct):
@@ -121,12 +124,15 @@ class KnownWords(models.Model):
                         9 : None,
         }
         if correct == 1:
+            self.times_answered_correct = self.times_answered_correct + 1
             if self.tier_level < 9: 
                 self.tier_level = self.tier_level + 1
         elif self.tier_level != 1:
             self.tier_level = self.tier_level - 1
+            self.times_answered_wrong = self.times_answered_wrong + 1
         
-        
+        total_times_answered = self.times_answered_correct + self.times_answered_wrong
+        self.correct_percentage = self.times_answered_correct / total_times_answered
         new_hours = options[self.tier_level]
         random_multiplier = random.uniform(.95, 1.05)
         

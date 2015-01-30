@@ -83,6 +83,13 @@ def srs_review_words(request, full_name):
     else:
         
             words_list = srs_get_and_update(request, full_name)
+            words_id = []
+            # for each in words_list:
+  #               words_id.append(each.id)
+  #               print each.kanji.all()
+                
+            print words_id    
+            # words_with_kanji = Words.objects.filter()
                
     return render(request, 'flashcard/review-cards.html', {'full_name':full_name, 'words':words_list})
     
@@ -111,7 +118,10 @@ def srs_get_and_update(request, full_name):
         word.last_practiced = now
         word.save()
         if time_remaining <= 0:
+            #using this so i can update right or wrong words
+            #need to add normal id to put definitions etc
             word.words.id = word.id
+            # print word.words.kanji.all()
             words_list.append(word.words)
             
             

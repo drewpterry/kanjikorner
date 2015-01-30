@@ -81,7 +81,10 @@ vocab.push({
 	meaning: '{{ word.meaning}}',
 	know_word_object_id: {{ word.id }},
 	correct: true,
-	first_time: true 
+	first_time: true,
+	// kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
+// 	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
+// 	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
 	});
 
 {% endfor %}
