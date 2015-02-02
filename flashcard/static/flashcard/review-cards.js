@@ -422,6 +422,10 @@ $('#answerinput').keyup(function(event){
 		}	
 		
 	};
+	
+	
+	
+	
 });
 
 

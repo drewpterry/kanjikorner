@@ -171,9 +171,9 @@ header {
 	
     #outercontainer form .login {
       height: 35px;
-      width: 200px;
+      width: 250px;
       margin-top: 10px;
-      font-size: 1.5em;
+      font-size: 1.2em;
       border: none;
       border-radius: 5px;
       text-align: center;
@@ -190,7 +190,7 @@ header {
 	  
 	#account-create {
         height: 35px;
-        width: 200px;
+        width: 250px;
         margin-top: 10px;
         background-color: #d2d2d2;
 		margin-left:2%;
@@ -211,7 +211,7 @@ header {
 	  
     #outercontainer form .button {
       height: 35px;
-      width: 200px;
+      width: 250px;
       margin-top: 10px;
       background-color: rgba(66,235,89,1);
       border-style: none;

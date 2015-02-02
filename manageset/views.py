@@ -38,13 +38,15 @@ def main_profile(request,full_name):
         userprofile = UserProfile.objects.get(user = userprofiles)
         usersets = userprofile.user_sets.all().order_by('pub_date')
         
-        print "usersets:", usersets
         
         
         # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         known_words = KnownWords.objects.filter(user_profile = userprofile).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         total_word_count = KnownWords.objects.filter(user_profile = userprofile).exclude(tier_level__in = [0,10]).count()
-        print total_word_count, "ehll" 
+        one_day_ago = datetime.now() - timedelta(days = 1)
+        number_words_added_today = KnownWords.objects.filter(user_profile = userprofile, date_added__gte = one_day_ago).count()
+        # print number_words_added_today
+        # print total_word_count, "ehll"
         
         
         # print known_words[0]['tier_level']
@@ -62,7 +64,7 @@ def main_profile(request,full_name):
                 count_dict[each] = 0
                 
         number_of_added_kanji = KnownKanji.objects.filter(user_profile = userprofile).count()
-        print number_of_added_kanji
+        # print number_of_added_kanji
        
         
         number_of_reviews = len(srs_get_and_update(request, full_name))
@@ -72,7 +74,7 @@ def main_profile(request,full_name):
             # next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
             if next_review.exists():
                 next_review = next_review[0]
-                print next_review
+                # print next_review
                 next_review = next_review['time_until_review']
 
                 next_review = str(timedelta(seconds = next_review)).split('.')[0]
@@ -83,7 +85,7 @@ def main_profile(request,full_name):
         
         
         
-        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji, 'word_count':total_word_count})
+        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji, 'word_count':total_word_count, 'words_added_today':number_words_added_today})
  
  
  

@@ -184,7 +184,7 @@ var nextset = function(){
 		rewritecards += "<div id = 'cardhold" + addtwo + "' class = 'cardhold'>";	
 		rewritecards += "<div id = 'word" + addtwo + "' class = 'answerbox mini left'>";
 		rewritecards += "<div class = 'flipper'>";
-		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'> 2 more</div>";
+		rewritecards += "<div id = 'front" + addtwo + "' class = 'front mini2'>Finish</div>";
 		rewritecards += "<div id = 'back" + addtwo + "' class = 'back mini2'></div>";
 		rewritecards += "</div></div></div>";
 		rewritecards += "<div id = 'cardhold" + addone + "' class = 'cardhold'>";	

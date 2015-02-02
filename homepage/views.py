@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.context_processors import csrf
 from django.contrib import auth
+from django.contrib.auth.models import User
 from forms import UserCreateForm
 from manageset.models import UserProfile
 from manageset.views import main_profile
@@ -23,6 +24,11 @@ def index(request):
 def auth_view(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
+    try:
+        username = User.objects.get(email = username)
+    except:
+        return HttpResponseRedirect('/login/invalid')
+    username = username.username
     user = auth.authenticate(username = username, password = password)
     if user is not None:
         # theusername = User.objects.get(username = username)

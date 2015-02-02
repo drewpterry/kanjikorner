@@ -60,7 +60,7 @@
 		<form id = "login-form" action = "/login/auth/" method = "POST">{% csrf_token %}
 			<!-- <input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
 			<br/> -->
-			<input type = "text" class = "login" name = "username" placeholder = "username"></input>
+			<input type = "text" class = "login" name = "username" placeholder = "email address"></input>
 			<br>
 	
 			
@@ -72,7 +72,7 @@
 			
 			
 		</form>
-		<p style = "float:left; margin-left:24%">or</p>
+		<p style = "float:left; margin-left:28%">or</p>
 		<br style = "clear:both"/>
 		<a href = "{% url 'registration_register' %}"><div id = "account-create" class = "button">create account</div></a>
 		{% else %}
