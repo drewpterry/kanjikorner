@@ -3,7 +3,7 @@ upstream kanjisite {
 }
 
 server {
-        server_name 54.153.55.125 localhost 127.0.0.1;
+        server_name kanjisama.com localhost 127.0.0.1;
 
         index index.html;
 
