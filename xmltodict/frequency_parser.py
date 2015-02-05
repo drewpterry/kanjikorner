@@ -1,7 +1,7 @@
-#execfile('../xmltodict/frequency_parser.py')
+#execfile('xmltodict/frequency_parser.py')
 from manageset.models import UserProfile, Sets, Words, Kanji, WordMeanings
 
-fyle = open("../xmltodict/frequency_lists/base_aggregates.txt")
+fyle = open("xmltodict/frequency_lists/base_aggregates.txt")
 
 count = 0
 count_1 = 0

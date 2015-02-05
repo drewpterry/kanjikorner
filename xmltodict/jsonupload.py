@@ -1,9 +1,10 @@
+#execfile('xmltodict/jsonupload.py')
 import json
 from manageset.models import UserProfile, Sets, Words, Kanji
 from pprint import pprint
 
 
-with open('../xmltodict/frequency_lists/wiki_kanji_scrape.json') as data_file:    
+with open('xmltodict/frequency_lists/wiki_kanji_scrape.json') as data_file:    
     data = json.load(data_file)
     total_count = 0
     kanji_exist_count = 0

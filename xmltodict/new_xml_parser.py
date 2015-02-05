@@ -1,7 +1,7 @@
-#execute this in django shell: execfile('../xmltodict/new_xml_parser.py')
+#execute this in django shell: execfile('xmltodict/new_xml_parser.py')
 import xml.etree.ElementTree as ET
 from manageset.models import UserProfile, Sets, Words, Kanji, WordMeanings
-tree = ET.parse('../xmltodict/frequency_lists/JMdict_e.xml')
+tree = ET.parse('xmltodict/frequency_lists/JMdict_e.xml')
 root = tree.getroot()
 
 # print root

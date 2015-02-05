@@ -1,9 +1,9 @@
-#execute this in django shell: execfile('../xmltodict/all_word_upload.py')
+#execute this in django shell: execfile('xmltodict/all_word_upload.py')
 import json
 from manageset.models import UserProfile, Sets, Words, Kanji
 from pprint import pprint
 
-with open('../xmltodict/word_list.json') as data_file:    
+with open('xmltodict/word_list.json') as data_file:    
     data = json.load(data_file)
     count = 0
     exist_count = 0

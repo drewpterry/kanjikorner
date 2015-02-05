@@ -3,12 +3,12 @@
 from manageset.models import UserProfile, Sets, Words, Kanji, WordMeanings
 
 newspaper_kanji = open("xmltodict/frequency_lists/newspaper_kanji/complete_kanji_frequency_newspaper.csv")
-fyle = open("../xmltodict/frequency_lists/jlptkanji/tangorin_20001.csv")
-file_n2 = open("../xmltodict/frequency_lists/jlptkanji/tangorin_20002.csv")
-file_n3 = open("../xmltodict/frequency_lists/jlptkanji/tangorin_20003.csv")
-file_n4 = open("../xmltodict/frequency_lists/jlptkanji/tangorin_20004.csv")
-file_n5 = open("../xmltodict/frequency_lists/jlptkanji/tangorin_20005.csv")
-jinmei = open("../xmltodict/frequency_lists/jinmeiyo/tangorin_1000.csv")
+fyle = open("xmltodict/frequency_lists/jlptkanji/tangorin_20001.csv")
+file_n2 = open("xmltodict/frequency_lists/jlptkanji/tangorin_20002.csv")
+file_n3 = open("xmltodict/frequency_lists/jlptkanji/tangorin_20003.csv")
+file_n4 = open("xmltodict/frequency_lists/jlptkanji/tangorin_20004.csv")
+file_n5 = open("xmltodict/frequency_lists/jlptkanji/tangorin_20005.csv")
+jinmei = open("xmltodict/frequency_lists/jinmeiyo/tangorin_1000.csv")
 
 count = 0
 in_db = 0
