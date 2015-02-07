@@ -6,7 +6,7 @@ root = tree.getroot()
 
 # print root
 #
-full_word_list = []
+
 i = 0
 exist_count = 0
 non_exist_count = 0
@@ -79,31 +79,3 @@ for child in root.iter('entry'):
     i = i + 1
             
     print i, "exist: ", exist_count, "nope", non_exist_count
-        # kanji_list.append(each.find('keb').text)
- #        if each.find('ke_pri') != None:
- #            frequency.append(each.find('ke_pri').text)
-
-
-
-    
-
-            # glosses = glosses + '$' + each.text
-
-    # each_word = {'seq_id':seq, 'kanji_readings': kanji_list, 'kanji_frequency':frequency, 'hirigana':hirigana, 'frequency2': frequency2, 'pos':part_of_speech, 'definitions':glosses}
- #    full_word_list.append(each_word)
-
-
-    
-# print full_word_list
-    # print "id:", seq, "kanji:", kanji_list, "frequency:", frequency, "hirigana:", hirigana, "pos", part_of_speech, "gloss:", glosses
-        
-    # for each in child:
-#         print "hello"
-    # try:
-#         pos = child.find('pos').text
-#     except:
-#         pos = "nope"
-    # print seq, rel, sense
-
-# for elem in tree.iter('entry'):
-#     print elem.tag 
