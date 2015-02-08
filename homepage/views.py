@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
+from manageset.models import Kanji
 from django.core.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -18,7 +19,10 @@ def index(request):
     if request.user.is_authenticated():
         template = 'manageset/profile.html'
         return main_profile(request,full_name)
-    return render(request, template, {'full_name':full_name})
+        
+    thekanji = Kanji.objects.all()[0:2136]
+        
+    return render(request, template, {'full_name':full_name, 'kanji_objects': thekanji})
      
 
 def auth_view(request):
