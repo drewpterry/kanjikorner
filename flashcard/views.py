@@ -55,7 +55,7 @@ def complete_stack(request, full_name, set_name):
                     words_practiced = []
                     
                     for each in data:  
-                        print each
+                        print each, "test test"
                         # this is really confusing (this is actually the id of the word, not the KnownWord Object), temporary fix so that practicecard template will work for both reviews and stacks
                         words_practiced.append(each['know_word_object_id'])
                         print "got heeere"
