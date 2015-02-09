@@ -444,7 +444,7 @@ var update_words = function(signal){
 		url:'/profile/' + user_name + '/' + set_name + '/complete-stack',
 		type:'POST',
 		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: csrftoken, set_name: set_name},
-		success: update_words_success, 
+		success: console.log("submitted words"), 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
 		}

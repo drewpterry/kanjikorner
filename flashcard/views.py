@@ -38,10 +38,15 @@ def complete_stack(request, full_name, set_name):
         return HttpResponse("you are not authenticated")
     else:
         if request.is_ajax():
+            
             try:
+                print "works here"
+                userprofiles = User.objects.get(username = full_name).userprofile.id
+                userprofile = get_object_or_404(UserProfile, pk = userprofiles)
                 
                 theset = request.POST['set_name']
-                the_set_object = Sets.objects.get(name = theset)
+                the_set_object = userprofile.user_sets.get(name = theset)
+                # the_set_object = Sets.objects.get(name = theset)
                 if the_set_object.times_practiced == 0:
                     
                     the_set_object.times_practiced = 1
@@ -55,7 +60,7 @@ def complete_stack(request, full_name, set_name):
                     words_practiced = []
                     
                     for each in data:  
-                        print each, "test test"
+                        print each, "test test "
                         # this is really confusing (this is actually the id of the word, not the KnownWord Object), temporary fix so that practicecard template will work for both reviews and stacks
                         words_practiced.append(each['know_word_object_id'])
                         print "got heeere"
