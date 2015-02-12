@@ -29,7 +29,7 @@ def practice_stack(request, full_name, set_name):
             
         kanji_names = json.dumps(kanji_names)    
             
-        print kanji_names    
+        # print kanji_names
         return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names})
         
 

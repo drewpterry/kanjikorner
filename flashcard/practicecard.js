@@ -114,7 +114,9 @@ var nextset = function(){
 		};
 		
 	}else{
-		remaining -= 1;
+		if(remaining > 0){
+			remaining -= 1;
+		};
 		document.getElementById('highscore').innerHTML = remaining;
 	};
 	
@@ -303,106 +305,108 @@ var levenshteinenator = (function () {
 
 //on enter of text checks if correct answer, currently must be exact match but should change
 $('#answerinput').keyup(function(event){
-	if(event.keyCode == 13){
-		
-		var textinput = document.getElementById('answerinput');
-		var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
-		var english_def = vocab[randarray[wordnumber]].meaning;
-		card_user_is_on = randarray[wordnumber];
-		
-		var correct_check = '';
-		
+	if(remaining >0){
+		if(event.keyCode == 13){
 			
-		if(type_flag == false){
-			thing_to_check = hiragana_reading;
-			wanakana.unbind(inputIME);
-			correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
-			document.getElementById('answerinput').placeholder = "meaning";
-		} else{
-			thing_to_check = english_def;
+			var textinput = document.getElementById('answerinput');
+			var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
+			var english_def = vocab[randarray[wordnumber]].meaning;
+			card_user_is_on = randarray[wordnumber];
 			
-			var clean_thing_to_check = thing_to_check.replace(/ *\([^)]*\) */g, "");
+			var correct_check = '';
 			
-			wanakana.bind(inputIME)
-			document.getElementById('answerinput').placeholder = "ひらがな";
-			var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
-			var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
-			console.log(levenshteinenator_value_compare);
-			console.log(levenshteinenator_value);
-			correct_check = levenshteinenator_value_compare > .32;
-		};
-		
-		
-		
-		//checks entered word equals the english meaning
-		
-		
-		if(correct_check){
-			
-			if(type_flag == true){
 				
-				document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
-			}
-			
-			$("#word" + wordnumber).toggleClass("answerbox2");
-			textinput.style.color = "red";
-			
-			
-			
-			window.setTimeout(function(){
-				$("#word" + wordnumber).toggleClass("answerbox2")
-				
-				document.getElementById('answerinput').value = '';
-				document.getElementById('answerinput').style.color = "grey";
-			},3000);
-			
-			
-			console.log("wronglasdf");
-		
-			both_right = false;		
-			textinput.style.color = "red";
-		
 			if(type_flag == false){
-				type_flag = true;
-			}else{
-				window.setTimeout(function(){nextset()},3200);
+				thing_to_check = hiragana_reading;
+				wanakana.unbind(inputIME);
+				correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
+				document.getElementById('answerinput').placeholder = "meaning";
+			} else{
+				thing_to_check = english_def;
+				
+				var clean_thing_to_check = thing_to_check.replace(/ *\([^)]*\) */g, "");
+				
+				wanakana.bind(inputIME)
+				document.getElementById('answerinput').placeholder = "ひらがな";
+				var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
+				var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
+				console.log(levenshteinenator_value_compare);
+				console.log(levenshteinenator_value);
+				correct_check = levenshteinenator_value_compare > .32;
 			};
 			
 			
-			if(wordnumber+1 != randarray.length){
-				
-	
-				
-				// both_right = false;
-// 				textinput.style.color = "red";
-//
-// 				if(type_flag == false){
-// 					type_flag = true;
-// 				}else{
-// 					window.setTimeout(function(){nextset()},3200);
-// 				};
-			}
 			
-		}else {
-			// console.log("this is correct");
-			textinput.style.color = "rgba(66,235,89,1)";
+			//checks entered word equals the english meaning
 			
-			if(type_flag == false){
-				type_flag = true;
+			
+			if(correct_check){
+				
+				if(type_flag == true){
+					
+					document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
+				}
+				
+				$("#word" + wordnumber).toggleClass("answerbox2");
+				textinput.style.color = "red";
+				
+				
+				
 				window.setTimeout(function(){
-				document.getElementById('answerinput').placeholder = "meaning";
-				document.getElementById('answerinput').value = '';
-				document.getElementById('answerinput').style.color = "grey";
-				},1000);
-			}else{
-			window.setTimeout(function(){nextset()},100);
-			
+					$("#word" + wordnumber).toggleClass("answerbox2")
+					
+					document.getElementById('answerinput').value = '';
+					document.getElementById('answerinput').style.color = "grey";
+				},3000);
 				
-			};		
+				
+				console.log("wronglasdf");
 			
-		}	
-		// console.log(randarray);
-	};
+				both_right = false;		
+				textinput.style.color = "red";
+			
+				if(type_flag == false){
+					type_flag = true;
+				}else{
+					window.setTimeout(function(){nextset()},3200);
+				};
+				
+				
+				if(wordnumber+1 != randarray.length){
+					
+		
+					
+					// both_right = false;
+// 					textinput.style.color = "red";
+//  	
+// 					if(type_flag == false){
+// 						type_flag = true;
+// 					}else{
+// 						window.setTimeout(function(){nextset()},3200);
+// 					};
+				}
+				
+			}else {
+				// console.log("this is correct");
+				textinput.style.color = "rgba(66,235,89,1)";
+				
+				if(type_flag == false){
+					type_flag = true;
+					window.setTimeout(function(){
+					document.getElementById('answerinput').placeholder = "meaning";
+					document.getElementById('answerinput').value = '';
+					document.getElementById('answerinput').style.color = "grey";
+					},1000);
+				}else{
+				window.setTimeout(function(){nextset()},100);
+				
+					
+				};		
+				
+			}	
+			// console.log(randarray);
+		};
+	};	
 });
 
 
