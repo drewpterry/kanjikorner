@@ -305,7 +305,7 @@ var levenshteinenator = (function () {
 
 //on enter of text checks if correct answer, currently must be exact match but should change
 $('#answerinput').keyup(function(event){
-	if(remaining >0){
+	if(remaining > 0){
 		if(event.keyCode == 13){
 			
 			var textinput = document.getElementById('answerinput');
