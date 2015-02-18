@@ -9,4 +9,6 @@ Create virtual environment where venv is the directory
 
 ```cd venv/bin/activate ```
 
+```pip install -r requirements.tx ```
+
 
