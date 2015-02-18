@@ -26,7 +26,7 @@ close the server
 ```python manage.py shell```
 
 inside shell run to populate database
-```execfile('xmltodict/jsonupload.py')```
+``` execfile('xmltodict/jsonupload.py') ```
 
 
 
