@@ -2,4 +2,11 @@ kanjikorner
 ===========
 This is a new project.
 
-``` Code block```
+```pip install virtualenv```
+
+Create virtual environment where venv is the directory
+```virtualenv venv ```
+
+```cd venv/bin/activate ```
+
+
