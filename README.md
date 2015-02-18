@@ -10,8 +10,10 @@ Create virtual environment where venv is the directory
 ```cd venv/bin/activate ```
 
 inside venv directory run:
-``` git clone ```
+``` git clone https://github.com/drewpterry/kanjikorner.git kanjisite ```
 
+
+inside kanjisite run:
 ```pip install -r requirements.tx ```
 
 make sure to change your database settings in settings.py 
