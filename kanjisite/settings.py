@@ -89,31 +89,19 @@ WSGI_APPLICATION = 'kanjisite.wsgi.application'
 
 # DATABASE_PW = os.environ['DATABASE_PW']
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         #'NAME': '/desktop/djangotut/sqlite3.db)',
-#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'NAME': os.environ['DATABASE_NAME'],
-#         'HOST':'',
-#         'USER': os.environ['USER_NAME'],
-#         'PASSWORD': os.environ['DATABASE_PW'],
-#         'PORT':'5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #'NAME': '/desktop/djangotut/sqlite3.db)',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME':'KanjiDB',
-        'HOST':'kanjiapp.czbseelickqu.us-west-1.rds.amazonaws.com',
-        'USER': 'drewterry',
-        'PASSWORD': '!Fender2',
+        'NAME': os.environ['DATABASE_NAME'],
+        'HOST':'',
+        'USER': os.environ['USER_NAME'],
+        'PASSWORD': os.environ['DATABASE_PW'],
         'PORT':'5432',
     }
 }
+
 
 
 # Internationalization

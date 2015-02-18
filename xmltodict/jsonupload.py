@@ -1,7 +1,9 @@
+
 #execfile('xmltodict/jsonupload.py')
 import json
 from manageset.models import UserProfile, Sets, Words, Kanji
 from pprint import pprint
+
 
 
 with open('xmltodict/frequency_lists/wiki_kanji_scrape.json') as data_file:    
@@ -30,5 +32,14 @@ with open('xmltodict/frequency_lists/wiki_kanji_scrape.json') as data_file:
             
     print kanji_exist_count,"  ", total_count        
         # Kanji(kanji_name = data[i]["kanji"],readings = data[i]["readings"], kanji_meaning = data[i]["meaning"], strokes = data[i]["strokes"], grade = gradenumber).save()
+        
+data_file.close()        
 # print data
+
+
+execfile('xmltodict/jlpt_upload_script.py')
+execfile('xmltodict/all_word_upload.py')
+execfile('xmltodict/frequency_parser.py')
+execfile('xmltodict/kanji_word_matcher.py')
+execfile('xmltodict/new_xml_parser.py')
         
