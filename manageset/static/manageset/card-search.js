@@ -39,7 +39,7 @@ var addword = function(idnumber, kanji, meaning, element){
 	minicard = minicard + "<div class = 'back mini'>" + kanji + "</div></div></div>";
 
 	
-	if (element.innerText == "know it!"){
+	if (element.innerText == "add it!"){
 		var hiddeninput = "<input type = 'hidden' id = 'knownwords" + idnumber + "' name = 'known-kanji' value = '" + idnumber +"' ></input>";
 		
 		$("#wordlist-know").append(minicard);
@@ -71,7 +71,7 @@ var removeWord = function(idnumber, kanji, meaning, element){
 	knowncheck.splice(position,1);
 	
 	wordCard.parentNode.className = "front";
-	wordCard.innerHTML = "know it!";
+	wordCard.innerHTML = "add it!";
 	
 	
 	

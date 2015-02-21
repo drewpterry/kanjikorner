@@ -143,7 +143,7 @@
 					<h2>{{ the_count.3 }}</h2>
 					<span>三</span>
 				</div>
-				<div class = "level-indicator">
+				<div class = "level-indicator" id = "chart-tutorial-stop">
 					<h2>{{ the_count.4 }}</h2>
 					<span>四</span>
 				</div>
@@ -182,8 +182,9 @@
 			<br style = "clear:both;"/>
 			<br/>
 			
+			
 	
-			<a href = "{% url 'profile:new-words' full_name %}">	
+			<a href = "{% url 'profile:new-words' full_name %}" id = "hellome">	
 				<div id = "primary-set-list" class = "set-list-no-hover">
 					<p>Create New Lessons</p>
 					<span style = "font-size:2em;">+</span><!-- <p>+</p> -->
@@ -214,10 +215,54 @@
 		{% endfor %}
 		</div>
 		
+		<ol id="joyride-tutorial" style = "display:none">
+		  /* data-id needs to be the same as the parent it will attach to */
+		  <li data-id="dashboard-title"><h1>Welcome!</h1><p>Kanjisama is an SRS (spaced repition system) application that can help you learn 2000 kanji and thousands of the most common Japanese words. We help you rapidly build your vocab based on kanji you already know and give you the tools to learn new kanji at your own pace. </p>
+		  
+		  </li>
+		  
 
-		
-		
+		  /* This tip will be display as a modal */
+
+		  
+		  
+		  <li data-id = "primary-set-list" data-options="tipLocation:right;"><h1>Creating Lessons</h1> <p>Create lessons using words you want to learn from a list of the 10,000 most common words prioritized by the kanji you already know.</p></li>
+		  
+		  <li data-id = "primary-set-list" data-options="tipLocation:right;"><h1>Reviewing Lessons</h1> <p>After you create a lesson, come back here to review your lesson. When you review a lesson you'll go through all the words one time with the reading and definition, and then one more time without the that information. Once you complete a lesson all those words will be added to you <em><strong> review queue </strong></em>.</p></li>
+		  
+		  <li data-id = "review-indicator-no-click" data-options="tipLocation:right;"><h1>The Review Queue</h1> <p>This is your review queue. Once you complete a lesson the words will be added to your review queue. We automatically tell you when its time to review your words again. When words are ready to review they will appear here (just click!), so make sure to check back occasionally! </p></li>
+		  
+		  <li data-id = "chart-tutorial-stop" class = "tutorial-width"><h1>Progress Chart</h1> <p>This area lets you visually keep track of your words through our SRS system. Once you complete a lesson, words will move from the "零" pile to the "一"　pile. Then as you review words from your review queue, words will either go up a level or down a level depending on if you successfully remembered the reading and meaning of the review word. As a word moves up each level, the time until you see the word will keep increasing. This way you will practice words you don't know well more frequently and words you know less frequently, until you reach the end. At that point you have mastered the word and it will no longer show up! </p></li>
+		  
+		  <li data-id = "kanji-indicator" data-options="tipLocation:right;"><h1>Let's get started</h1> <p>This shows how many kanji you know! Right now we need to figure how many you already know (it's okay if you don't know any!). <strong>Click this circle <strong> to get started!  </p></li>
+
+		  /* using 'data-button' lets you have custom button text */
+		  <li data-id="progress-chart-inner" data-button="Second Button">Content...</li>
+		  "kanji-indicator"
+
+		 
+		</ol>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'manageset/joyride-master/joyride-2.1.css' %}">
+		<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
 		<script src = "{% static 'manageset/main_profile.js' %}"></script>
+		
+		<script>
+		$(window).load(function() {
+		  $("#joyride-tutorial").joyride({
+		    /* Options will go here */
+			  {% if added_kanji_count == 0  %}
+			  autoStart : true,
+			  {% else %}
+			  autoStart : false,
+			  {% endif %}
+			  
+			  // modal:true,
+			  // 'scrollSpeed': 1000,
+       	   	  // expose: true
+		  });
+		});
+		</script>
 <!-- <script src = "manageset/main_profile.js"></script> -->
 {% endblock %}
 

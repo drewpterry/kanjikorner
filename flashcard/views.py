@@ -67,7 +67,7 @@ def complete_stack(request, full_name, set_name):
                         
                         
                         
-                    KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 5).total_seconds())
+                    KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 4).total_seconds())
                     print "or heere"
                     the_set_object.save()
                     

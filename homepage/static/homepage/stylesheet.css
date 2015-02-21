@@ -1245,7 +1245,7 @@ font-size: 40px; }
 
 #create-set-description, #set-title{
 	margin-left:0px;
-	width:100%;
+	width:250px;
 	padding-left:10px;
 }
 
@@ -1258,7 +1258,7 @@ font-size: 40px; }
 #create-set-button{
 	float:left;
 	height:40px;
-	width:100%;
+	width:250px;
 	margin-left:0px;
 	background-color:rgba(230,85,85,1);
 	border-radius:5px;

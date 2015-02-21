@@ -250,7 +250,7 @@ def new_words_view(request, full_name):
 
     if len(special_words) == 0:        
 
-        words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 200), Q(frequency = 0)|Q(frequency__gte = 40)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
+        words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 300), Q(frequency = 0)|Q(frequency__gte = 35)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
         words_list = list(words)
      
