@@ -93,9 +93,10 @@ def srs_review_words(request, full_name):
         
             words_list = srs_get_and_update(request, full_name)
             words_id = []
-            # for each in words_list:
-  #               words_id.append(each.id)
-  #               print each.kanji.all()
+            for each in words_list:
+                words_id.append(each.id)
+                print each.kanji.all()
+                print each.wordmeanings_set.all(), "me"
                 
             print words_id    
             # words_with_kanji = Words.objects.filter()
@@ -129,7 +130,10 @@ def srs_get_and_update(request, full_name):
         if time_remaining <= 0:
             #using this so i can update right or wrong words
             #need to add normal id to put definitions etc
-            word.words.id = word.id
+            # print word.words.knownwords_set
+            # setattr(word.words)
+            word.words.known_word_id = word.id
+            # word.words.id = word.id
             # print word.words.kanji.all()
             words_list.append(word.words)
             

@@ -335,26 +335,31 @@ $('#answerinput').keyup(function(event){
 			
 			var textinput = document.getElementById('answerinput');
 			var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
-			var english_def = vocab[randarray[wordnumber]].meaning;
+			var english_def = vocab[randarray[wordnumber]].definitions;
+			// var english_def = vocab[randarray[wordnumber]].meaning;
 			card_user_is_on = randarray[wordnumber];
+			
 			var correct_check = '';
+			
 				
 			if(type_flag == false){
 				thing_to_check = hiragana_reading;
 				wanakana.unbind(inputIME);
-				document.getElementById('answerinput').placeholder = "meaning";
 				correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
+				document.getElementById('answerinput').placeholder = "meaning";
 			} else{
 				thing_to_check = english_def;
-				var clean_thing_to_check = thing_to_check.replace(/ *\([^)]*\) */g, "");
-				
-				wanakana.bind(inputIME)
+				wanakana.bind(inputIME);
 				document.getElementById('answerinput').placeholder = "ひらがな";
-				var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
-				var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
-				console.log(levenshteinenator_value_compare);
-				console.log(levenshteinenator_value);
-				correct_check = levenshteinenator_value_compare > .32;
+				
+				for(var i = 0; i <= thing_to_check.length - 1; i++){
+					console.log(thing_to_check[i]);
+					var clean_thing_to_check = thing_to_check[i].replace(/ *\([^)]*\) */g, "");
+					var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
+					var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
+					correct_check = levenshteinenator_value_compare > .32;
+					if(correct_check == false){break}
+				};
 			
 			};
 			

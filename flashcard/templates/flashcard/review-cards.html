@@ -79,12 +79,12 @@ vocab.push({
 	word: '{{ word.real_word }}',
 	hiragana: '{{ word.hiragana }}',
 	meaning: '{{ word.meaning}}',
-	know_word_object_id: {{ word.id }},
+	know_word_object_id: {{ word.known_word_id }},
 	correct: true,
 	first_time: true,
-	// kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
-// 	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
-// 	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
+	kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
+	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
+	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
 	});
 
 {% endfor %}
