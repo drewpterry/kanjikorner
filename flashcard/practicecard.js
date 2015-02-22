@@ -310,7 +310,8 @@ $('#answerinput').keyup(function(event){
 			
 			var textinput = document.getElementById('answerinput');
 			var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
-			var english_def = vocab[randarray[wordnumber]].meaning;
+			var english_def = vocab.definitions
+			// var english_def = vocab[randarray[wordnumber]].meaning;
 			card_user_is_on = randarray[wordnumber];
 			
 			var correct_check = '';
@@ -322,7 +323,11 @@ $('#answerinput').keyup(function(event){
 				correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
 				document.getElementById('answerinput').placeholder = "meaning";
 			} else{
+		
 				thing_to_check = english_def;
+				for(var i = 0, i <= thing_to_check.length, i++){
+					console.log(thing_to_check[i]);
+				};
 				
 				var clean_thing_to_check = thing_to_check.replace(/ *\([^)]*\) */g, "");
 				
