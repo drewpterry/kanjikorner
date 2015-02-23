@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords
-from django.db.models import Count
+from django.db.models import Count, Min, Sum, Avg
 from django.contrib.auth.models import User
 from django.db import connection
 from django.db.models import Q
@@ -41,10 +41,14 @@ def main_profile(request,full_name):
         
         
         # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-        known_words = KnownWords.objects.filter(user_profile = userprofile).values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
-        total_word_count = KnownWords.objects.filter(user_profile = userprofile).exclude(tier_level__in = [0,10]).count()
+        user_known_words = KnownWords.objects.filter(user_profile = userprofile)
+        known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+        total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
         one_day_ago = datetime.now() - timedelta(days = 1)
         number_words_added_today = KnownWords.objects.filter(user_profile = userprofile, date_added__gte = one_day_ago).count()
+        total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
+        total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
+        total_reviews_ever = total_review_wrong['times_answered_wrong__sum'] + total_review_right['times_answered_correct__sum']
         # print number_words_added_today
         # print total_word_count, "ehll"
         
@@ -63,7 +67,7 @@ def main_profile(request,full_name):
             except KeyError:
                 count_dict[each] = 0
                 
-        number_of_added_kanji = KnownKanji.objects.filter(user_profile = userprofile).count()
+        number_of_added_kanji = user_known_words.count()
         # print number_of_added_kanji
        
         
@@ -85,7 +89,9 @@ def main_profile(request,full_name):
         
         
         
-        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, 'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji, 'word_count':total_word_count, 'words_added_today':number_words_added_today})
+        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
+         'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
+          'word_count':total_word_count, 'words_added_today':number_words_added_today, 'total_reviews_ever':total_reviews_ever})
  
  
  
