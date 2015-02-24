@@ -67,7 +67,7 @@ def main_profile(request,full_name):
             except KeyError:
                 count_dict[each] = 0
                 
-        number_of_added_kanji = user_known_words.count()
+        number_of_added_kanji =  KnownKanji.objects.filter(user_profile = userprofile).count()
         # print number_of_added_kanji
        
         
