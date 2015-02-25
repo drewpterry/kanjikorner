@@ -48,7 +48,10 @@ def main_profile(request,full_name):
         number_words_added_today = KnownWords.objects.filter(user_profile = userprofile, date_added__gte = one_day_ago).count()
         total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
         total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
-        total_reviews_ever = total_review_wrong['times_answered_wrong__sum'] + total_review_right['times_answered_correct__sum']
+        try:
+            total_reviews_ever = total_review_wrong['times_answered_wrong__sum'] + total_review_right['times_answered_correct__sum']
+        except:
+           total_reviews_ever = 0     
         # print number_words_added_today
         # print total_word_count, "ehll"
         

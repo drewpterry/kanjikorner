@@ -7,7 +7,7 @@
 
 				<form id = "create-set-form" action = "{% url 'profile:create-set' full_name %}" method = "post">{% csrf_token %}
 				
-					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" value = "Lesson {{ usersets }}" onfocus="this.value = this.value;" autofocus></input>
+					<input type = "text" id = "set-title" class = "text-area left-margin" name = "title" placeholder = "Name your stack" value = "Lesson {{ usersets|add:"1" }}" onfocus="this.value = this.value;" disabled></input>
 				
 					<br style = "clear:both"/>
 					<!-- <textarea id = "create-set-description" class = "text-area left-margin" name = "description" placeholder = "Write a brief description here"></textarea> -->

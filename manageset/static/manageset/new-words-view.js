@@ -12,34 +12,11 @@ var keyword = '';
 
 
 
-// Hides and shows ajax gif
-// $(document).ready(function(){
-//     $("#loadingDiv").on("ajaxSend", function() {
-//         $(this).show();
-//     }).on("ajaxStop", function() {
-//         $(this).hide();
-//     }).on("ajaxError", function() {
-//         $(this).hide();
-//     });
-//
-//      });
+
 
 $('#loadingDiv').hide()
 
 
-
-var search = function(signal){
-	
-	$.ajax({
-		url:'http://localhost:8000/profile/new-set/view-known-words',
-		type:'GET',
-		data:{csrfmiddlewaretoken: '{{ csrf_token }}', full_name: '{{ full_name }}'},
-		success: displaySearch, 
-		failure: function(data){
-			alert("Sorry got an error on the AJAX")
-		}
-	});
-};
 
 
 var indicate_as_known = function(word_id){
@@ -260,62 +237,4 @@ $.ajaxSetup({
 
 
 
-
-
-
-
-
-
-
-// not used since I removed ajax
-// var displaySearch = function(data,signal){
-// 			data = JSON.stringify(data);
-// 			data = JSON.parse(data);
-//
-//
-// 			var dataLength = data.length;
-// 			var foundflag = false;
-// 			var content = ''
-// 			var addCheckLength = addcheck.length;
-//
-//
-//
-// 				for(var i= 0; i<dataLength; i++){
-// 					var pk = data[i].pk;
-// 					var kanjiName = data[i].fields.real_word;
-// 					var kanjiMeaning = data[i].fields.meaning;
-//
-// 						content = content + "<div id = 'answercontainer" + pk + "' class = 'answerbox' >";
-// 						content = content + "<div class = 'flipper'><div class = front>";
-// 						content = content + "<div id = 'kanji'>" + kanjiName + "</div>";
-// 						content = content + "<div id = 'meaning'>" + kanjiMeaning + "</div>";
-// 						content = content + "<div id = 'grade'>" + data[i].fields.frequency + "</div>";
-// 						content = content + "<button class = 'add-remove' id = 'knowit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)' >know it!</button>";
-// 						//hmmm some people on stackoverflow say inline javascript is bad practice...
-// 						//also probably the fact that I repeat it 2 times is bad...
-// 						content = content + "<button class = 'add-remove' id = 'addit' onclick = 'addword(" + pk + ",\"" + kanjiName + "\",\"" + kanjiMeaning + "\", this)'>add</button>";
-// 						content = content + "</div></div>"
-// 						content = content + "<div class = 'back'>" + kanjiName + "</div></div></div>";
-//
-// 					};
-// 				document.getElementById('container').innerHTML = content;
-//
-//
-//
-//
-// 					for(var i = 0; i<addCheckLength; i++){
-// 						if(document.getElementById('answercontainer'+addcheck[i]) != null){
-//
-// 							//this should probably somehow be combined with the bit in addword function, also made more clear what its targeting
-// 							//add class to div where class = front
-// 							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.className += " outline";
-// 							//change add button to a remove button
-// 							document.getElementById('answercontainer'+addcheck[i]).firstChild.firstChild.lastChild.innerHTML = "remove";
-// 						}
-// 					}
-// 		};
-
-
-//so that opening page has all the cards
-// search('');
 		
