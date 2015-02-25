@@ -239,7 +239,11 @@ def new_words_view(request, full_name):
     for each in selected_kanji:
         new_kanji.append(each.kanji.get().id)
 
-    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).exclude(frequency_two__lte = 300, frequency = 0).prefetch_related('kanji').order_by('-frequency_two')
+#most recent filter
+    # special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).exclude(frequency_two__lte = 300, frequency = 0).prefetch_related('kanji').order_by('-frequency_two')
+    
+    special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency_two = None).exclude(published = False).exclude(id__in = known_word_list).exclude(combined_frequency__lte = 300).prefetch_related('kanji').order_by('-combined_frequency')
+    
     # special_words = Words.objects.filter(kanji__in = new_kanji).exclude(frequency = 0).exclude(id__in = known_word_list).prefetch_related('kanji').order_by('frequency')
     special_words = list(special_words)
     for each in list(special_words):

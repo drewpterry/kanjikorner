@@ -9,7 +9,7 @@
 			<div class = "front">
 				<div id = 'kanji'> {{ each.real_word }} </div>
 				<div id = 'meaning'> {{ each.meaning|slice:":40" }} </div>
-				<div id = 'grade'>{{ each.frequency_two }} - {{ each.frequency }}</div>
+				<div id = 'grade'>lvl: {{ each.frequency_thousand }}</div>
 				<button class = 'add-remove' id = 'knowit' onclick = 'know_it("{{ each.pk }}"," {{ each.real_word }}","{{ each.meaning }}", this)' >know it!</button>
 	
 				<button class = 'add-remove' id = 'addit' onclick = 'addword("{{ each.pk }}","{{ each.real_word }}","{{ each.meaning }}", this)'>add</button>

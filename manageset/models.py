@@ -31,10 +31,34 @@ class Words(models.Model):
     hiragana = models.CharField(max_length = 301)
     frequency = models.IntegerField(db_index = True)
     frequency_two = models.IntegerField(db_index = True, null = True)
+    combined_frequency = models.IntegerField(db_index = True, null = True)
+    frequency_thousand = models.IntegerField(db_index = True, null = True)
     part_of_speech = models.CharField(max_length = 200, null = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)
     published = models.BooleanField(default = True)
+    
+    def combine_frequencies(self):
+        
+        
+        frequency_bonus = 0
+        frequency_again = 0
+        if self.frequency_two == None:
+            frequency_again = 0
+        else:
+            frequency_again = self.frequency_two
+
+        # print self.frequency
+
+        if self.frequency > 0:
+           
+            frequency_bonus = self.frequency - 49
+            frequency_bonus = frequency_bonus * (-1)
+            frequency_bonus = frequency_bonus * 5 + 230
+
+        self.combined_frequency = frequency_bonus + frequency_again
+        return self.combined_frequency
+            
     
     def __unicode__(self):
         return self.real_word
@@ -143,11 +167,13 @@ class KnownWords(models.Model):
         self.last_practiced = datetime.now()
         self.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
                     
-        return "updated:", self.tier_level, self.last_practiced, self.time_until_review
+        return
         
     def times_practiced(self):
         total_times_practiced = self.times_answered_correct + self.times_answered_wrong
         return total_times_practiced
+        
+   
     
     def __unicode__(self):
         return self.words.real_word
