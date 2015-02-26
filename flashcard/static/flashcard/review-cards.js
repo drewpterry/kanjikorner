@@ -209,12 +209,6 @@ var nextset = function(){
 	//if both right and this is the first time it should update
 	
 	
-	
-	
-	
-	
-	
-	
 	wordnumber += 1;
 	type_flag = false;
 	
@@ -225,33 +219,7 @@ var nextset = function(){
 		$("#cardhold"+addtwo).hide().fadeIn();
 	},500);
 	
-	// if(sets_until_complete == 1){
-// 		definition_info = '';
-// 		for(var i = 0; i<3; i++){
-// 			if(vocab[randarray[wordnumber]].definitions[i]){
-// 				definition_info += '<li>' + vocab[randarray[wordnumber]].definitions[i] + '</li>';
-// 			}
-// 		};
-//
-// 		kanji_symbols = '';
-// 		for(var i = 0; i<=vocab[randarray[wordnumber]].kanjis.length; i++){
-// 			if(vocab[randarray[wordnumber]].kanjis[i]){
-//
-// 				kanji_symbols += 			'<div class = "each-kanji">';
-// 				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber]].kanjis[i] + '</div>';
-// 				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber]].kanji_meanings[i] +'</div>';
-// 				kanji_symbols +=			'</div>';
-//
-// 			}
-// 		};
-//
-// 		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
-// 		$('#word-pos').html('coming soon');
-// 		$('.list-definitions > ol').html(definition_info);
-// 		$('.kanji-info').html(kanji_symbols);
-// 	}else{
-// 		$('.word-info-box').hide();
-// 	};
+
 	
 
 	
@@ -329,110 +297,99 @@ var levenshteinenator = (function () {
 }());
 
 //on enter of text checks if correct answer, currently must be exact match but should change
-$('#answerinput').keyup(function(event){
-	if(remaining >0){
-		if(event.keyCode == 13){
+enter_flag = true;
+$('#answerinput').keydown(function(event){
+	if(remaining > 0 && enter_flag == true && event.keyCode == 13){
+		
+		enter_flag = false;	
+		var textinput = document.getElementById('answerinput');
+		var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
+		var english_def = vocab[randarray[wordnumber]].definitions;
+		// var english_def = vocab[randarray[wordnumber]].meaning;
+		card_user_is_on = randarray[wordnumber];
+		
+		var correct_check = '';
+		
 			
-			var textinput = document.getElementById('answerinput');
-			var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
-			var english_def = vocab[randarray[wordnumber]].definitions;
-			// var english_def = vocab[randarray[wordnumber]].meaning;
-			card_user_is_on = randarray[wordnumber];
+		if(type_flag == false){
+			thing_to_check = hiragana_reading;
+			wanakana.unbind(inputIME);
+			correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
+			document.getElementById('answerinput').placeholder = "meaning";
+		} else{
+			thing_to_check = english_def;
+			wanakana.bind(inputIME);
+			document.getElementById('answerinput').placeholder = "ひらがな";
 			
-			var correct_check = '';
+			for(var i = 0; i <= thing_to_check.length - 1; i++){
+				console.log(thing_to_check[i]);
+				var clean_thing_to_check = thing_to_check[i].replace(/ *\([^)]*\) */g, "");
+				var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
+				var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
+				correct_check = levenshteinenator_value_compare > .32;
+				if(correct_check == false){break}
+			};
+		
+		};
+		
+		
 			
+		//checks entered word equals the hiragana or english reading
+		if(correct_check){
+			
+			if(type_flag == true){
 				
+				document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
+			}
+			
+			$("#word" + wordnumber).toggleClass("answerbox2");
+			textinput.style.color = "red";
+			
+			vocab[randarray[wordnumber]].correct = false;
+			
+			window.setTimeout(function(){
+				$("#word" + wordnumber).toggleClass("answerbox2")
+				enter_flag = true;
+				document.getElementById('answerinput').value = '';
+				document.getElementById('answerinput').style.color = "grey";
+			},2000);
+			
+			
+			
+		
+			both_right = false;		
+			textinput.style.color = "red";
+		
 			if(type_flag == false){
-				thing_to_check = hiragana_reading;
-				wanakana.unbind(inputIME);
-				correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
-				document.getElementById('answerinput').placeholder = "meaning";
-			} else{
-				thing_to_check = english_def;
-				wanakana.bind(inputIME);
-				document.getElementById('answerinput').placeholder = "ひらがな";
-				
-				for(var i = 0; i <= thing_to_check.length - 1; i++){
-					console.log(thing_to_check[i]);
-					var clean_thing_to_check = thing_to_check[i].replace(/ *\([^)]*\) */g, "");
-					var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
-					var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
-					correct_check = levenshteinenator_value_compare > .32;
-					if(correct_check == false){break}
-				};
-			
+				type_flag = true;
+			}else{
+				window.setTimeout(function(){nextset()},2200);
 			};
 			
 			
-				
-			//checks entered word equals the hiragana or english reading
-			if(correct_check){
-				
-				if(type_flag == true){
-					
-					document.getElementById('back' + wordnumber).children[0].innerHTML = vocab[randarray[wordnumber]].meaning
-				}
-				
-				$("#word" + wordnumber).toggleClass("answerbox2");
-				textinput.style.color = "red";
-				
-				vocab[randarray[wordnumber]].correct = false;
-				
+		}else {
+			
+			textinput.style.color = "rgba(66,235,89,1)";
+			
+			if(type_flag == false){
+				type_flag = true;
 				window.setTimeout(function(){
-					$("#word" + wordnumber).toggleClass("answerbox2")
-					
-					document.getElementById('answerinput').value = '';
-					document.getElementById('answerinput').style.color = "grey";
-				},3000);
-				
-				
-				
+				enter_flag = true;	
+				document.getElementById('answerinput').placeholder = "meaning";
+				document.getElementById('answerinput').value = '';
+				document.getElementById('answerinput').style.color = "grey";
+				},1000);
+			}else{
+				window.setTimeout(function(){	
+				enter_flag = true;
+				nextset()
+				},100);
+			};		
 			
-				both_right = false;		
-				textinput.style.color = "red";
+		};	
 			
-				if(type_flag == false){
-					type_flag = true;
-				}else{
-					window.setTimeout(function(){nextset()},3200);
-				};
-				
-				
-				if(wordnumber+1 != randarray.length){
-					
-		
-					
-					// both_right = false;
-// 					textinput.style.color = "red";
-//  	
-// 					if(type_flag == false){
-// 						type_flag = true;
-// 					}else{
-// 						window.setTimeout(function(){nextset()},3200);
-// 					};
-				}
-				
-			}else {
-				
-				textinput.style.color = "rgba(66,235,89,1)";
-				
-				if(type_flag == false){
-					type_flag = true;
-					window.setTimeout(function(){
-					document.getElementById('answerinput').placeholder = "meaning";
-					document.getElementById('answerinput').value = '';
-					document.getElementById('answerinput').style.color = "grey";
-					},1000);
-				}else{
-				window.setTimeout(function(){nextset()},100);
-				
-					
-				};		
-				
-			}	
-			
-		}
 	};
+	
 	
 	
 	
@@ -462,24 +419,6 @@ var reset = function(){
 }
 
 
-
-
-
-// var update_words = function(signal){
-// 	set_name = document.getElementById('set-name').value
-// 	user_name = document.getElementById('user-name').value
-// 	console.log(set_name, user_name)
-// 	$.ajax({
-// 		// need to pass variable to template that I can grab with javascript to replace this url
-// 		url:'/profile/' + user_name + '/' + set_name + '/complete-stack',
-// 		type:'GET',
-// 		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: '{{ csrf_token }}', set_name: set_name},
-// 		success: update_words_success,
-// 		failure: function(data){
-// 			alert("Sorry got an error on the AJAX")
-// 		}
-// 	});
-// };
 
 
 var update_words_success = function(data){
