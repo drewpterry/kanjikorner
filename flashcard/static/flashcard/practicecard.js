@@ -301,48 +301,50 @@ var levenshteinenator = (function () {
 
 }());
 
-//on enter of text checks if correct answer, currently must be exact match but should change
-$('#answerinput').keyup(function(event){
-	if(remaining >0){
-		if(event.keyCode == 13){
+
+//answer submission
+
+enter_flag = true; //if false won't let user press enter
+$('#answerinput').keydown(function(event){
+	if(remaining > 0 && enter_flag == true && event.keyCode == 13){
+		
 			
-			var textinput = document.getElementById('answerinput');
-			var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
-			var english_def = vocab[randarray[wordnumber]].definitions;
-			// var english_def = vocab[randarray[wordnumber]].meaning;
-			card_user_is_on = randarray[wordnumber];
+		enter_flag = false;
+		
+		var textinput = document.getElementById('answerinput');
+		var hiragana_reading = vocab[randarray[wordnumber]].hiragana;
+		var english_def = vocab[randarray[wordnumber]].definitions;
+		// var english_def = vocab[randarray[wordnumber]].meaning;
+		card_user_is_on = randarray[wordnumber];
+		
+		var correct_check = '';
+		
 			
-			var correct_check = '';
+		if(type_flag == false){
 			
-				
-			if(type_flag == false){
-				thing_to_check = hiragana_reading;
-				wanakana.unbind(inputIME);
-				correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
-				document.getElementById('answerinput').placeholder = "meaning";
-			} else{
-				thing_to_check = english_def;
-				wanakana.bind(inputIME);
-				document.getElementById('answerinput').placeholder = "ひらがな";
-				
-				for(var i = 0; i <= thing_to_check.length - 1; i++){
-					console.log(thing_to_check[i]);
-					var clean_thing_to_check = thing_to_check[i].replace(/ *\([^)]*\) */g, "");
-					var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
-					var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
-					correct_check = levenshteinenator_value_compare > .32;
-					if(correct_check == false){break}
-				};
-				
-				
+			thing_to_check = hiragana_reading;
+			wanakana.unbind(inputIME);
+			correct_check = textinput.value.toLowerCase() != thing_to_check.toLowerCase();
+			document.getElementById('answerinput').placeholder = "meaning";
+		} else{
+			thing_to_check = english_def;
+			wanakana.bind(inputIME);
+			document.getElementById('answerinput').placeholder = "ひらがな";
+			
+			for(var i = 0; i <= thing_to_check.length - 1; i++){
+				console.log(thing_to_check[i]);
+				var clean_thing_to_check = thing_to_check[i].replace(/ *\([^)]*\) */g, "");
+				var levenshteinenator_value = levenshteinenator(textinput.value.toLowerCase(), clean_thing_to_check.toLowerCase());
+				var levenshteinenator_value_compare = levenshteinenator_value / clean_thing_to_check.length;
+				correct_check = levenshteinenator_value_compare > .32;
+				if(correct_check == false){break}
 			};
-		};	
+			
+			
+		};
+			
 		
-		
-		
-		//checks entered word equals the english meaning
-		
-		
+		//if its wrong it will run this
 		if(correct_check){
 			
 			if(type_flag == true){
@@ -353,41 +355,25 @@ $('#answerinput').keyup(function(event){
 			$("#word" + wordnumber).toggleClass("answerbox2");
 			textinput.style.color = "red";
 			
-			
-			
+			// flip time
 			window.setTimeout(function(){
 				$("#word" + wordnumber).toggleClass("answerbox2")
-				
+				enter_flag = true;
 				document.getElementById('answerinput').value = '';
 				document.getElementById('answerinput').style.color = "grey";
-			},3000);
+			},2000);
 			
-			
-			console.log("wronglasdf");
 		
 			both_right = false;		
 			textinput.style.color = "red";
-		
+			
 			if(type_flag == false){
 				type_flag = true;
 			}else{
-				window.setTimeout(function(){nextset()},3200);
+				//flip time
+				window.setTimeout(function(){nextset()},2200);
 			};
 			
-			
-			if(wordnumber+1 != randarray.length){
-				
-	
-				
-				// both_right = false;
-// 				textinput.style.color = "red";
-//
-// 				if(type_flag == false){
-// 					type_flag = true;
-// 				}else{
-// 					window.setTimeout(function(){nextset()},3200);
-// 				};
-			}
 			
 		}else {
 			// console.log("this is correct");
@@ -396,12 +382,17 @@ $('#answerinput').keyup(function(event){
 			if(type_flag == false){
 				type_flag = true;
 				window.setTimeout(function(){
+				enter_flag = true;
 				document.getElementById('answerinput').placeholder = "meaning";
 				document.getElementById('answerinput').value = '';
 				document.getElementById('answerinput').style.color = "grey";
-				},1000);
+				},500);
 			}else{
-			window.setTimeout(function(){nextset()},100);
+			window.setTimeout(function(){
+				// may need to put on next set or just delay it until after next set
+				enter_flag = true;
+				nextset();
+			},100);
 			
 				
 			};		
