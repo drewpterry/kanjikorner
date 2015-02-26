@@ -355,22 +355,23 @@ $('#answerinput').keydown(function(event){
 			$("#word" + wordnumber).toggleClass("answerbox2");
 			textinput.style.color = "red";
 			
-			
+			// flip time
 			window.setTimeout(function(){
 				$("#word" + wordnumber).toggleClass("answerbox2")
 				enter_flag = true;
 				document.getElementById('answerinput').value = '';
 				document.getElementById('answerinput').style.color = "grey";
-			},3000);
+			},2000);
 			
 		
 			both_right = false;		
 			textinput.style.color = "red";
-		
+			
 			if(type_flag == false){
 				type_flag = true;
 			}else{
-				window.setTimeout(function(){nextset()},3200);
+				//flip time
+				window.setTimeout(function(){nextset()},2200);
 			};
 			
 			
