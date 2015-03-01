@@ -85,11 +85,12 @@ var startpage = function(){
 				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[0]].kanji_meanings[i] +'</div>';
 				kanji_symbols +=			'</div>';
 				
-			}	
+			};
+				
 		};
 		
 		$('#word-reading').html(vocab[randarray[0]].hiragana);
-		$('#word-pos').html('coming soon');
+		$('#word-pos').html(vocab[randarray[0]].part_of_speech.join('<br>'));
 		$('.list-definitions > ol').html(definition_info);
 		$('.kanji-info').html(kanji_symbols);
 	
@@ -236,7 +237,7 @@ var nextset = function(){
 		};
 		
 		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
-		$('#word-pos').html('coming soon');
+		$('#word-pos').html(vocab[randarray[wordnumber]].part_of_speech.join('<br>'));
 		$('.list-definitions > ol').html(definition_info);
 		$('.kanji-info').html(kanji_symbols);
 	}else{
