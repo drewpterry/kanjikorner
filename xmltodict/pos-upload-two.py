@@ -61,7 +61,7 @@ for child in root.iter('entry'):
                 # gloss = each.findall('gloss')
                 for each in pos:
                     the_pos = each.text
-                    print the_pos
+                    # print the_pos
                     word_pos_check = WordPos.objects.filter(word = the_word_instance, pos = the_pos).exists()
                     if word_pos_check:
                         exist_count += 1
