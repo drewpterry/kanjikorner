@@ -29,7 +29,7 @@ def practice_stack(request, full_name, set_name):
             
         kanji_names = json.dumps(kanji_names)    
             
-        # print kanji_names
+        
         return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names})
         
 
@@ -40,7 +40,7 @@ def complete_stack(request, full_name, set_name):
         if request.is_ajax():
             
             try:
-                print "works here"
+               
                 userprofiles = User.objects.get(username = full_name).userprofile.id
                 userprofile = get_object_or_404(UserProfile, pk = userprofiles)
                 
@@ -60,20 +60,20 @@ def complete_stack(request, full_name, set_name):
                     words_practiced = []
                     
                     for each in data:  
-                        print each, "test test "
+                        
                         # this is really confusing (this is actually the id of the word, not the KnownWord Object), temporary fix so that practicecard template will work for both reviews and stacks
                         words_practiced.append(each['know_word_object_id'])
-                        print "got heeere"
+                        
                         
                         
                         
                     KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 4).total_seconds())
-                    print "or heere"
+                   
                     the_set_object.save()
                     
-                    print "last here"
+                    
                     data = json.dumps(words)
-                    print " actually last here"
+                    
                     
                     
                 else:
@@ -95,10 +95,9 @@ def srs_review_words(request, full_name):
             words_id = []
             for each in words_list:
                 words_id.append(each.id)
-                print each.kanji.all()
-                print each.wordmeanings_set.all(), "me"
+               
                 
-            print words_id    
+               
             # words_with_kanji = Words.objects.filter()
                
     return render(request, 'flashcard/review-cards.html', {'full_name':full_name, 'words':words_list})
