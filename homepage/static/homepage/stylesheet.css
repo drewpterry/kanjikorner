@@ -555,6 +555,10 @@ display: table-cell;
 /*		  border-style:solid;*/
 	  }
 	  
+	  #word-pos {
+		  height:65px;
+	  }
+	  
 	  .word-info-box .information{
 		  height:35px;
 		  width:100%;
@@ -566,7 +570,7 @@ display: table-cell;
 	  .word-info-box .kanji-info{
 /*		  border-style:solid;*/
 		  margin-top:10px;
-		  height:80px;
+		  height:65px;
 		  width:100%;
 		  float:left;
 	  }

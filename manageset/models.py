@@ -83,7 +83,12 @@ class Sets(models.Model):
     def __unicode__(self):
         return self.name
         
-        
+class WordPos(models.Model):
+    word = models.ForeignKey(Words)
+    pos = models.CharField(max_length = 500)
+    
+    def __unicode__(self):
+        return self.meaning        
       
 
 class UserProfile(models.Model):

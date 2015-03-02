@@ -71,7 +71,7 @@
 				</div>
 				<div class = "inner-info-box">
 					<div class = "title">Part of Speech</div>
-					<div id = "word-pos" class = "information">adjective - na</div>
+					<div id = "word-pos" class = "information">na-adjective,<br> suru verb,<br> and something else</div>
 				</div>
 				<div class = "inner-info-box" >
 					<div class = "title">Kanji</div>
@@ -119,7 +119,8 @@ vocab.push({
 	know_word_object_id: {{ word.id }},
 	kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
 	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
-	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
+	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}],
+	part_of_speech: [{% for pos in word.wordpos_set.all reversed %}'{{pos.pos}}',{% endfor %}]
 	});
 
 {% endfor %}
