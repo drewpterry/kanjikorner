@@ -7,7 +7,7 @@ colors{
 
 body {
   margin: 0px;
-  font-family: "Helvetica Neue";
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #86e7fc;
 /*  text-align:center;*/
  }

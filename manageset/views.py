@@ -113,10 +113,11 @@ def new_kanji_view(request,full_name):
         # print known_kanji_list, "hello"
         profile_known_kanji = Kanji.objects.all().exclude(pk__in = known_kanji_list).order_by('grade','id')
         # print profile_known_kanji, "test"
+        number_of_added_kanji =  KnownKanji.objects.filter(user_profile = profile).count()
         if request.is_ajax():
             template = page_template
         
-        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template})
+        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template, 'added_kanji_count': number_of_added_kanji})
 
 
 def word_bank_view(request,full_name):

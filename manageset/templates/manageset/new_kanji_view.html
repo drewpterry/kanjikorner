@@ -14,6 +14,9 @@
 					<input type = "submit" class = "left-margin" value = "Submit Known Kanji"></input>
 				</form>
 				
+				
+				
+				
 {% endblock %}
 
 
@@ -27,13 +30,28 @@ First add the kanji you are already familiar with, and then add unfamiliar kanji
 
 {% include page_template %}
 
+		<ol id="joyride-tutorial" style = "display:none">
+		  /* data-id needs to be the same as the parent it will attach to */
+		  <li data-id="new-kanji"><h1>Unkown Kanji</h1><p>Click the "add it!" button on any kanji to add it to your profile. To get started, take a few minutes to add all the kanji you are fairly comfortable with (don't worry you can go back and change) and then click the submit known kanji button. As you become ready to learn more kanji you can come back and add them later. </p>
+		  
+		  </li>
+		  
 
+		</ol>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'manageset/joyride-master/joyride-2.1.css' %}">
+		<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
+		
+		
+		
 
 {% endblock %}
 
 		
 
 {% block scripts %}
+		
+
 <script>
 var knowncheck = [];
 	
@@ -43,9 +61,25 @@ var knowncheck = [];
 
 </script>
 {% block js %}
+		<script>
+		$(window).load(function() {
+		  $("#joyride-tutorial").joyride({
+		    /* Options will go here */
+			  {% if added_kanji_count == 0  %}
+			  autoStart : true,
+			  {% else %}
+			  autoStart : false,
+			  {% endif %}
+			  
+			  // modal:true,
+			  // 'scrollSpeed': 1000,
+       	   	  // expose: true
+		  });
+		});
+		</script>
 {{ block.super }}
 <script src = "{% static 'manageset/card-search.js' %}"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!-- // <script src="http://code.jquery.com/jquery-latest.js"></script> -->
     <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
     <script>$.endlessPaginate();</script>
 {% endblock %}	
