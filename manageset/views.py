@@ -297,6 +297,7 @@ def new_words_view(request, full_name):
             print kanji
     
     
+    
     if request.is_ajax():
         template = page_template               
     return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets, 'selected_kanji':selected_kanji})        

@@ -22,6 +22,8 @@ def practice_stack(request, full_name, set_name):
         userprofiles = User.objects.get(username = full_name).userprofile.id
         userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         words = Sets.objects.get(name = set_name, userprofile = userprofiles).words.all()
+        words_in_queue = KnownWords.objects.filter(user_profile = userprofile, tier_level__gte = 1).exists()
+        
         kanji_names = []
         for each in words:
             
@@ -30,7 +32,7 @@ def practice_stack(request, full_name, set_name):
         kanji_names = json.dumps(kanji_names)    
             
         
-        return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names})
+        return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names, 'words_in_queue':words_in_queue})
         
 
 def complete_stack(request, full_name, set_name):
