@@ -2,11 +2,10 @@
 {% load staticfiles %}
 {% block pagetitle %}Profile{% endblock %}
 
-{% block header%}
-	{% include "nav_bar.html" %}
-{% endblock%}
+
 
 {% block content %}
+<a id = 'home-button' href = '/'><div>Home</div></a>
 	<input id = "set-name" type = "hidden" value = "{{ set_name }}"></>
 	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></>
 	<!-- <div id = "set-name-title">{{ set_name }}</div> -->
@@ -52,15 +51,45 @@
 
 		</div>
 			
-			
+				<div id = "more-info-btn">word info</div>	
 				<br style = "clear:both;"/>
-				<!-- <input autocapitalize="off" autocomplete="off" autocorrect="off" id="user-response" name="user-response" placeholder="答え" type="text" lang="ja"> -->
+		
 			<input type = "text" id = "answerinput"　lang = "ja" placeholder = "ひらがな" autofocus></input>
+			<br style = "clear:both"/>
 			<!-- <div id = "result">X</div> -->
-		</div>
+	</div>
 	
 		<!-- <div id = "answered" class = "sidebar"></div> -->
-		
+		<br style = "clear:both"/>
+		<div class = "word-info-box">
+			<div class = "left-box">
+				<div class = "inner-info-box">
+					<div class = "title">Reading</div>
+					<div id = "word-reading"class = "information">ひらがな</div>
+				</div>
+				<div class = "inner-info-box">
+					<div class = "title">Part of Speech</div>
+					<div id = "word-pos" class = "information">na-adjective,<br> suru verb,<br> and something else</div>
+				</div>
+				<div class = "inner-info-box" >
+					<div class = "title">Kanji</div>
+					<div class = "kanji-info">
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class = "word-defintions">
+				<div class = "title">Definitions</div>
+				<div class = "list-definitions">
+					<ol>
+						<li>If you see this</li>
+						<li>Its an error </li>
+						<li>Please send us an email</li>
+					</ol>
+				</div>	
+			</div>
+		</div>
 		
 		
 		
@@ -84,7 +113,8 @@ vocab.push({
 	first_time: true,
 	kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
 	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
-	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}]
+	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}],
+	part_of_speech: [{% for pos in word.wordpos_set.all reversed %}'{{pos.pos}}',{% endfor %}]
 	});
 
 {% endfor %}

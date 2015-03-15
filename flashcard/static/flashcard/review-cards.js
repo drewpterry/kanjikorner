@@ -9,6 +9,30 @@ var sets_until_complete = 2;
 var type_flag = false;
 var both_right = true;
 
+$('.word-info-box').hide();
+$('#more-info-btn').hide();
+
+
+
+$('#more-info-btn').on('click',function(){
+	hide_or_show_info();
+	// $('.word-info-box').css('position','absolute');
+	
+});
+
+var hide_or_show_info = function(){
+	if($('.word-info-box').css('display') == "none"){
+		write_info_box();
+		$('.word-info-box').fadeIn('fast');
+		$('#more-info-btn').html('close');
+	}else{
+		$('.word-info-box').fadeOut('fast');
+		$('#more-info-btn').html('word info');
+	}
+	// $('.word-info-box').css('position','absolute');
+	
+}
+
 //creates array of random uniques
 var randomarray = function(){
 
@@ -40,14 +64,12 @@ var startpage = function(){
 	};
 	// var randvocabword = vocab[randarray[wordnumber]];
 	
-	// initial_cards = '<div id = "center">';
+
 	initial_cards = "";
-	// initial_cards += "hello";
 	initial_cards += "<div id = 'cardhold1' class = 'cardhold'>";            
 	initial_cards +=			'<div id = "word1" class = "answerbox mini left">';
 	initial_cards +=				'<div class = "flipper">';
 	initial_cards +=					'<div id = "front1"class = "front mini2"><div>' + vocab_word + '</div></div>';
-	// initial_cards +=					'<div id = "back1" class = "back mini2">' + vocab[randarray[1]].hiragana + '</div>';
 	initial_cards +=				'</div>';
 	initial_cards +=			'</div>';
 	initial_cards +=	    '</div>';
@@ -56,8 +78,6 @@ var startpage = function(){
 	initial_cards +=				'<div class = "flipper">';
 	initial_cards +=					'<div id = "front0" class = "front">';
 	initial_cards +=						'<div>' + vocab[randarray[0]].word + '</div>';
-	// initial_cards +=						'<div>' + vocab[randarray[0]].hiragana + '</div>';
-	// initial_cards +=						'<div>' + vocab[randarray[0]].meaning + '</div>';
 	initial_cards +=					'</div>';
 	initial_cards +=					'<div id = "back0" class = "back back-multi"><span>' + vocab[randarray[0]].hiragana + '</span></div>';
 	initial_cards +=				'</div>';
@@ -65,12 +85,9 @@ var startpage = function(){
 	initial_cards +=	'</div>'	;
 	
 	document.getElementById('center').innerHTML = initial_cards;
-	
-	// for(var i = 0; i<2; i++){
-// 		document.getElementById('front' + i).innerHTML = vocab[randarray[i]].word;
-// 		document.getElementById('back' + i).innerHTML = vocab[randarray[i]].hiragana;
-// 	}
-}
+
+
+};
 
 
 //animates cards to the right
@@ -219,9 +236,44 @@ var nextset = function(){
 		$("#cardhold"+addtwo).hide().fadeIn();
 	},500);
 	
-
+	$('#more-info-btn').show();
+	$('.word-info-box').fadeOut();
+	$('#more-info-btn').html('word info');
 	
 
+	
+};
+
+
+//show word info box
+var write_info_box = function(){
+	
+		definition_info = '';
+		for(var i = 0; i<3; i++){
+			if(vocab[randarray[wordnumber - 1]].definitions[i]){
+				definition_info += '<li>' + vocab[randarray[wordnumber - 1]].definitions[i] + '</li>';
+			}	
+		};
+		
+		kanji_symbols = '';
+		for(var i = 0; i<=vocab[randarray[wordnumber - 1]].kanjis.length; i++){
+			if(vocab[randarray[wordnumber - 1]].kanjis[i]){
+				
+				kanji_symbols += 			'<div class = "each-kanji">';
+				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber - 1]].kanjis[i] + '</div>';
+				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber - 1]].kanji_meanings[i] +'</div>';
+				kanji_symbols +=			'</div>';
+				
+			};
+				
+		};
+		
+		$('#word-reading').html(vocab[randarray[wordnumber - 1]].hiragana);
+		$('#word-pos').html(vocab[randarray[wordnumber - 1]].part_of_speech.join('<br>'));
+		$('.list-definitions > ol').html(definition_info);
+		$('.kanji-info').html(kanji_symbols);
+	
+		$('.word-info-box').fadeIn('fast');
 	
 };
 

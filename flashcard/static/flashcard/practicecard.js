@@ -68,29 +68,36 @@ var startpage = function(){
 	
 	document.getElementById('center').innerHTML = initial_cards;
 	
+	write_info_box();
+	
+};
+
+
+//writes or hides the info box
+var write_info_box = function(){
 	if(sets_until_complete == 1){
 		definition_info = '';
 		for(var i = 0; i<3; i++){
-			if(vocab[randarray[0]].definitions[i]){
-				definition_info += '<li>' + vocab[randarray[0]].definitions[i] + '</li>';
+			if(vocab[randarray[wordnumber]].definitions[i]){
+				definition_info += '<li>' + vocab[randarray[wordnumber]].definitions[i] + '</li>';
 			}	
 		};
 		
 		kanji_symbols = '';
-		for(var i = 0; i<=vocab[randarray[0]].kanjis.length; i++){
-			if(vocab[randarray[0]].kanjis[i]){
+		for(var i = 0; i<=vocab[randarray[wordnumber]].kanjis.length; i++){
+			if(vocab[randarray[wordnumber]].kanjis[i]){
 				
 				kanji_symbols += 			'<div class = "each-kanji">';
-				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[0]].kanjis[i] + '</div>';
-				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[0]].kanji_meanings[i] +'</div>';
+				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber]].kanjis[i] + '</div>';
+				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber]].kanji_meanings[i] +'</div>';
 				kanji_symbols +=			'</div>';
 				
 			};
 				
 		};
 		
-		$('#word-reading').html(vocab[randarray[0]].hiragana);
-		$('#word-pos').html(vocab[randarray[0]].part_of_speech.join('<br>'));
+		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
+		$('#word-pos').html(vocab[randarray[wordnumber]].part_of_speech.join('<br>'));
 		$('.list-definitions > ol').html(definition_info);
 		$('.kanji-info').html(kanji_symbols);
 	
@@ -98,11 +105,10 @@ var startpage = function(){
 		$('.word-info-box').hide();
 	};
 	
-
 };
 
 
-//animates cards to the right
+//animates cards to the right, and other actions that need to happen at this time
 var nextset = function(){
 	
 	if(both_right == false){
@@ -215,34 +221,8 @@ var nextset = function(){
 	},500);
 	
 	
+	write_info_box();
 	
-	if(sets_until_complete == 1){
-		definition_info = '';
-		for(var i = 0; i<3; i++){
-			if(vocab[randarray[wordnumber]].definitions[i]){
-				definition_info += '<li>' + vocab[randarray[wordnumber]].definitions[i] + '</li>';
-			}	
-		};
-		
-		kanji_symbols = '';
-		for(var i = 0; i<=vocab[randarray[wordnumber]].kanjis.length; i++){
-			if(vocab[randarray[wordnumber]].kanjis[i]){
-				
-				kanji_symbols += 			'<div class = "each-kanji">';
-				kanji_symbols +=				'<div class = "actual-kanji">'+ vocab[randarray[wordnumber]].kanjis[i] + '</div>';
-				kanji_symbols +=				'<div class = "kanji-meaning">'+ vocab[randarray[wordnumber]].kanji_meanings[i] +'</div>';
-				kanji_symbols +=			'</div>';
-				
-			}	
-		};
-		
-		$('#word-reading').html(vocab[randarray[wordnumber]].hiragana);
-		$('#word-pos').html(vocab[randarray[wordnumber]].part_of_speech.join('<br>'));
-		$('.list-definitions > ol').html(definition_info);
-		$('.kanji-info').html(kanji_symbols);
-	}else{
-		$('.word-info-box').hide();
-	};
 		
 	
 };

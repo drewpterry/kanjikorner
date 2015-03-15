@@ -1,6 +1,8 @@
 colors{
 	red: #e65555; rgba(230, 85, 85, 1)
 	blue: #86e7fc;
+	dark-blue: #61DAF9;
+	darker-blue: #3ED4F9;
 	grey:#d2d2d2;
 	green:rgba(66,235,89,1);
 }
@@ -486,6 +488,33 @@ display: table-cell;
       text-align: center;
       border-radius: 5px;
       outline: none; }
+	  
+	  #more-info-btn {
+		  position:absolute;
+		  width:100px;
+		  right:133px;
+		  bottom:230px;
+	    -webkit-border-radius: 28;
+	    -moz-border-radius: 28;
+	    border-radius: 28px;
+	    font-family: Arial;
+	    color: white;
+	    font-size: 20px;
+	    background: #3ED4F9;
+	    padding: 10px 20px 10px 20px;
+	    text-decoration: none;
+	  }
+
+	  #more-info-btn:hover {
+	    background: #3cb0fd;
+	    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+	    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+	    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+	    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+	    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+	    text-decoration: none;
+		cursor:pointer;
+	  }
 	  
      #result {
       height: 50px;
