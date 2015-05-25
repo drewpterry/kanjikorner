@@ -1,168 +1,253 @@
-{% extends "overall_site_temp.html" %}
-
-
 {% load staticfiles %}
 
-{% block pagetitle%}Home{% endblock %}
 
-{% block header%}
-	{% include "nav_bar.html" %}
-{% endblock%}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
+<head>
 
-	<section id = "featured" class = "section">
-		{% if full_name %}
-		<div class = "header">Hi, {{ full_name }}.</div>
-		
-		{% else %}
-		<br/>
-		<div class = "header"> A flexible spaced repetition based kanji and vocabulary learning application </div>
-		{% endif %}
-		
-		<br/>
-		
-		
-		<div id = "tst">
-			
-			
-			<div id = "answerbox" style = "width:450px; height:220px;">
-				<div class = "flipper" style = "width:450px; height:220px;">
-					<div id = "front" style = "width:450px; height:220px; line-height:200px; font-size:6em">歓迎</div>
-					<div id = "back" style = "width:450px; height:220px;line-height:200px; font-size:4em;">かんげい</div>
-				</div>
-			</div>
-			
-		</div>
-		
-	</section>
-	
-	<section id = "signin" class = "section">
-		{% if not full_name %}
-		<form id = "login-form" action = "/login/auth/" method = "POST">{% csrf_token %}
-			<!-- <input type = "button" id = "facebook" class = "button" value = "login with Facebook"></input>
-			<br/> -->
-			<input type = "text" class = "login" name = "username" placeholder = "email address"></input>
-			<br>
-	
-			
-			<input type = "password" class = "login" name = "password" placeholder = "password"></input>
-			<br/>
-			<input type = "submit" class = "button" value = "login"></input>
-			<br/>
-			
-			
-			
-		</form>
-		<p style = "float:left; margin-left:28%">or</p>
-		<br style = "clear:both"/>
-		<a href = "{% url 'registration_register' %}"><div id = "account-create" class = "button">create account</div></a>
-		{% else %}
-		{% endif %}
-		
-		
-		
-	</section>
-	
-	
-	
-	
-	
-{% endblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% block after-outer %}
-	<!-- <hr/> -->
-	
-	<div id = "articles" class = "explanation-section">
-		<br/>
-		<div class = "half-section">
-			<div class = "header">Learn kanji and words at your own pace</div>
-			<br style = "clear:both;"/>
-		
-			<div class = "explanation-text"> Learn the 2136 kanji that all Japanese children learn in school through the most common Japanese vocab words. Learn 5 new words a day or 20 words a day its up to you.</div>
-		</div>	
-		
-		<div class = "half-section">
-			<div id = "kanji-chart">
-			{% for each in kanji_objects%}	
-				{{ each.kanji_name}}
-			{% endfor %}	
-			</div>	
-		</div>
-		
-	</div>
-	
-	<div id = "articles" class = "explanation-section blue">
-		<br/>
-		<div class = "half-section">
-			<div id = "dashboard-image1">
-			<!-- <img src = "{% static 'homepage/dashboard-alt.png' %}"/> -->
-			</div>
-		</div>
-		<div class = "half-section">
-			<div class = "header">Remember your words using a spaced repetition system</div>
-			<br style = "clear:both;"/>
-			<div class = "explanation-text">We show which words you need to review to help burn them into your long term memory. Words you have trouble with will be shown more frequenly and words you master will gradually dissappear.</div>
-		</div>	
-		
-	</div>
-	
-	<div id = "articles" class = "explanation-section">
-		<br/>
-		<div class = "half-section">
-			<div class = "header">Keep track of your progress</div>
-			<br style = "clear:both;"/>
-			<div class = "explanation-text">See your knowledge of kanji and japanese vocab increase in front of you. See which words you have the most trouble with. Make sure your on pace to hit your goals.</div>
-		</div>
-		<div class = "half-section">	
-			<div id = "dashboard-image">
-			<!-- <img src = "{% static 'homepage/dashboard-alt.png' %}"/> -->
-			</div>
-		</div>	
-	</div>
-	<!-- <div id = "resources" class = "section">
-		<div class = "header">Resources</div>
-	</div> -->
+    <title>Landing Page - Start Bootstrap Theme</title>
 
-	<br style = "clear:both"/>
-{% endblock %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "homepage/css/lavish-bootstrap.css" %}" rel="stylesheet">
 
-{% block scripts %}
-<script>
-var front_back_count = 0;
-var back_card = "かんげい";
-	setInterval(function(){
-		
-		
-		
-		if(front_back_count == 2){
-			if(back_card == "Welcome"){
-				back_card = "かんげい";
-			}else{
-				back_card = "Welcome";
-			};
-			front_back_count = 0;
-		};
-		
-		
-		
-		$("#back").html(back_card);
-		
-		
-		$("#answerbox").toggleClass("answerbox2");
-	
-		front_back_count += 1;
-		
-		
-	}, 5000);
-	
-	
+    <!-- Custom CSS -->
+    <link href="{% static "homepage/css/landing-page.css" %}" rel="stylesheet">
 
-	
-</script>
-	
-{% endblock %}	
+    <!-- Custom Fonts -->
+    <link href="{% static "homepage/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-{% block footer%}
- {% include "../../kanjisite/templates/footer.html" %}
-{% endblock%}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="#">kanjisama</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#about">About</a>
+                    </li>
+                    <li>
+                        <a href="#services">Sign In</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Header -->
+    <a name="about"></a>
+    <div class="intro-header">
+        <div class="container">
+
+            <div class="row">
+				
+                <div class="col-lg-5 col-md-5">
+                    <div class="intro-message">
+                        <h1>Kanjisama</h1>
+                        <h3>A flexible spaced repetition based kanji and vocabulary learning application</h3>
+                        <hr class="intro-divider">
+                        
+                    </div>
+                </div>
+				
+                <div class="col-lg-5 col-md-5 col-lg-offset-2">
+					<form style = "margin-top: 30%;" action = "/login/auth/" method = "POST">{% csrf_token %}
+					  <div class="form-group">
+					    
+					    <input type="email" class="form-control input-lg" name = "username" id="exampleInputEmail1" placeholder="Enter email">
+					  </div>
+					  <div class="form-group">
+					    
+					    <input type="password" class="form-control input-lg" name = "password" id="exampleInputPassword1" placeholder="Password">
+					  </div>
+					  
+					  <div class="row">
+					  				<div class="col-xs-12 col-md-6"><input type="submit" value="Sign In" class="btn btn-primary btn-block btn-lg" tabindex="7"></div>
+					  				<div class="col-xs-12 col-md-6"><a href="{% url 'registration_register' %}" class="btn btn-info btn-block btn-lg">Create Account</a></div>
+					  </div>
+					  
+					  
+					</form>
+                    </div>
+                </div>
+				
+            </div>
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.intro-header -->
+
+    <!-- Page Content -->
+
+	<a  name="services"></a>
+    <div class="content-section-a">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Learn kanji and words at your<br> own pace</h2>
+                    <p class="lead">Learn the 2136 kanji that all Japanese children learn in school through the most common Japanese vocab words. Learn 5 new words a day or 20 words a day its up to you.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img id = "learning-image" class="img-responsive center-block" src="{% static "homepage/img/learning.svg" %}" alt="">
+					<div class = "white-cover"></div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-a -->
+
+    <div class="content-section-b">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Remember your words using a spaced repetition system</h2>
+                    <p class="lead">We show which words you need to review to help burn them into your long term memory. Words you have trouble with will be shown more frequenly and words you master will gradually dissappear.</p>
+                </div>
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <img id = "thinking-image" class="img-responsive center-block" src="{% static "homepage/img/thinking.svg" %}" alt="">
+					<div class = "blue-cover"></div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-b -->
+
+    <div class="content-section-a">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Keep track of your progress</h2>
+                    <p class="lead">See your knowledge of kanji and japanese vocab increase in front of you. See which words you have the most trouble with. Make sure your on pace to hit your goals.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img id = "progress-image" class="img-responsive center-block" src="{% static "homepage/img/progress.svg" %}" alt="">
+					<div class = "white-cover"></div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-a -->
+
+	<a  name="contact"></a>
+    <div class="banner">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5" style = "margin-bottom:30px;">
+                    <h2>Ready to get going?</h2>
+                </div>
+                <div class="col-lg-5">
+                    <a href = "{% url 'registration_register' %}" id = "start-learning-btn" class="btn btn-lg btn-primary center-block" role = "button">Start Learning!</a>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.banner -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#services">Services</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#contact">Contact</a>
+                        </li>
+                    </ul>
+					
+                    <p class="copyright text-muted small">Copyright &copy; kanjisama 2014. All Rights Reserved</p>
+                </div>
+                <div class="col-lg-5">
+                    <ul class="list-inline intro-social-buttons">
+                        <li>
+                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg center-block"><i class="fa fa-twitter fa-fw"></i> <span class="nework-name">Twitter</span></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg center-block"><i class="fa fa-facebook fa-fw"></i> <span class="n">Facebook</span></a>
+                        </li>
+                    </ul>
+					
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{% static "homepage/js/jquery.js" %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+
+</body>
+
+</html>
