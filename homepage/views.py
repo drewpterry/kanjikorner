@@ -15,7 +15,7 @@ def index(request):
     full_name = request.user.username
     c = {}
     c.update(csrf(request))
-    template = 'homepage/index.html'
+    template = 'homepage/index2.html'
     if request.user.is_authenticated():
         template = 'manageset/profile.html'
         return main_profile(request,full_name)
