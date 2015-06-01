@@ -242,64 +242,28 @@
 		  		</div>
 	      	</div>
 			
+			{% for each in usersets %}
+			
 	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Stack 1
-		  			<div>25 words</div>
-	  			   <button class="btn btn-primary" type="button">
+	      	  <div class = "text-center stack">{{ each }}
+		  			<div>{{ each.words.count }} words</div>
+	  			   <a href = "{% url 'flashcard:practice-stack' full_name each %}">
+					   <button class="btn btn-primary" type="button">
 	  					  Review
-	  				</button>
+	  					</button>
+					</a>	
 					<br>
-		  			<span class="label label-default">Incomplete</span>
-					
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Stack 1
-		  			<div>25 words</div>
-	  			   <button class="btn btn-primary" type="button">
-	  					  Review
-	  				</button>
-					<br>
+					{% if each.times_practiced == 1 %}
 		  			<span class="label label-primary">Complete</span>
-					
+					{% else %}
+					<span class="label label-default">Incomplete</span>
+					{% endif %}
+			
 		  		</div>
 	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
-	      	<div class="col-xs-4 col-sm-2 col-m-2">
-	      	  <div class = "text-center stack">Reviews
-		  			<h3>3</h3>
-		  			<div>Now</div>
-		  		</div>
-	      	</div>
+			
+			{% endfor %}
+	      	
 
  		</div>
  	</div>
