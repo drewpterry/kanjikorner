@@ -28,13 +28,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				
                 <ul class="nav navbar-nav navbar-right">
-					
+					<li><a href>
+					  Reviews <span class="badge">1245</span>
+					</button><a/></li>
 					{% if full_name %}
-							<li>
-					                <p class="navbar-btn">
-					                    <a href="{% url 'flashcard:srs_review_words' full_name %}" class="btn btn-default">Reviews <span class="badge">{{ review_number }}</span></a>
-					                </p>
-					        </li>
 							<li><a href = "/logout/complete/">Sign Out</a></li>
 							<li><a href = "{% url 'profile:index' full_name %}">Profile</a></li>
 					{% else %}

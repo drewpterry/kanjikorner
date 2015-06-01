@@ -17,7 +17,7 @@ def index(request):
     c.update(csrf(request))
     template = 'homepage/index.html'
     if request.user.is_authenticated():
-        template = 'manageset/profile.html'
+        
         return main_profile(request,full_name)
         
     thekanji = Kanji.objects.all()[0:2136]

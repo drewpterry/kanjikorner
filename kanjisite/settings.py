@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'southtut',    
     'endless_pagination',
     'registration',
+    'bootstrap_toolkit',
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

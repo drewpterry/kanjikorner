@@ -15,6 +15,7 @@ from django.core.context_processors import csrf
 from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
+
 # import pdb; pdb.set_trace()
 
 # Create your views here.
@@ -77,6 +78,8 @@ def main_profile(request,full_name):
         number_of_reviews = len(srs_get_and_update(request, full_name))
         next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
         due_tomorrow = len(next_review) + number_of_reviews
+        kanji_percent = round(number_of_added_kanji /21.36, 2) 
+        print kanji_percent, "kanji perecent"
         if number_of_reviews == 0:
             # next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
             if next_review.exists():
@@ -92,9 +95,9 @@ def main_profile(request,full_name):
         
         
         
-        return render(request,'manageset/profile.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
+        return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
-          'word_count':total_word_count, 'words_added_today':number_words_added_today, 'total_reviews_ever':total_reviews_ever})
+          'word_count':total_word_count, 'words_added_today':number_words_added_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent})
  
  
  
