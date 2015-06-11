@@ -33,7 +33,7 @@
 
 </head>
 
-<body>
+<body class = "profile-page">
 
     <!-- Navigation -->
     {% include "nav_bar.html" %}
@@ -111,7 +111,7 @@
 	   
 	   <div class = "row/">
 		  <div class = "col-xs-12 col-sm-12 col-md-12 bg-grey module">
-		   		<h3>Kanji Progress 
+		   		<h3>Kanji Progress <small>{{ added_kanji_count }}/2136</small>
 					<a href = "{% url 'profile:view_new_kanji' full_name %}">
 		   		   <button class="btn btn-primary" type="button">
 		   				  Add more <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -134,7 +134,7 @@
    <div class = "container">
 	   <div class = "row/">
 		   <div class = "col-xs-12 col-sm-12 col-md-12 bg-grey module">
-		   <h3>Words In Progress
+		   <h3>Words In Progress <small>{{ word_count}}</small>
 			   <a href = "{% url 'profile:new-words' full_name %}">
 		   		<button class="btn btn-primary" type="button">
 				  	Add more <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

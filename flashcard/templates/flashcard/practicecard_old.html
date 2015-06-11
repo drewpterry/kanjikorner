@@ -6,9 +6,16 @@
 
 {% block content %}
 <a id = 'home-button' href = '/'><div>Home</div></a>
-	<input id = "set-name" type = "hidden" value = "{{ set_name }}"></input>
-	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></input>
-	<!-- <div id = "set-name-title">{{ set_name }}</div> -->
+<div id = "end-of-practice">
+	<div id = "words-added-message">
+		Awesome you've just added <span id = "words-added-count"></span> words to your review queue!
+		</div>
+	<a href = '/'><div id = "back-to-profile-button">Back to profile</div></a>
+		
+</div>
+	<input id = "set-name" type = "hidden" value = "{{ set_name }}">
+	<input id = "user-name" type = "hidden" value = "{{ full_name }}">
+	<div id = "set-name-title">{{ set_name }}</div>
 		<!-- <div id = "unanswered" class = "sidebar">
 			<div class = "preview">neko</div>
 			<div class = "preview">neko</div>
@@ -23,10 +30,7 @@
 					<div id = "highscore" class = "score">0</div>
 				</div>
 
-				<!-- <div class = "scorebox right">
-					<div class = "title">Trouble Words</div>
-					<div id = "currentscore" class = "score">0</div>
-				</div> -->
+				
 
 			</div>
 		<div id = "center">
@@ -51,16 +55,14 @@
 
 		</div>
 			
-				<div id = "more-info-btn">word info</div>	
+			
 				<br style = "clear:both;"/>
-		
+				<!-- <input autocapitalize="off" autocomplete="off" autocorrect="off" id="user-response" name="user-response" placeholder="答え" type="text" lang="ja"> -->
 			<input type = "text" id = "answerinput"　lang = "ja" placeholder = "ひらがな" autofocus></input>
-			<br style = "clear:both"/>
 			<!-- <div id = "result">X</div> -->
-	</div>
-	
+		</div>
+	</br>
 		<!-- <div id = "answered" class = "sidebar"></div> -->
-		<br style = "clear:both"/>
 		<div class = "word-info-box">
 			<div class = "left-box">
 				<div class = "inner-info-box">
@@ -97,20 +99,60 @@
 {% endblock %}
 
 {% block scripts %}
+		<ol id="joyride-tutorial" style = "display:none">
+		  /* data-id needs to be the same as the parent it will attach to */
+		  <li data-id="answerinput" data-options="tipLocation:right;"><h1>Lessons</h1><p> This is a lesson. Here you'll go through each word one time where you will be able to see the hiragana reading and the definition. After you do that then you will need to go through the words one more time without being able to see the reading or definition.</p>
+			  
+			  <li data-id="answerinput" data-options="tipLocation:right;"><h1>Typing your answer</h1><p> Try typing the hiragana reading here and pressing enter (don't worry about changing your keyboard, just type romaji and it will automatically change).</p>
+			<li data-id="answerinput" data-options="tipLocation:right;"><h1>Typing your answer</h1><p> Once you type in the hiragana, then you will be asked to type in the meaning. Hint - when there are multiple definitions, you can type any of the definitions and it will work. Second hint - if definition has a parenthesis in it you DON'T need to type the information in the parenthesis.</p>	  
+				
+				<li data-id="answerinput" data-options="tipLocation:right;"><h1>Typing your answer</h1><p> Once you complete the lesson the words will be added into your review queue, but you can come back to redo the lesson any time you want! Now get going!</p>
+		  
+		   
+		  
+		  </li>
+		  
+
+		</ol>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'manageset/joyride-master/joyride-2.1.css' %}">
+		<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
+		<script>
+		$(window).load(function() {
+		  $("#joyride-tutorial").joyride({
+		    /* Options will go here */
+			  {% if words_in_queue == False %}
+			  autoStart : true,
+			  {% else %}
+			  autoStart : false,
+			  {% endif %}
+			  
+			  // modal:true,
+			  // 'scrollSpeed': 1000,
+       	   	  // expose: true
+		  });
+		});
+		</script>
+
+
 
 <script>
 var vocab = [];
 
-{% for word in words %}
 
+// var kanjiss = JSON.stringify({{kanji_names}});
+//
+// var kanjis = {{kanji_names | safe}}
+
+
+{% for word in words %}
+var kanjis = [];
 vocab.push({
 	//I need to fix this so it works under all circumstances, both practice and reviews
 	word: '{{ word.real_word }}',
 	hiragana: '{{ word.hiragana }}',
 	meaning: '{{ word.meaning}}',
-	know_word_object_id: {{ word.known_word_id }},
-	correct: true,
-	first_time: true,
+	know_word_object_id: {{ word.id }},
 	kanjis: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_name }}',{% endfor %}],
 	kanji_meanings: [{% for kanji in word.kanji.all %}'{{ kanji.kanji_meaning }}',{% endfor %}],
 	definitions: [{% for defs in word.wordmeanings_set.all reversed %}'{{defs.meaning}}',{% endfor %}],
@@ -121,7 +163,7 @@ vocab.push({
 
 </script>
 
-<script src = "{% static 'flashcard/review-card-new.js' %}"></script>
+<script src = "{% static 'flashcard/practicecard.js' %}"></script>
 <script src = "{% static 'flashcard/wanakana.min.js' %}"></script>
 <script>
 //binds IME to answer input
@@ -134,4 +176,4 @@ vocab.push({
 				}
 			)(window.wanakana);
 </script>
-{% endblock %}	
+{% endblock %}		

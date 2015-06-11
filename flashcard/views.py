@@ -98,11 +98,11 @@ def srs_review_words(request, full_name):
             for each in words_list:
                 words_id.append(each.id)
                
-                
+            print words_list  
                
             # words_with_kanji = Words.objects.filter()
                
-    return render(request, 'flashcard/review-cards.html', {'full_name':full_name, 'words':words_list})
+    return render(request, 'flashcard/review-cards-new.html', {'full_name':full_name, 'words':words_list})
     
 
 def srs_get_and_update(request, full_name):
@@ -159,6 +159,7 @@ def tier_level_update(request, full_name):
                 
                 
                 selected_word = KnownWords.objects.get(id = known_id)
+                print "got here"
                 selected_word.update_tier_and_review_time(increase_level)
                 selected_word.save()
                 
