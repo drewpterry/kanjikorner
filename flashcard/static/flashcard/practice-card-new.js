@@ -247,7 +247,7 @@ var next_card_2 = function(){
 var rewrite_cards_2 = function(){
 	
 	if(vocab.sets_until_complete === 0){
-		var left_card_text = "Finish";
+		var left_card_text = (wordnumber+1 < vocab.length) ? vocab[wordnumber + 1].word : "Finish!";
 	}else{
 		var left_card_text = (wordnumber+1 < vocab.length) ? vocab[wordnumber + 1].word : "...and again!";
 	};	

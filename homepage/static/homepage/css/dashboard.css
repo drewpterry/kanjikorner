@@ -267,23 +267,26 @@ ol {
 	}*/
 	 .flip-container.hover .flipper, .flip-container.flip .flipper {
 		transform: rotateY(180deg);
+		-webkit-transform: rotateY(180deg);
 	}
 
 .flip-container, .front, .back {
-	
+
 }
 
 /* flip speed goes here */
 .flipper {
 	transition: 0.3s;
 	transform-style: preserve-3d;
-
+	-webkit-transform-style: preserve-3d;
+	
 	position: relative;
 }
 
 /* hide back of pane during swap */
 .front, .back {
 	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
 
 	position: absolute;
 	top: 0;
@@ -296,6 +299,7 @@ ol {
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
+	-webkit-transform: rotateY(0deg);
 /*	transform: rotateY(180deg);*/
 
 }
@@ -303,6 +307,7 @@ ol {
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
 /*	transform: rotateY(0deg);*/
 
 }

@@ -46,7 +46,6 @@ var startpage_2 = function(){
  	initial_cards +=												vocab_word
  	initial_cards +=						'					</div>'
  	initial_cards +=						'					<div class="back text-center review-card mini-card">'
- 	initial_cards +=						'						test'
  	initial_cards +=						'					</div>'
 	initial_cards +=						'					'
 	initial_cards +=						'					'
@@ -255,7 +254,7 @@ var next_card_2 = function(){
 
 var rewrite_cards_2 = function(){
 	
-	var left_card_text = (wordnumber+1 < vocab.length) ? vocab[wordnumber + 1].word : "...and again!";
+	var left_card_text = (wordnumber+1 < vocab.length) ? vocab[wordnumber + 1].word : "Finish!";
 	
 	var rewritecards = '';
 		rewritecards += '<div class = "container">	'
@@ -267,7 +266,6 @@ var rewrite_cards_2 = function(){
 		rewritecards +=  									left_card_text
 		rewritecards += ' 								</div>'
 		rewritecards += ' 								<div class="back text-center review-card mini-card">'
-		rewritecards += ' 									ing'
 		rewritecards += ' 								</div>'
 		rewritecards += '								'
 		rewritecards += '								'
@@ -372,7 +370,7 @@ var reset_2 = function(){
 	
 	if(vocab.sets_until_complete == 0){
 		update_words();
-		// $('#end-of-practice').fadeIn();
+		$('#myModal').modal('show');
 		console.log("set end")
 		
 	}else{

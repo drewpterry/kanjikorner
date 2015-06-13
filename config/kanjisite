@@ -3,6 +3,11 @@ upstream kanjisite {
 }
 
 server {
+        server_name www.kanjisama.com;
+        return 301 $scheme://kanjisama.com$request_uri;
+}
+
+server {
         server_name kanjisama.com localhost 127.0.0.1;
 
         index index.html;
@@ -27,3 +32,4 @@ server {
                 expires 7d;
         }
 }
+
