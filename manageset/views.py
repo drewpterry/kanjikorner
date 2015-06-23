@@ -91,9 +91,6 @@ def main_profile(request,full_name):
         else:
             next_review = "Now"
             
-            
-        
-        
         
         return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
@@ -152,7 +149,7 @@ def known_kanji_view(request,full_name):
     
 def new_words_view(request, full_name):
     
-    template='manageset/new_words_view.html'
+    template='manageset/your_words.html'
     page_template='manageset/entry_index_words.html'
     profile = request.user.userprofile
     
@@ -267,7 +264,7 @@ def new_words_view(request, full_name):
 
     if len(special_words) == 0:        
 
-        words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:1000]
+        words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:20]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 300), Q(frequency = 0)|Q(frequency__gte = 35)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
         words_list = list(words)
@@ -288,18 +285,12 @@ def new_words_view(request, full_name):
         
     else:
         words_list = []
-
-
-
-
-
+        
     data = special_words + words_list
 
     for each in selected_kanji.all():
         for kanji in each.kanji.all():
             print kanji
-    
-    
     
     if request.is_ajax():
         template = page_template               
@@ -568,36 +559,6 @@ def add_words_to_set(request,full_name):
     # return render(request, "manageset/create-set-confirm.html", {'setname':setname, 'chosenwords':thechosenwords})
 
 
-# def add_known_words(request, full_name):
-#     c = {}
-#     c.update(csrf(request))
-#     userprofiles = User.objects.get(username = full_name).userprofile.id
-#     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-#     knownkanji = request.POST.getlist('known-kanji')
-#     theknownkanji = []
-#
-#     # for words in knownkanji:
-#  #        if UserProfile.objects.get(id = userprofiles).known_words.filter(id = words).exists() == False:
-#  #            obj1 = Words.objects.get(id = words)
-#  #            theknownkanji.append(obj1)
-#  #
-#  #    userprofile.known_words.add(*theknownkanji)
-#     #submit known kanji
-#
-#     print knownkanji
-#
-#     for wordss in knownkanji:
-#
-#         # if KnownKanji.objects.filter(user_profile = 10).kanji.filter(id = kanjis).exists() == False:
-#         obj1 = Words.objects.get(id = wordss)
-#         new_known_kanji = KnownWords(words = obj1, user_profile = userprofile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
-#         new_known_kanji.save()
-#         # new_known_kanji.words.add(obj1)
-# #         new_known_kanji.user_profile.add(userprofile)
-#
-#
-#
-#     return new_words_view(request, full_name)
     
 
 def add_known_word(request, full_name):    

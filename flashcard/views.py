@@ -48,7 +48,6 @@ def complete_stack(request, full_name, set_name):
                 
                 theset = request.POST['set_name']
                 the_set_object = userprofile.user_sets.get(name = theset)
-                # the_set_object = Sets.objects.get(name = theset)
                 if the_set_object.times_practiced == 0:
                     
                     the_set_object.times_practiced = 1
@@ -66,17 +65,10 @@ def complete_stack(request, full_name, set_name):
                         # this is really confusing (this is actually the id of the word, not the KnownWord Object), temporary fix so that practicecard template will work for both reviews and stacks
                         words_practiced.append(each['know_word_object_id'])
                         
-                        
-                        
-                        
                     KnownWords.objects.filter(user_profile = userprofiles, words__in = words_practiced).update(last_practiced = datetime.now(), tier_level = 1, time_until_review = timedelta(hours = 4).total_seconds())
                    
                     the_set_object.save()
-                    
-                    
                     data = json.dumps(words)
-                    
-                    
                     
                 else:
                     #doesnt mean anything just to show ajax response worked
@@ -98,10 +90,6 @@ def srs_review_words(request, full_name):
             for each in words_list:
                 words_id.append(each.id)
                
-            print words_list  
-               
-            # words_with_kanji = Words.objects.filter()
-               
     return render(request, 'flashcard/review-cards-new.html', {'full_name':full_name, 'words':words_list})
     
 
@@ -109,9 +97,7 @@ def srs_get_and_update(request, full_name):
     
    
     userprofiles = User.objects.get(username = full_name).id
-    # print "srs update; ", userprofiles
     userprofile = UserProfile.objects.get(user = userprofiles) 
-    
     
     words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
     words_list = []
@@ -131,16 +117,11 @@ def srs_get_and_update(request, full_name):
         if time_remaining <= 0:
             #using this so i can update right or wrong words
             #need to add normal id to put definitions etc
-            # print word.words.knownwords_set
-            # setattr(word.words)
             word.words.known_word_id = word.id
-            # word.words.id = word.id
-            # print word.words.kanji.all()
+
             words_list.append(word.words)
             
             
-            
-    
     return words_list 
 
 

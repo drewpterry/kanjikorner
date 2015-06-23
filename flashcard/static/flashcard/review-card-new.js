@@ -88,6 +88,7 @@ $('#answer-input').keydown(function(event){
 				if(wrong_answer){$("#main-card").toggleClass("flip")};
 				answer_input.value = '';
 				answer_input.style.color = "grey";
+				input_ready = true;
 			},delay_time);
 		};
 					
@@ -107,6 +108,7 @@ $('#answer-input').keydown(function(event){
 				answer_input.style.color = "#fc0527";
 				$("#main-card").toggleClass("flip");
 				vocab.first_time = false;
+				input_ready = false;
 				reset_input_bar("meaning",true,2000);
 				
 			};
@@ -124,7 +126,7 @@ $('#answer-input').keydown(function(event){
 				var clean_definitions = current_word.definitions[i].replace(/ *\([^)]*\) */g, "");
 				var levenshteinenator_value = levenshteinenator(answer_input_value, clean_definitions.toLowerCase());
 				var levenshteinenator_value_compare = levenshteinenator_value / clean_definitions.length;
-				var correct_answer = levenshteinenator_value_compare < .68;
+				var correct_answer = levenshteinenator_value_compare <= .32;
 				if(correct_answer == true){break}
 			};
 					
@@ -136,7 +138,6 @@ $('#answer-input').keydown(function(event){
 				reset_input_bar("hiragana", false, 100);
 				
 			}else{
-				console.log("not correct");
 				answer_input.style.color = "#fc0527";
 				wanakana.bind(inputIME);
 				$("#main-card").toggleClass("flip");
@@ -145,23 +146,22 @@ $('#answer-input').keydown(function(event){
 				reset_input_bar("hiragana", true, 2000);
 			};
 			
-			input_ready = false
+			input_ready = false;
 			
 			wanakana.bind(inputIME);
-			console.log("working");
 			//reinserts word back into vocab list if any part is incorrect
 			if(current_word.english_def_correct === false || current_word.hiragana_correct === false){
 				if(current_word.first_time){
 					update_word_object(current_word.know_word_object_id, 0);
 					vocab.first_time = false;
-					console.log("working 2");
+					
 				};
 				
 				current_word.hiragana_attempt = false;
 				current_word.english_def_correct = false;
 				current_word.hiragana_correct = false;
-				if(vocab.length - wordnumber > 3){
-					vocab.splice(wordnumber + 3, 0,current_word)
+				if(vocab.length - wordnumber > 7){
+					vocab.splice(wordnumber + 7, 0,current_word)
 				}else{
 					vocab.push(current_word)
 				};	
@@ -169,8 +169,14 @@ $('#answer-input').keydown(function(event){
 			}else{
 				if(current_word.first_time){
 					update_word_object(current_word.know_word_object_id, 1);
-					console.log("working");
-				}
+					
+					var current_remaining = $('#remaining-count').data('remaining');
+					$('#remaining-count').data('remaining', current_remaining - 1);
+					$('#remaining-count').html(current_remaining - 1);
+					var completed_words = $('#completed-word-count').data('complete');
+					$('#completed-word-count').data('complete', completed_words + 1);
+					$('#completed-word-count').html(completed_words + 1);
+				};
 			};
 			
 			vocab.first_time ? vocab.first_time = false : 
@@ -371,22 +377,7 @@ var reset_2 = function(){
 	if(vocab.sets_until_complete == 0){
 		update_words();
 		$('#myModal').modal('show');
-		console.log("set end")
 		
-	}else{
-		// vocab.sets_until_complete = vocab.sets_until_complete - 1;
-// 		wordnumber = 0;
-// 		vocab.length = vocab.original_length;
-// 		for(var i = 0; i < vocab.length; i++){
-// 			vocab[i].hiragana_correct = false;
-// 			vocab[i].english_def_correct = false;
-// 			vocab[i].hiragana_attempt = false;
-// 		};
-//
-// 		$("#word-info-panel").hide();
-// 		shuffleArray(vocab);
-// 		current_word = vocab[wordnumber];
-// 		startpage_2();
 	};
 };
 

@@ -22,7 +22,7 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'k#m)k+llsq(s&nu7j&haxby5rtp*d8c^z85xacn(&hoyeljb#^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -103,7 +103,18 @@ DATABASES = {
     }
 }
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         #'NAME': '/desktop/djangotut/sqlite3.db)',
+#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'NAME': 'KanjiDB',
+#         'HOST':'kanjiapp.czbseelickqu.us-west-1.rds.amazonaws.com',
+#         'USER': 'drewterry',
+#         'PASSWORD': '!23kanjisama#21',
+#         'PORT':'5432',
+#     }
+# }
 
 
 # Internationalization

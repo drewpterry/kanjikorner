@@ -225,7 +225,7 @@
 	
     
         <!-- /.container -->
-
+		
     <div class = "container">
  	   <div class = "row">
  		   <h2>Initial Review Stacks
@@ -236,12 +236,12 @@
 			</a>
  			</h2>
  			<hr>
-			
+			{% if not usersets %}
 	      	<div class="col-xs-4 col-sm-2 col-m-2">
 	      	  <div class = "text-center stack">You don't have any stacks yet!
 		  		</div>
 	      	</div>
-			
+			{% endif %}
 			{% for each in usersets %}
 			
 	      	<div class="col-xs-4 col-sm-2 col-m-2">

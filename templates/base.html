@@ -4,12 +4,12 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{% static 'homepage/stylesheet.css' %}" />
+    <link rel="stylesheet" href="{% static 'homepage/css/dashboard.css' %}" />
     <title>{% block title %}User test{% endblock %}</title>
 </head>
 
 <body>
-    <div id="header">
+    <div id="auth-header">
     {% block header %}
     <a href="{% url 'home' %}">{% trans "Home" %}</a> | 
 

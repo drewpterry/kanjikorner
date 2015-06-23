@@ -48,6 +48,10 @@ h6 {
     font-weight: 400;
 }
 
+#auth-header a {
+	padding-left:10px;
+}
+
 //.stat-box {
 /*	height:200px;*/
 /*	border-style:solid;*/
@@ -68,7 +72,6 @@ h6 {
 	-webkit-box-shadow: inset 0px 0px 7px 0px rgba(107,106,107,1);
 	-moz-box-shadow: inset 0px 0px 7px 0px rgba(107,106,107,1);
 	box-shadow: inset 0px 0px 7px 0px rgba(107,106,107,1);
-
 	
 }
 
@@ -315,6 +318,106 @@ ol {
 
 
 
+.manage-card{
+	height:150px;
+	background-color:white;
+	margin-bottom:15px;
+	border-color:grey;
+	border-width:1px;
+	border-radius:5px;
+	-webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+}
+
+.manage-card .word-frequency {
+	position:absolute;
+	top:0px;
+	left:20px;	
+}
+
+.manage-card .kanji {
+	font-size:1.7em;
+	
+}
+
+.manage-card .meaning {
+	font-weight:normal;
+}
+
+.manage-card .add-word-button-clicked {
+	background-color:#19fc5d;
+	border-color:#19fc5d;
+}
+
+.manage-card .button-holder {
+	position: absolute;
+	bottom:20px;
+}
+
+.manage-card .remove-word-button {
+	position:absolute;
+	margin:5px;
+	right:15px;
+	background-color:white;
+	color: rgba(233,233,233,1);
+	border-style:solid;
+	border-color:white;
+	border-width:1px;
+	font-size:1.3em;
+	-webkit-transition: color .2s;
+	    transition: color .2s;
+}
+
+.manage-card .remove-word-button:hover {
+	border-color:rgba(233,233,233,1);
+}
+
+.manage-card .red-color {
+	color:#fc0527;
+}
+
+
+.manage-card .glyphicon-holder {
+	
+	position:absolute;
+	top:120px;
+	right:20px;
+	color:rgba(233,233,233,1);
+	z-index:1;
+	border:none;
+	font-size:1.3em;
+	background-color:white;
+	-webkit-transition: color .5s;
+	    transition: color .5s;
+	
+	cursor:pointer;
+/*	border-style:solid;*/
+}
+
+.manage-card .glyphicon-holder:hover {
+	color:#19fc5d;
+}
+#stack-preview{
+	height:70vh;
+	overflow:auto;
+}
+
+
+  .affix-top {
+     position:static;
+  }
+  
+  .affix {
+	  margin-top:-60px;
+	  position:fixed;
+  }
+  
+  
+#set-title {
+	width:100px;
+}
+
 
 footer {
     padding: 50px 0;
@@ -330,5 +433,13 @@ p.copyright {
 @media screen and (max-width: 1000px) {
 	.mini-card{
 		visibility:hidden;
+	}
+	
+}
+
+@media screen and (max-width: 500px) {
+	
+	.mini-word-meaning{
+		display:none;
 	}
 }

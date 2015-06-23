@@ -86,6 +86,7 @@ $('#answer-input').keydown(function(event){
 				if(wrong_answer){$("#main-card").toggleClass("flip")};
 				answer_input.value = '';
 				answer_input.style.color = "grey";
+				input_ready = true;
 			},delay_time);
 		};
 					
@@ -104,7 +105,7 @@ $('#answer-input').keydown(function(event){
 			}else{
 				answer_input.style.color = "#fc0527";
 				$("#main-card").toggleClass("flip");
-				
+				input_ready = false;
 				reset_input_bar("meaning",true,2000);
 				
 			};
@@ -122,7 +123,7 @@ $('#answer-input').keydown(function(event){
 				var clean_definitions = current_word.definitions[i].replace(/ *\([^)]*\) */g, "");
 				var levenshteinenator_value = levenshteinenator(answer_input_value, clean_definitions.toLowerCase());
 				var levenshteinenator_value_compare = levenshteinenator_value / clean_definitions.length;
-				var correct_answer = levenshteinenator_value_compare < .68;
+				var correct_answer = levenshteinenator_value_compare <= .32;
 				if(correct_answer == true){break}
 			};
 					
@@ -138,12 +139,13 @@ $('#answer-input').keydown(function(event){
 				answer_input.style.color = "#fc0527";
 				wanakana.bind(inputIME);
 				$("#main-card").toggleClass("flip");
+				
 				var next_card_interval = 2200;
 					
 				reset_input_bar("hiragana", true, 2000);
 			};
 			
-			input_ready = false
+			input_ready = false;
 			wanakana.bind(inputIME);
 			
 			//reinserts word back into vocab list if any part is incorrect

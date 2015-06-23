@@ -9,7 +9,6 @@ from manageset.models import UserProfile
 from manageset.views import main_profile
 
 
-# Create your views here.
 
 def index(request):
     full_name = request.user.username
@@ -35,23 +34,16 @@ def auth_view(request):
     username = username.username
     user = auth.authenticate(username = username, password = password)
     if user is not None:
-        # theusername = User.objects.get(username = username)
-#         p = UserProfile(user = "testuser")
-#         p.save()
+
         auth.login(request,user)
         return HttpResponseRedirect('/')
     else:
         return HttpResponseRedirect('/login/invalid')    
     
-    # if user is not None:
-#         auth.login(request,user)
-#         request.session['validuser'] = 'hello'
-#         return HttpResponseRedirect('/homepage/loggedin')
-#     else:
-#         return HttpResponseRedirect('/homepage/invalid')
 
 def invalid_login(request):
-    return render(request, 'homepage/invalid-login.html')
+    not_valid = True
+    return render(request, 'registration/login.html', {'not_valid':not_valid})
     
 def logout(request):
     auth.logout(request)
