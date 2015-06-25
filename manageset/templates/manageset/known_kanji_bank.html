@@ -1,42 +1,136 @@
-{% extends 'manageset/manage_set_template.html' %}
 {% load staticfiles %}
-{% block pagetitle %}Kanji Bank{% endblock %}
-
-				
-{% block add-known %}
-				<span style = "float:left"> Known Kanji: </span>
-
-				
-				<form id = "remove-kanji-form" action = "{% url 'profile:remove-known-kanji' full_name %}"method = "post">{% csrf_token %}
-				
-					<input type = "submit" class = "left-margin" value = "Remove These Kanji"></input>
-				</form>
-				
-				
-				
-{% endblock %}	
-
-{% block instructions %}
-These are the kanji that you've indicated you know or are learning. <br/>
-Clicking the checkmark will further filter the words in the new words tab to include only the checked words. <br/>
-Removing words will put them back into the unknown kanji tab. 
-{% endblock %}
-
-			
-
-{% block scripts %}
-
-<script>
-
-var selected_kanji_list = {{ known_kanji_list }};
 
 
-</script>
+<!DOCTYPE html>
+<html lang="en">
 
-<script src = "{% static 'manageset/kanji_bank.js' %}"></script>
+<head>
 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kanjisama - Create Stacks</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "homepage/css/lavish-bootstrap.css" %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    	<link href="{% static "homepage/css/dashboard.css" %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static "homepage/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class = "manage-set-page">
+	<!-- Navigation -->
+	{% include "nav_bar.html" %}
+	<br style = "clear:both">
+	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></input>
+
+   
+    
 
 	
-{% endblock %}
-
+	<div class = "container" style = "padding-top:35px">
+		<ul class="nav nav-tabs" style = "padding-top:35px">
+		  <li role="presentation"><a href="{% url 'profile:new-words' full_name %}">Create Stacks / Add Words</a></li>
+		  <li role="presentation" class = "active"><a href="{% url 'profile:add-known-kanji' full_name %}">Kanji</a></li>
+		  
+		</ul>
+		<div class = "row">
+	      	<div class="col-xs-3 col-sm-3 col-md-3 pull-left" data-spy="affix" data-offset-top="60" data-offset-bottom="0">
+			<form id = "create-set-form" action = "{% url 'profile:remove-known-kanji' full_name %}" method = "post">{% csrf_token %}
+			
 				
+			
+
+				<input type = "submit" class = "btn btn-primary btn-lg" value = "Add Back to New Kanji"></input>
+				<div id = "stack-preview" class = "row">
+					<!-- <div class = "col-xs-12 col-sm-12 col-md-12">
+						<span class = "pull-left">Hello</span><span class = "pull-right">definition</span>
+					</div> -->
+					
+				</div>
+			</form>             
+	      	</div>
+			
+	      	<div class="col-xs-8 col-sm-9 col-md-9 pull-right">
+      	  	  	<div class = "row" style = "margin-top:0px;">
+					<div class = "col-xs-6 col-sm-3 col-md-6">
+		  				<a href = "{% url 'profile:view_new_kanji' full_name %}"><div class = "btn btn-default col-md-12">New Kanji</div></a>
+					</div>
+					<div class = "col-xs-6 col-sm-3 col-md-6">
+		  				<a href = "{% url 'profile:known-kanji' full_name %}"><div class = "btn btn-default col-md-12">Added Kanji</div></a>
+					</div>
+				</div>
+        	  	
+				
+        	  	<div class = "row">
+					
+				{% for each in known_kanji_list %}	
+				
+				<div class="col-xs-12 col-sm-4 col-md-3">
+					<div class = "text-center manage-card">
+						<!-- <div class = 'word-frequency'>{{ each.frequency_thousand }}</div> -->
+						
+							<span class="glyphicon glyphicon-info-sign glyphicon-holder" aria-hidden="true"></span>
+					
+						
+						
+						<br>
+						<div class = 'kanji'> {{ each.kanji_name }} </div>
+						<div class = 'meaning'> {{ each.kanji_meaning }} </div>
+						<div class = 'meaning'> {{ each.grade }} </div>
+						<div class = "row">
+						
+						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
+							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-kanji= {{ each.kanji_name }} data-meaning = "{{ each.kanji_meaning }}" data-hiragana = {{ each.hiragana }}>Add back
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</div>
+						</div>
+						
+					</div>
+					</div>
+					
+				</div>
+					
+				{% endfor %}	
+					
+					
+  				</div>
+		  	</div>
+		</div>
+		
+      	
+		
+	</div>
+   
+       
+    
+
+    <!-- Footer -->
+   {% include "footer_new.html" %}
+
+    <!-- jQuery -->
+    <script src="{% static "homepage/js/jquery.js" %}"></script>
+	<script src = "{% static 'homepage/jquery.cookie.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+	<script src="{% static "manageset/your-words.js" %}"></script>
+
+</body>
+
+</html>

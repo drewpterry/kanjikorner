@@ -16,13 +16,10 @@ from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 
-# import pdb; pdb.set_trace()
 
-# Create your views here.
 
 def verify_profiles(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
-            # return render(request, 'myapp/login_error.html')
             return False
             
 not_auth = HttpResponse("you are not authenticated")
@@ -40,8 +37,6 @@ def main_profile(request,full_name):
         usersets = userprofile.user_sets.all().order_by('pub_date')
         
         
-        
-        # userprofile = get_object_or_404(UserProfile, pk = userprofiles)
         user_known_words = KnownWords.objects.filter(user_profile = userprofile)
         known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
@@ -53,11 +48,6 @@ def main_profile(request,full_name):
             total_reviews_ever = total_review_wrong['times_answered_wrong__sum'] + total_review_right['times_answered_correct__sum']
         except:
            total_reviews_ever = 0     
-        # print number_words_added_today
-        # print total_word_count, "ehll"
-        
-        
-        # print known_words[0]['tier_level']
         
         count_dict = {}
         
@@ -72,7 +62,6 @@ def main_profile(request,full_name):
                 count_dict[each] = 0
                 
         number_of_added_kanji =  KnownKanji.objects.filter(user_profile = userprofile).count()
-        # print number_of_added_kanji
        
         
         number_of_reviews = len(srs_get_and_update(request, full_name))
@@ -81,10 +70,9 @@ def main_profile(request,full_name):
         kanji_percent = round(number_of_added_kanji /21.36, 2) 
         print kanji_percent, "kanji perecent"
         if number_of_reviews == 0:
-            # next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
+  
             if next_review.exists():
                 next_review = next_review[0]
-                # print next_review
                 next_review = next_review['time_until_review']
 
                 next_review = str(timedelta(seconds = next_review)).split('.')[0]
@@ -107,48 +95,54 @@ def new_kanji_view(request,full_name):
     else:
         template='manageset/new_kanji_view.html'
         page_template='manageset/entry_index_page.html'
-        # kanjis = Kanji.objects.all()
         profile = request.user.userprofile
         known_kanji_list = get_known_kanji_list(request)
-        # print known_kanji_list, "hello"
         profile_known_kanji = Kanji.objects.all().exclude(pk__in = known_kanji_list).order_by('grade','id')
-        # print profile_known_kanji, "test"
         number_of_added_kanji =  KnownKanji.objects.filter(user_profile = profile).count()
+        number_of_reviews = len(srs_get_and_update(request, full_name))
         if request.is_ajax():
             template = page_template
         
-        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template, 'added_kanji_count': number_of_added_kanji})
+        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template, 'added_kanji_count': number_of_added_kanji, 'review_number': number_of_reviews})
 
 
 def word_bank_view(request,full_name):
     if verify_profiles(request,full_name) == False:
             return not_auth
     else:
-        # kanjis = Kanji.objects.all()
         profile = request.user.userprofile
-        # profile_known_words = profile.known_words.all()
         profile_known_words = 2
-        return render(request, "manageset/known_word_bank.html", {'full_name':full_name, 'known_kanji': profile_known_words})           
+        
+        
+        number_of_reviews = len(srs_get_and_update(request, full_name))
+        return render(request, "manageset/known_word_bank.html", {'full_name':full_name, 'known_kanji': profile_known_words, 'review_number': number_of_reviews})           
 
 
 
 def known_kanji_view(request,full_name):
     profile = request.user.userprofile
-    known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
-    
-    known_kanji_list = []
-    for each in known_kanji:
-        known_kanji_list.append(each.kanji.get().id)
+#     known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
+#     known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
+    known_kanji_list = KnownKanji.objects.filter(user_profile = profile).prefetch_related('kanji').order_by('date_added').reverse()
+    number_of_reviews = len(srs_get_and_update(request, full_name))
+    known_kanji = []
+    for each in known_kanji_list:
+        individual_kanji = each.kanji.get()
+        known_kanji.append(individual_kanji)
         
-    print known_kanji_list    
+    # known_kanji_list = []
+#     for each in known_kanji:
+#         known_kanji_list.append(each.kanji.get().id)
+#
+#     print known_kanji_list   
     # print known_kanji
-    return render(request, "manageset/known_kanji_bank.html", {'full_name':full_name, 'known_kanji_list':known_kanji_list})
+    return render(request, "manageset/known_kanji_bank.html", {'full_name':full_name, 'known_kanji_list':known_kanji, 'review_number': number_of_reviews})
  
  
  
     
 def new_words_view(request, full_name):
-    
+    number_of_reviews = len(srs_get_and_update(request, full_name))
     template='manageset/your_words.html'
     page_template='manageset/entry_index_words.html'
     profile = request.user.userprofile
@@ -294,7 +288,7 @@ def new_words_view(request, full_name):
     
     if request.is_ajax():
         template = page_template               
-    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets, 'selected_kanji':selected_kanji})        
+    return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets, 'selected_kanji':selected_kanji, 'review_number': number_of_reviews})        
 
 
 
@@ -358,10 +352,8 @@ def get_known_kanji(request):
             try:
                 
                 data = get_the_known_kanji(request)
-               
                 data = serializers.serialize("json",data)
                 data = json.dumps(data)
-
 
             except KeyError:
                 return HttpResponse("error")
@@ -369,20 +361,15 @@ def get_known_kanji(request):
         return HttpResponse(data, content_type="application/json")
 
 
-# i dont think this is being used anymore
+
 def get_the_known_kanji(request):
     data = []
     profile = request.user.userprofile.id
     profile_known_kanji = KnownKanji.objects.filter(user_profile = profile).prefetch_related('kanji').order_by('date_added').reverse()
-    # print profile_known_kanji
-    # print profile_known_kanji
     for each in profile_known_kanji:
         kanji_obj = each.kanji.get()
         data.append(kanji_obj)
-    # data = serializers.serialize("json",data)
-#     data = json.dumps(data)
 
-    # print "known kanji data", data
     return data
     
 
@@ -415,12 +402,10 @@ def get_known_word_list(request, withid):
  
     if withid == False:
         for each in profile_known_kanji:
-            # print each.date_added, each.words
             kanji_obj = each.words
             known_word_list.append(kanji_obj)
     else:
         for each in profile_known_kanji:
-            # print each.date_added
             kanji_obj = each.words.id
             known_word_list.append(kanji_obj)
                             
@@ -436,40 +421,25 @@ def get_new_words(request):
     else:
         if request.is_ajax():
             try:
-                # ordering = request.GET['theorder']
-                # searchword = request.GET['searchword']
 
                 profile = request.user.userprofile
-                # profile_known_kanji = profile.known_kanji.all()
                 profile_known_kanji = get_the_known_kanji(request)
 
                 kanji_in = []
 
                 known_word_list = get_known_word_list(request, True)
-                # print known_word_list
-
-                # exclude_kanji = []
- #                m = 1000
- #                while (m < 2000):
- #                   # print 'The count is:', m
- #                   exclude_kanji.append(m)
- #                   m = m + 1
-                # print exclude_kanji
-                print "this is the get new words function"
 
                 for each in profile_known_kanji:
                     kanji_in.append(each.id)
 
                 #this is the query that takes forever, adding another exclude to remove words that have extra kanji makes it a lot slower
                 words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency','pk').distinct()[0:1000]
-                # print words
 
                 #i think this is what causes it to slow down
                 data = serializers.serialize("json",words)
                 data = json.loads(data)
 
                 #add words with these kanji to front
-                # new_kanji = [72,69,207,237,316]
                 new_kanji = []
                 words_with_new_kanji = []
 
@@ -479,7 +449,7 @@ def get_new_words(request):
 
                     if thelist:
                         data.remove(each)
-                        # i = i + 1
+                       
                     else:
                         for kanji in new_kanji:
                             if kanji in each[u'fields'][u'kanji']:
@@ -491,7 +461,6 @@ def get_new_words(request):
                 data = data[:10]
                 data = json.dumps(data)
 
-                # print KnownWords.objects.all()[0].words
             except KeyError:
                 return HttpResponse("there was an error")
         return HttpResponse(data, content_type="application/json")
@@ -516,8 +485,6 @@ def update_knownkanji_special(request):
                         each.selected_kanji = False    
                     each.save()        
                 
-                
-                # data = get_known_word_list(request, False)
                 
                 data = serializers.serialize("json",data)
                 data = json.dumps(data)
@@ -594,7 +561,7 @@ def add_known_kanji(request, full_name):
     c.update(csrf(request))
     userprofiles = User.objects.get(username = full_name).userprofile.id
     userprofile = get_object_or_404(UserProfile, pk = userprofiles)
-    knownkanji = request.POST.getlist('known-kanji')
+    knownkanji = request.POST.getlist('chosenwords')
     theknownkanji = []
             
     for kanjis in knownkanji:

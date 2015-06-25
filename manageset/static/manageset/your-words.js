@@ -82,6 +82,23 @@ var remove_word_or_undo = function(word_id, already_clicked, element){
 	});
 };
 
+$('.glyphicon-info-sign').on('click', function(){
+	var element = $(this).parent().find('.add-word-button');
+	var kanji = element.data('kanji');
+	var meaning = element.data('meaning');
+	var grade = element.data('grade');
+	var readings = element.data('readings');
+	var strokes = element.data('strokes');
+	console.log(element)
+	$('#kanji-symbol').html(kanji);
+	$('#readings').html(readings);
+	$('#meaning').html(meaning);
+	$('#grade').html(grade);
+	$('#strokes').html(strokes)
+	$('#myModal').modal('show');
+	
+});
+
 
 
 var csrftoken = $.cookie('csrftoken');

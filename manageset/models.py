@@ -92,8 +92,6 @@ class WordPos(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     user_sets = models.ManyToManyField(Sets, blank = True)
-    # known_kanji = models.ManyToManyField(Kanji, blank = True)
-    # known_words = models.ManyToManyField(Words, blank = True)
     
     
     def __unicode__(self):
@@ -107,6 +105,7 @@ def createUserProfile(sender, user, request, **kwargs):
 user_registered.connect(createUserProfile)
 
 class KnownKanji(models.Model):
+    #should be a foreign key
     kanji = models.ManyToManyField(Kanji)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)

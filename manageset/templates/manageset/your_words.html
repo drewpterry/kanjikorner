@@ -46,7 +46,7 @@
 	<div class = "container" style = "padding-top:35px">
 		<ul class="nav nav-tabs" style = "padding-top:35px">
 		  <li role="presentation" class="active"><a href="#">Create Stacks / Add Words</a></li>
-		  <li role="presentation"><a href="#">Kanji</a></li>
+		  <li role="presentation"><a href="{% url 'profile:view_new_kanji' full_name %}">Kanji</a></li>
 		  
 		</ul>
 		<div class = "row">
@@ -79,11 +79,8 @@
         	  	
 				
 				<div class = "row">
-					<div class="col-xs-8 col-sm-8 col-md-4 offset-md-1" style = "border-style:solid">
-						Test
-					</div>
-					<div class="col-xs-8 col-sm-8 col-md-4 offset-md-1" style = "border-style:solid">
-						Test
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<div class="well well-sm">This area shows all the words available to you based off of the kanji you've added. The words are organized by their relative frequency.</div>
 					</div>
 				</div>
 				

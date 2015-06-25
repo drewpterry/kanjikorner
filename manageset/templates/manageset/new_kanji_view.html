@@ -1,93 +1,188 @@
-{% extends 'manageset/manage_set_template.html' %}
 {% load staticfiles %}
-{% block pagetitle %}New Kanji{% endblock %}
 
 
+<!DOCTYPE html>
+<html lang="en">
 
-{% block add-known %}
+<head>
 
-				<span style = "float:left"> Known Kanji: </span>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-				
-				<form id = "known-kanji-form" action = "{% url 'profile:add-known-kanji' full_name %}" method = "post">{% csrf_token %}
-				
-					<input type = "submit" class = "left-margin" value = "Submit Known Kanji"></input>
-				</form>
-				
-				
-				
-				
-{% endblock %}
+    <title>Kanjisama - Create Stacks</title>
 
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "homepage/css/lavish-bootstrap.css" %}" rel="stylesheet">
 
-{% block instructions %}
-This area shows all of the 2136 Jouyou kanji by the grade level it is learned in Japan.</br>
-First add the kanji you are already familiar with, and then add unfamiliar kanji when your ready. 
-{% endblock %}
+    <!-- Custom CSS -->
+    	<link href="{% static "homepage/css/dashboard.css" %}" rel="stylesheet">
 
+    <!-- Custom Fonts -->
+    <link href="{% static "homepage/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-{% block words %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-{% include page_template %}
+</head>
 
-		<ol id="joyride-tutorial" style = "display:none">
-		  /* data-id needs to be the same as the parent it will attach to */
-		  <li data-id="new-kanji"><h1>Unkown Kanji</h1><p>Click the "add it!" button on any kanji to add it to your profile. To get started, take a few minutes to add all the kanji you are fairly comfortable with (don't worry you can go back and change) and then click the submit known kanji button. As you become ready to learn more kanji you can come back and add them later. </p>
-		  
-		   <li data-id="new-words"><h1>Click here</h1><p>Once you've added you're kanji, click here to see your available words!</p>
-		  
-		  </li>
-		  
+<body class = "manage-set-page">
+	<!-- Navigation -->
+	{% include "nav_bar.html" %}
+	<br style = "clear:both">
+	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></input>
 
-		</ol>
-
-		<link rel="stylesheet" type="text/css" href="{% static 'manageset/joyride-master/joyride-2.1.css' %}">
-		<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
-		
-		
-		
-
-{% endblock %}
-
-		
-
-{% block scripts %}
-		
-
-<script>
-var knowncheck = [];
-	
-{% for kanji in known_kanji %}
-	knowncheck.push('{{ kanji.id }}');
-{% endfor %}
-
-</script>
-{% block js %}
-		<script>
-		$(window).load(function() {
-		  $("#joyride-tutorial").joyride({
-		    /* Options will go here */
-			  {% if added_kanji_count == 0  %}
-			  autoStart : true,
-			  {% else %}
-			  autoStart : false,
-			  {% endif %}
-			  
-			  // modal:true,
-			  // 'scrollSpeed': 1000,
-       	   	  // expose: true
-		  });
-		});
-		</script>
-{{ block.super }}
-<script src = "{% static 'manageset/card-search.js' %}"></script>
-    <!-- // <script src="http://code.jquery.com/jquery-latest.js"></script> -->
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>$.endlessPaginate();</script>
-{% endblock %}	
-{% endblock %}
-
-
+   
     
-    
+
 	
+	<div class = "container" style = "padding-top:35px">
+		<ul class="nav nav-tabs" style = "padding-top:35px">
+		  <li role="presentation"><a href="{% url 'profile:new-words' full_name %}">Create Stacks / Add Words</a></li>
+		  <li role="presentation" class = "active"><a href="{% url 'profile:add-known-kanji' full_name %}">Kanji</a></li>
+		  
+		</ul>
+		<div class = "row">
+	      	<div class="col-xs-3 col-sm-3 col-md-3 pull-left" data-spy="affix" data-offset-top="60" data-offset-bottom="0">
+			<form id = "create-set-form" action = "{% url 'profile:add-known-kanji' full_name %}" method = "post">{% csrf_token %}
+			
+				
+			
+
+				<input type = "submit" class = "btn btn-primary btn-lg" value = "Add Kanji"></input>
+				<div id = "stack-preview" class = "row">
+					<!-- <div class = "col-xs-12 col-sm-12 col-md-12">
+						<span class = "pull-left">Hello</span><span class = "pull-right">definition</span>
+					</div> -->
+					
+				</div>
+			</form>             
+	      	</div>
+			
+	      	<div class="col-xs-8 col-sm-9 col-md-9 pull-right">
+      	  	  	<div class = "row" style = "margin-top:0px;">
+					<div class = "col-xs-6 col-sm-3 col-md-6">
+		  				<div class = "btn btn-default col-md-12">New Kanji</div>
+					</div>
+					<div class = "col-xs-6 col-sm-3 col-md-6">
+		  				<a href = "{% url 'profile:known-kanji' full_name %}"><div class = "btn btn-default col-md-12">Added Kanji</div></a>
+					</div>
+				</div>
+        	  	
+				
+        	  	<div class = "row">
+					
+				{% for each in known_kanji %}	
+				
+				<div class="col-xs-12 col-sm-4 col-md-3">
+					<div class = "text-center manage-card">
+						<!-- <div class = 'word-frequency'>{{ each.frequency_thousand }}</div> -->
+						
+							<span class="glyphicon glyphicon-info-sign glyphicon-holder" aria-hidden="true"></span>
+					
+						
+						
+						<br>
+						<div class = 'kanji'> {{ each.kanji_name }} </div>
+						<div class = 'meaning'> {{ each.kanji_meaning }} </div>
+						<div class = 'meaning'> {{ each.grade }} </div>
+						<div class = "row">
+						
+						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
+							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-kanji= {{ each.kanji_name }} data-meaning = "{{ each.kanji_meaning }}" data-grade = {{ each.grade }}  data-strokes="{{ each.strokes }}" data-readings = "{{ each.on_kun_readings }}">Add
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</div>
+						</div>
+						
+					</div>
+					</div>
+					
+				</div>
+					
+				{% endfor %}	
+					
+					
+  				</div>
+		  	</div>
+		</div>
+		
+      	
+		
+	</div>
+   
+   
+<!-- MODAL -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title text-center" id="myModalLabel">Kanji Info</h4>
+        </div>
+        <div class="modal-body text-center">
+  		<div class = "row">
+  			
+        	
+  				<div class = "col-xs-6 col-sm-6 col-md-6">
+  					<div class = "inner-info-box">
+  						<div class = "word-info-header">Kanji</div>
+  						<div id = "kanji-symbol"class = "information">日</div>
+  					</div>
+  					<div class = "inner-info-box">
+  						<div class = "word-info-header">Strokes</div>
+  						<div id = "strokes" class = "information">4</div>
+  					</div>
+  					<div class = "inner-info-box" >
+  						<div class = "word-info-header">Grade</div>
+						<div id = "grade" class = "information">4</div>
+  						
+  					</div>
+  				</div>
+        	
+  				<div class = "col-xs-6 col-sm-6 col-md-6">
+					
+  					<div class = "inner-info-box" >
+  						<div class = "word-info-header">Readings</div>
+  						<div id = "readings" class = "information">にち, ひ</div>
+  					</div>
+					
+					<div class = "inner-info-box" >
+  						<div class = "word-info-header">Meaning</div>
+  						<div id = "meaning" class = "information"></div>
+					
+  					
+  				</div>
+				
+
+  		</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Close</button> -->
+        </div>
+      </div>
+    </div>
+  </div>     
+    
+
+    <!-- Footer -->
+   {% include "footer_new.html" %}
+
+    <!-- jQuery -->
+    <script src="{% static "homepage/js/jquery.js" %}"></script>
+	<script src = "{% static 'homepage/jquery.cookie.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+	<script src="{% static "manageset/your-words.js" %}"></script>
+
+</body>
+
+</html>
