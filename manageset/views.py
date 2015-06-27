@@ -34,7 +34,7 @@ def main_profile(request,full_name):
         userprofiles = User.objects.get(username = full_name).id
        
         userprofile = UserProfile.objects.get(user = userprofiles)
-        usersets = userprofile.user_sets.all().order_by('pub_date')
+        usersets = userprofile.user_sets.all().order_by('pub_date').prefetch_related('words')
         
         
         user_known_words = KnownWords.objects.filter(user_profile = userprofile)
@@ -98,12 +98,14 @@ def new_kanji_view(request,full_name):
         profile = request.user.userprofile
         known_kanji_list = get_known_kanji_list(request)
         profile_known_kanji = Kanji.objects.all().exclude(pk__in = known_kanji_list).order_by('grade','id')
-        number_of_added_kanji =  KnownKanji.objects.filter(user_profile = profile).count()
-        number_of_reviews = len(srs_get_and_update(request, full_name))
+        # number_of_added_kanji =  KnownKanji.objects.filter(user_profile = profile).count()
         if request.is_ajax():
             template = page_template
+            number_of_reviews = ''
+        else:    
+            number_of_reviews = len(srs_get_and_update(request, full_name))
         
-        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template, 'added_kanji_count': number_of_added_kanji, 'review_number': number_of_reviews})
+        return render(request, template, {'full_name':full_name, 'known_kanji': profile_known_kanji, 'page_template': page_template, 'review_number': number_of_reviews})
 
 
 def word_bank_view(request,full_name):
@@ -113,7 +115,6 @@ def word_bank_view(request,full_name):
         profile = request.user.userprofile
         profile_known_words = 2
         
-        
         number_of_reviews = len(srs_get_and_update(request, full_name))
         return render(request, "manageset/known_word_bank.html", {'full_name':full_name, 'known_kanji': profile_known_words, 'review_number': number_of_reviews})           
 
@@ -121,22 +122,21 @@ def word_bank_view(request,full_name):
 
 def known_kanji_view(request,full_name):
     profile = request.user.userprofile
-#     known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
-#     known_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True)
+    template = 'manageset/known_kanji_bank.html'
+    page_template = 'manageset/added_kanji_pagination_block.html'
     known_kanji_list = KnownKanji.objects.filter(user_profile = profile).prefetch_related('kanji').order_by('date_added').reverse()
-    number_of_reviews = len(srs_get_and_update(request, full_name))
     known_kanji = []
     for each in known_kanji_list:
         individual_kanji = each.kanji.get()
         known_kanji.append(individual_kanji)
         
-    # known_kanji_list = []
-#     for each in known_kanji:
-#         known_kanji_list.append(each.kanji.get().id)
-#
-#     print known_kanji_list   
-    # print known_kanji
-    return render(request, "manageset/known_kanji_bank.html", {'full_name':full_name, 'known_kanji_list':known_kanji, 'review_number': number_of_reviews})
+    if request.is_ajax():
+        template = page_template
+        number_of_reviews = ''
+    else:    
+        number_of_reviews = len(srs_get_and_update(request, full_name))
+        
+    return render(request, template, {'full_name':full_name, 'known_kanji_list':known_kanji, 'page_template': page_template, 'review_number': number_of_reviews})
  
  
  
@@ -258,7 +258,7 @@ def new_words_view(request, full_name):
 
     if len(special_words) == 0:        
 
-        words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:20]
+        words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:1000]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 300), Q(frequency = 0)|Q(frequency__gte = 35)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
         # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
         words_list = list(words)
@@ -336,6 +336,7 @@ def get_known_kanji_list(request):
     profile_known_kanji =  KnownKanji.objects.filter(user_profile = profile.id).prefetch_related('kanji')
     
     for each in profile_known_kanji:
+        #need to change kanji to foreign key or one to one relationship to change this
         theid = each.kanji.get().id
         known_kanji_list.append(theid)
 
@@ -593,6 +594,7 @@ def remove_known_kanji(request,full_name):
     for each in deletekanji:
         the_kanji_object = Kanji.objects.get(id = each)
         print the_kanji_object
+        # print KnownKanji.objects.filter(user_profile = userprofiles, kanji = the_kanji_object)
         KnownKanji.objects.get(user_profile = userprofiles, kanji = the_kanji_object).delete()
     
     return known_kanji_view(request, full_name)

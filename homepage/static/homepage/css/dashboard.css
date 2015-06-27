@@ -378,7 +378,7 @@ ol {
 }
 
 
-.manage-card .glyphicon-holder {
+.glyphicon-holder {
 	
 	position:absolute;
 	top:120px;
@@ -395,9 +395,16 @@ ol {
 /*	border-style:solid;*/
 }
 
-.manage-card .glyphicon-holder:hover {
+.glyphicon-holder:hover {
 	color:#19fc5d;
 }
+
+.mini-card .glyphicon-holder {
+	font-size:.8em;
+	top: 100px;
+	right:5px;
+}
+
 #stack-preview{
 	height:70vh;
 	overflow:auto;
@@ -418,6 +425,23 @@ ol {
 	width:100px;
 }
 
+
+/* endless pagination more button styling*/
+.endless_more {
+	border-radius:5px;
+	border-color:rgba(200,200,200,1);
+	border-style:solid;
+	border-width:1px;
+	padding-right:20px;
+	padding-left:20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	color:black;	
+}
+
+.endless_more:hover {
+	background-color: rgba(245,245,245,1);
+}
 
 footer {
     padding: 50px 0;

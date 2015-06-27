@@ -55,7 +55,10 @@ INSTALLED_APPS = (
     'endless_pagination',
     'registration',
     'bootstrap_toolkit',
+    'debug_toolbar',
 )
+
+ENDLESS_PAGINATION_LOADING = """<img src= '/static/manageset/ajax-loader.gif' alt="loading" />"""
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/app-messages'

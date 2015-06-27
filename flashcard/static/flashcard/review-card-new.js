@@ -300,7 +300,7 @@ var rewrite_cards_2 = function(){
 		rewritecards += ' 							<div class="flipper mini-flipper">'
 		rewritecards += ' 								<div class="front text-center review-card mini-card">'
 		rewritecards +=  									vocab[wordnumber - 1].word
-		rewritecards += ' 								</div>'
+		rewritecards += ' 								<span class="glyphicon glyphicon-info-sign glyphicon-holder" aria-hidden="true"></span></div>'
 		rewritecards += ' 								<div class="back text-center review-card mini-card">'
 		rewritecards += ' 									ing'
 		rewritecards += ' 								</div>'
@@ -313,10 +313,42 @@ var rewrite_cards_2 = function(){
 	
 	window.setTimeout(function(){
 		document.getElementById('card-container').innerHTML = rewritecards;
+		$('.glyphicon-info-sign').on('click', function(){
+			write_info_box()
+			$('#infoModal').modal();
+		});
 		$("#first-card").hide().fadeIn();
 	},500);
 };
 
+var write_info_box = function(){
+		var previous_word = vocab[wordnumber-1]
+		definition_info = previous_word.definitions.join("; ");
+		// for(var i = 0; i<3; i++){
+// 			if(previous_word.definitions[i]){
+// 				definition_info += '<li>' + previous_word.definitions[i] + '</li>';
+// 			};
+// 		};
+		
+		var kanji_symbols = '';
+		for(var i = 0; i<=previous_word.kanjis.length; i++){
+			if(previous_word.kanjis[i]){
+				
+				kanji_symbols += 			'<div class = "each-kanji information">';
+				kanji_symbols +=				'<div class = "actual-kanji">'+ previous_word.kanjis[i] + '</div>';
+				kanji_symbols +=				'<div class = "kanji-meaning">'+ previous_word.kanji_meanings[i] +'</div>';
+				kanji_symbols +=			'</div>';
+				
+			};		
+		};
+		
+		$('#myModalKanji').html(previous_word.word);
+		$('#word-reading').html(previous_word.hiragana);
+		$('#word-pos').html(previous_word.part_of_speech.join('<br>'));
+		$('.list-definitions').html(definition_info);
+		$('.kanji-info').html(kanji_symbols);
+		
+};
 
 
 var levenshteinenator = (function () {

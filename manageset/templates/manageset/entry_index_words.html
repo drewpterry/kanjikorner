@@ -1,32 +1,40 @@
 {% load endless %}
 
-{% lazy_paginate 300 data %}
-{% for each in data %}
-	<div id = 'answercontainer{{ each.pk }}' class = 'answerbox' >
-		<div class = 'flipper'>
-			
-			
-			<div class = "front">
-				<div id = 'kanji'> {{ each.real_word }} </div>
-				<div id = 'meaning'> {{ each.meaning|slice:":40" }} </div>
-				<div id = 'grade'>lvl: {{ each.frequency_thousand }}</div>
-				<button class = 'add-remove' id = 'knowit' onclick = 'know_it("{{ each.pk }}"," {{ each.real_word }}","{{ each.meaning }}", this)' >know it!</button>
-	
-				<button class = 'add-remove' id = 'addit' onclick = 'addword("{{ each.pk }}","{{ each.real_word }}","{{ each.meaning }}", this)'>add</button>
+{% lazy_paginate 100 data %}
+				{% for each in data %}	
 				
-				
-			</div>
-			<div class = 'undo' onclick = 'undo("{{ each.pk }}"," {{ each.real_word }}","{{ each.meaning }}", this)'>Removed</div>
-			
-			<div class = 'back'>
-				
-			</div>
-			
-			
-		</div>
-	</div>
-{% endfor %}
+				<div class="col-xs-12 col-sm-4 col-md-3">
+					<div class = "text-center manage-card">
+						<div class = 'word-frequency'>{{ each.frequency_thousand }}</div>
+						
+							<span class="glyphicon glyphicon-info-sign glyphicon-holder" aria-hidden="true"></span>
+					
+						<div class = "btn btn-danger btn-xs remove-word-button" data-clicked = false data-id = {{ each.pk }}>
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						</div>
+						
+						<br>
+						<div class = 'kanji'> {{ each.real_word }} </div>
+						<div class = 'meaning'> {{ each.hiragana }} </div>
+						<div class = 'meaning'> {{ each.meaning|slice:":40" }} </div>
+						<div class = "row">
+						
+						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
+							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-kanji= {{ each.real_word }} data-meaning = "{{ each.meaning|slice:':40' }}" data-hiragana = {{ each.hiragana }}>Add
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</div>
+						</div>
+						
+					</div>
+					</div>
+					
+				</div>
+					
+				{% endfor %}
 <br style = "clear:both;"/>
 
 
-{% show_more %}
+	<div class = "center-block text-center">{% show_more %}</div>
+	
+
+

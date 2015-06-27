@@ -176,7 +176,7 @@ $('#answer-input').keydown(function(event){
 
 
 
-//writes or hides the info box
+//writes word information
 var write_info_box = function(){
 
 		definition_info = '';

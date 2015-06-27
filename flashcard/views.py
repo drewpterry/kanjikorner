@@ -86,9 +86,6 @@ def srs_review_words(request, full_name):
     else:
         
             words_list = srs_get_and_update(request, full_name)
-            words_id = []
-            for each in words_list:
-                words_id.append(each.id)
                
     return render(request, 'flashcard/review-cards-new.html', {'full_name':full_name, 'words':words_list})
     
@@ -98,8 +95,8 @@ def srs_get_and_update(request, full_name):
    
     userprofiles = User.objects.get(username = full_name).id
     userprofile = UserProfile.objects.get(user = userprofiles) 
-    
-    words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
+    now = datetime.utcnow().replace(tzinfo=utc)
+    words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
     words_list = []
     known_word_id = []
     
@@ -108,12 +105,11 @@ def srs_get_and_update(request, full_name):
         now = datetime.utcnow().replace(tzinfo=utc)
         difference = now - last_practiced
         difference = difference.total_seconds()
-        
+
         time_remaining = word.time_until_review - difference
-        
-        word.time_until_review = time_remaining
-        word.last_practiced = now
-        word.save()
+
+       
+        # word.save()
         if time_remaining <= 0:
             #using this so i can update right or wrong words
             #need to add normal id to put definitions etc
@@ -121,6 +117,8 @@ def srs_get_and_update(request, full_name):
 
             words_list.append(word.words)
             
+       
+    words.update(last_practiced = now,time_until_review = F('time_until_review') - difference)
             
     return words_list 
 

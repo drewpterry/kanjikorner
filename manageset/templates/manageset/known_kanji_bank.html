@@ -79,34 +79,8 @@
 				
         	  	<div class = "row">
 					
-				{% for each in known_kanji_list %}	
-				
-				<div class="col-xs-12 col-sm-4 col-md-3">
-					<div class = "text-center manage-card">
-						<!-- <div class = 'word-frequency'>{{ each.frequency_thousand }}</div> -->
-						
-							<span class="glyphicon glyphicon-info-sign glyphicon-holder" aria-hidden="true"></span>
-					
-						
-						
-						<br>
-						<div class = 'kanji'> {{ each.kanji_name }} </div>
-						<div class = 'meaning'> {{ each.kanji_meaning }} </div>
-						<div class = 'meaning'> {{ each.grade }} </div>
-						<div class = "row">
-						
-						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
-							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-kanji= {{ each.kanji_name }} data-meaning = "{{ each.kanji_meaning }}" data-hiragana = {{ each.hiragana }}>Add back
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							</div>
-						</div>
-						
-					</div>
-					</div>
-					
-				</div>
-					
-				{% endfor %}	
+			{% include page_template %}	
+		</br>	
 					
 					
   				</div>
@@ -117,7 +91,59 @@
 		
 	</div>
    
-       
+<!-- MODAL -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h4 class="modal-title text-center" id="myModalLabel">Kanji Info</h4>
+       </div>
+       <div class="modal-body text-center">
+ 		<div class = "row">
+ 			
+       	
+ 				<div class = "col-xs-6 col-sm-6 col-md-6">
+ 					<div class = "inner-info-box">
+ 						<div class = "word-info-header">Kanji</div>
+ 						<div id = "kanji-symbol"class = "information">日</div>
+ 					</div>
+ 					<div class = "inner-info-box">
+ 						<div class = "word-info-header">Strokes</div>
+ 						<div id = "strokes" class = "information">4</div>
+ 					</div>
+ 					<div class = "inner-info-box" >
+ 						<div class = "word-info-header">Grade</div>
+					<div id = "grade" class = "information">4</div>
+ 						
+ 					</div>
+ 				</div>
+       	
+ 				<div class = "col-xs-6 col-sm-6 col-md-6">
+				
+ 					<div class = "inner-info-box" >
+ 						<div class = "word-info-header">Readings</div>
+ 						<div id = "readings" class = "information">にち, ひ</div>
+ 					</div>
+				
+				<div class = "inner-info-box" >
+ 						<div class = "word-info-header">Meaning</div>
+ 						<div id = "meaning" class = "information"></div>
+				
+ 					
+ 				</div>
+			
+
+ 		</div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+         <!-- <button type="button" class="btn btn-primary">Close</button> -->
+       </div>
+     </div>
+   </div>
+ </div> 
+</div>     
     
 
     <!-- Footer -->
@@ -130,6 +156,10 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
 	<script src="{% static "manageset/your-words.js" %}"></script>
+	
+	<!-- Endless pagination -->
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate();</script>
 
 </body>
 

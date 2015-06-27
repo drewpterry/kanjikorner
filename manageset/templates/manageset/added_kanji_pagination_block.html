@@ -1,7 +1,7 @@
 {% load endless %}
 
-{% paginate 100 known_kanji %}
-				{% for each in known_kanji %}	
+{% paginate 100 known_kanji_list %}
+				{% for each in known_kanji_list %}	
 				
 				<div class="col-xs-12 col-sm-4 col-md-3">
 					<div class = "text-center manage-card">
@@ -33,4 +33,3 @@
 
 
 	<div class = "center-block text-center">{% show_more %}</div>
-		
