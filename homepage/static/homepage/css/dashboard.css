@@ -317,7 +317,7 @@ ol {
 
 
 
-
+/*------------------------------- MANAGE CARD PAGES ---------------------------*/
 .manage-card{
 	height:150px;
 	background-color:white;
@@ -441,6 +441,40 @@ ol {
 
 .endless_more:hover {
 	background-color: rgba(245,245,245,1);
+}
+
+.check-button, .check-button:hover {
+	width:30px;
+	height:30px;
+	color:white;
+	font-size:20px;
+	text-align:center;
+	padding:2px;
+	margin-bottom:10px;
+}
+
+#myModalFilter .filter-checked {
+	background-color:#19fc5d;
+	border-color:#19fc5d;
+}
+
+.filter-preview {
+	height:32px;
+	width:40px;
+	border-radius:5px;
+	background-color:white;
+	text-align:center;
+	margin-left:5px;
+	
+}
+
+.filter-preview .kanji-meaning {
+	font-size:.5em;
+	font-weight:normal;
+}
+
+.glyphicon-ok {
+	display:block;
 }
 
 footer {

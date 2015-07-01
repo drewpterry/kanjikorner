@@ -100,6 +100,93 @@ $('.glyphicon-info-sign').on('click', function(){
 });
 
 
+$('#filter-button').on('click', function(){
+	$('#myModalFilter').modal('show');
+});
+
+
+
+
+
+// executed on page load
+var get_known_kanji = (function(signal){
+	
+	user_name = document.getElementById('user-name').value;
+	$('#filter-area').html("<img src = '/static/manageset/ajax-loader.gif'>")
+	$('#filter-area').load('/profile/' + user_name + '/new-set/known-kanji-filter', function(){
+		
+		$('.filter-checkbox').on('click',function(){
+			var element = $(this);
+			element.toggleClass('filter-checked');
+			var kanji_id = element.data('id');
+			update_filter_kanji(kanji_id);
+			filter_changed.change_filter(kanji_id);
+		});
+	});
+	
+})();
+
+var filter_changed = (function(){
+	var filter_array = [];
+	function add_to_filter_array(id){
+		var index = filter_array.indexOf(id);
+		if(index >= 0){
+			filter_array.splice(index,1)
+		}else{
+			filter_array.push(id);
+		}
+	};
+	
+	
+	
+	return {
+		change_filter: function(id){
+			add_to_filter_array(id)
+		},
+		state: function(){
+			var array_not_empty = filter_array.length != 0 ? true : false;
+			return array_not_empty
+		}
+	}
+
+})();
+
+var update_filter_kanji = function(kanji_id){
+	
+	$.ajax({
+		url:'/profile/upate-knownkanji-special',
+	//need to make this a post request
+		type:'GET',
+		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
+		success: function(data){
+			
+	console.log(data);
+},
+		failure: function(data){
+			alert("Sorry got an error on the AJAX")
+		}
+	});
+	
+	$('#myModalFilter').on('hide.bs.modal', function (e) {
+		if(filter_changed.state()){
+		
+			$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>");
+			$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words');
+		}else{
+			console.log('do nothering')
+		}
+	
+	})
+	
+};
+
+var get_all_words = function(){
+	user_name = document.getElementById('user-name').value;
+	$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>")
+	$('#your-words-container').load('/profile/' + user_name + '/new-set/all-words')
+	// $('#filter-area').html("<img src = '/static/manageset/ajax-loader.gif'>");
+	// $('#filter-area').load('/profile/' + user_name + '/new-set/all-words');
+};
 
 var csrftoken = $.cookie('csrftoken');
 function csrfSafeMethod(method) {
