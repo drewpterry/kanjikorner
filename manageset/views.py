@@ -123,37 +123,37 @@ class KnownKanjiView(View):
     
     template = 'manageset/known_kanji_bank.html'
     page_template = 'manageset/added_kanji_pagination_block.html'
+    
     def get(self, request, full_name):
         profile = request.user.userprofile
-        
-        # known_kanji_list = KnownKanji.objects.filter(user_profile = profile).prefetch_related('kanji').order_by('date_added').reverse()
         known_kanji = Kanji.objects.filter(knownkanji__user_profile = profile).annotate(added_date = Min('knownkanji__date_added')).order_by('-added_date')
-        # print test_known_kanji
-       
-        #this would work if it was a foreign key I think, it would be much faster, problem right now is that words can't be ordered
-        # known_kanji_list = KnownKanji.objects.filter(user_profile = profile).values_list('kanji__pk', flat = True)
-#         kanji_objects = Kanji.objects.filter(id__in = known_kanji_list)
-        # known_kanji = []
-        # for each in known_kanji_list:
-        #     individual_kanji = each.kanji.get()
-        #     individual_kanji.selected_kanji = each.selected_kanji
-        #     known_kanji.append(individual_kanji)
         
         if request.is_ajax():
             self.template = self.page_template
             number_of_reviews = ''
-            # for each in known_kanji:
-#                 individual_kanji = each.kanji.get()
-#                 individual_kanji.selected_kanji = each.selected_kanji
-#                 known_kanji.append(individual_kanji)
+
         else:    
             number_of_reviews = len(srs_get_and_update(request, full_name))
         
         return render(request, self.template, {'full_name':full_name, 'known_kanji_list':known_kanji, 'page_template': self.page_template, 'review_number': number_of_reviews})
 
-class KnownKanjiFilter(KnownKanjiView):
+class KnownKanjiFilter(View):
      page_template = 'manageset/kanji_filter.html'
-
+     def get(self, request, full_name):
+         profile = request.user.userprofile
+         known_kanji = KnownKanji.objects.filter(user_profile = profile).order_by('date_added').reverse()
+         kanji_objects = []
+         if request.is_ajax():
+             self.template = self.page_template
+             number_of_reviews = ''
+             for each in known_kanji:
+                 individual_kanji = each.kanji.get()
+                 individual_kanji.selected_kanji = each.selected_kanji
+                 kanji_objects.append(individual_kanji)
+         else:    
+             number_of_reviews = len(srs_get_and_update(request, full_name))
+        
+         return render(request, self.template, {'full_name':full_name, 'known_kanji_list':kanji_objects, 'page_template': self.page_template, 'review_number': number_of_reviews})     
 
 def known_kanji_view(request,full_name):
     profile = request.user.userprofile
@@ -259,10 +259,7 @@ def new_words_view(request, full_name):
     
     #start different way -------------------------------------------------------------
     
-    # all lot faster in general but only gives small subset of results, not effective for finding words with specific kanji because only pulls from returned number...as long as their are not too many kanji it happens quickly, no problem with 90 kanji after that time starts rising considerably
-    # kanji_in = []
-#     for each in range(20,600):
-#         kanji_in.append(each)
+
     
     
 
@@ -276,6 +273,8 @@ def new_words_view(request, full_name):
     
     special_words = Words.objects.filter(kanji__in = new_kanji).exclude(published = False).exclude(id__in = known_word_list).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).prefetch_related('kanji').order_by('-combined_frequency')
     
+    for each in special_words:
+        print each.wordmeanings_set.all()
 
     special_words = list(special_words)
     for each in list(special_words):
@@ -293,8 +292,7 @@ def new_words_view(request, full_name):
     if len(special_words) == 0:        
 
         words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:1000]
-        # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency_two = None).exclude(id__in = known_word_list).exclude(published = False).exclude(Q(frequency_two__lte = 300), Q(frequency = 0)|Q(frequency__gte = 35)).order_by('-frequency_two').prefetch_related('kanji').distinct()[0:1000]
-        # words = Words.objects.filter(kanji__in = kanji_in).exclude(frequency = 0).exclude(id__in = known_word_list).order_by('frequency').prefetch_related('kanji').distinct()[0:1000]
+
         words_list = list(words)
      
         i = 0

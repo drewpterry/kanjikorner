@@ -65,7 +65,7 @@
 		  				<div class = "btn btn-default col-md-12">Your Words</div>
 					</div>
 					<div class = "col-xs-6 col-sm-3 col-md-6">
-		  				<div class = "btn btn-default col-md-12">All Words</div>
+		  				<div id = "all-words" class = "btn btn-default col-md-12">All Words</div>
 					</div>
 				</div>
         	  	
@@ -98,7 +98,7 @@
 				{% include page_template %}	
 					
 					
-					
+					</br>
   				</div>
 		  	</div>
 		</div>
@@ -135,7 +135,53 @@
   </div>  
  </div>  
 
-       
+
+
+
+<!-- INFO MODAL -->
+ <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h4 class="modal-title text-center" id="myModalKanji">Word Info</h4>
+       </div>
+       <div class="modal-body text-center">
+ 	<div class = "row">
+		
+       	
+ 			<div class = "col-xs-6 col-sm-6 col-md-6">
+ 				<div class = "inner-info-box">
+ 					<div class = "word-info-header">Reading</div>
+ 					<div id = "word-reading" class = "information">ひらがな</div>
+ 				</div>
+ 				<div class = "inner-info-box">
+ 					<div class = "word-info-header">Part of Speech</div>
+ 					<div id = "word-pos" class = "information">na-adjective,<br> suru verb,<br> and something else</div>
+ 				</div>
+ 				<div class = "inner-info-box" >
+ 					<div class = "word-info-header">Kanji</div>
+ 					<div class = "kanji-info information">
+       	
+ 					</div>
+ 				</div>
+ 			</div>
+       	
+ 			<div class = "col-xs-6 col-sm-6 col-md-6">
+ 				<div class = "word-info-header">Definitions</div>
+ 				<div class = "list-definitions">
+ 					definitions,asdfjsa
+ 				</div>
+ 			</div>
+			
+
+ 	</div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>    
     
 
     <!-- Footer -->

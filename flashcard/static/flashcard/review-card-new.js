@@ -189,33 +189,33 @@ $('#answer-input').keydown(function(event){
 
 
 //writes or hides the info box
-var write_info_box = function(){
-
-		definition_info = '';
-		for(var i = 0; i<3; i++){
-			if(current_word.definitions[i]){
-				definition_info += '<li>' + current_word.definitions[i] + '</li>';
-			};	
-		};
-		
-		var kanji_symbols = '';
-		for(var i = 0; i<=current_word.kanjis.length; i++){
-			if(current_word.kanjis[i]){
-				
-				kanji_symbols += 			'<div class = "each-kanji information">';
-				kanji_symbols +=				'<div class = "actual-kanji">'+ current_word.kanjis[i] + '</div>';
-				kanji_symbols +=				'<div class = "kanji-meaning">'+ current_word.kanji_meanings[i] +'</div>';
-				kanji_symbols +=			'</div>';
-				
-			};		
-		};
-		
-		$('#word-reading').html(current_word.hiragana);
-		$('#word-pos').html(current_word.part_of_speech.join('<br>'));
-		$('.list-definitions > ol').html(definition_info);
-		$('.kanji-info').html(kanji_symbols);
-		
-};
+// var write_info_box = function(){
+//
+// 		definition_info = '';
+// 		for(var i = 0; i<3; i++){
+// 			if(current_word.definitions[i]){
+// 				definition_info += '<li>' + current_word.definitions[i] + '</li>';
+// 			};
+// 		};
+//
+// 		var kanji_symbols = '';
+// 		for(var i = 0; i<=current_word.kanjis.length; i++){
+// 			if(current_word.kanjis[i]){
+//
+// 				kanji_symbols += 			'<div class = "each-kanji information">';
+// 				kanji_symbols +=				'<div class = "actual-kanji">'+ current_word.kanjis[i] + '</div>';
+// 				kanji_symbols +=				'<div class = "kanji-meaning">'+ current_word.kanji_meanings[i] +'</div>';
+// 				kanji_symbols +=			'</div>';
+//
+// 			};
+// 		};
+//
+// 		$('#word-reading').html(current_word.hiragana);
+// 		$('#word-pos').html(current_word.part_of_speech.join('<br>'));
+// 		$('.list-definitions > ol').html(definition_info);
+// 		$('.kanji-info').html(kanji_symbols);
+//
+// };
 
 
 
@@ -323,7 +323,7 @@ var rewrite_cards_2 = function(){
 
 var write_info_box = function(){
 		var previous_word = vocab[wordnumber-1]
-		definition_info = previous_word.definitions.join("; ");
+		definition_info = previous_word.definitions.join(", ");
 		// for(var i = 0; i<3; i++){
 // 			if(previous_word.definitions[i]){
 // 				definition_info += '<li>' + previous_word.definitions[i] + '</li>';

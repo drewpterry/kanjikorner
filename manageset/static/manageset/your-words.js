@@ -84,6 +84,7 @@ var remove_word_or_undo = function(word_id, already_clicked, element){
 
 $('.glyphicon-info-sign').on('click', function(){
 	var element = $(this).parent().find('.add-word-button');
+	// if (element.data('kanji')){
 	var kanji = element.data('kanji');
 	var meaning = element.data('meaning');
 	var grade = element.data('grade');
@@ -96,8 +97,38 @@ $('.glyphicon-info-sign').on('click', function(){
 	$('#grade').html(grade);
 	$('#strokes').html(strokes)
 	$('#myModal').modal('show');
+	// }else{
+// 		console.log('mee')
+// 	}
+});
+
+$('.word-info-click').on('click', function(){
+	var element = $(this).parent().find('.add-word-button');
+	var word = element.data('word');
+	var reading = element.data('readings');
+	var definitions = element.data('definitions');
+	var pos = element.data('pos');
+	var kanjis = element.data('kanjis');
+	var kanji_meanings = element.data('kanji-meaning').split(',');
+	var kanji_symbols = '';
+	
+	for(var i = 0; i<=kanjis.length; i++){
+			kanji_symbols += 			'<div class = "each-kanji information">';
+			kanji_symbols +=				'<div class = "actual-kanji">'+ kanjis[i] + '</div>';
+			kanji_symbols +=				'<div class = "kanji-meaning">'+ kanji_meanings[i] +'</div>';
+			kanji_symbols +=			'</div>';
+	};
+	
+	$('#word-info-header').html(word);
+	$('#word-reading').html(reading);
+	$('#word-pos').html(pos);
+	$('.list-definitions').html(definitions);
+	$('.kanji-info').html(kanji_symbols);
+	$('#infoModal').modal('show');
 	
 });
+
+
 
 
 $('#filter-button').on('click', function(){
@@ -136,8 +167,6 @@ var filter_changed = (function(){
 			filter_array.push(id);
 		}
 	};
-	
-	
 	
 	return {
 		change_filter: function(id){
@@ -180,12 +209,15 @@ var update_filter_kanji = function(kanji_id){
 	
 };
 
+$('#all-words').on('click',function(){
+	//word info click won't work unless you reinitialize
+	get_all_words();
+});
 var get_all_words = function(){
 	user_name = document.getElementById('user-name').value;
 	$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>")
 	$('#your-words-container').load('/profile/' + user_name + '/new-set/all-words')
-	// $('#filter-area').html("<img src = '/static/manageset/ajax-loader.gif'>");
-	// $('#filter-area').load('/profile/' + user_name + '/new-set/all-words');
+
 };
 
 var csrftoken = $.cookie('csrftoken');

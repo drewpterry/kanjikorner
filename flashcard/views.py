@@ -93,10 +93,9 @@ def srs_review_words(request, full_name):
 def srs_get_and_update(request, full_name):
     
    
-    userprofiles = User.objects.get(username = full_name).id
-    userprofile = UserProfile.objects.get(user = userprofiles) 
+    profile = request.user.userprofile
     now = datetime.utcnow().replace(tzinfo=utc)
-    words = KnownWords.objects.filter(user_profile = userprofile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
+    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
     words_list = []
     known_word_id = []
     
