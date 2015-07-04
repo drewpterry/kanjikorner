@@ -62,7 +62,7 @@
 	      	<div class="col-xs-8 col-sm-9 col-md-9 pull-right">
       	  	  	<div class = "row" style = "margin-top:0px;">
 					<div class = "col-xs-6 col-sm-6 col-md-6">
-		  				<div class = "btn btn-default col-md-12">Your Words</div>
+		  				<div id = "your-words" class = "btn btn-default col-md-12 button-clicked">Your Words</div>
 					</div>
 					<div class = "col-xs-6 col-sm-3 col-md-6">
 		  				<div id = "all-words" class = "btn btn-default col-md-12">All Words</div>
@@ -72,15 +72,15 @@
 				
 				<div class = "row">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="well well-sm">These are all the words available to you based off of the kanji you've added. The words are organized by their relative frequency.</div>
+						<div id = "section-explanation" class="well well-sm">These words only consist of the kanji you've added organized by their relative frequency.</div>
 					</div>
 				</div>
 				
 				<div class = "row">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="well well-sm" style = "overflow:auto;">Kanji Filter
+						<div id = "your-words-filter" class="well well-sm" style = "overflow:auto;">
 							<div id = "filter-button" class = "btn btn-default pull-left">Filter</div>
-							
+							<div id = "filter-well">
 							{% for each in selected_kanji %}
 									{% for the_kanji in each.kanji.all %}
 									<div class = 'pull-left filter-preview' id = "filter-{{ the_kanji.kanji_name }}" data-count='0' class = 'filter-kanji'>
@@ -90,7 +90,22 @@
 									</div>
 									{% endfor %}
 							{% endfor %}
-						</div>
+							</div>
+						</div>	
+							
+						<!-- <div id = "your-words-filter" class="well well-sm" style = "overflow:auto;">
+						    <div class="input-group">
+						      <input id = "search-input" type="text" class="form-control" placeholder="Search by kanji, hiragana, or keyword">
+						      <span class="input-group-btn">
+						        <button id = "search-button" class="btn btn-default" type="button">Go!</button>
+						      </span>
+						    </div>
+
+
+						</div> -->
+													
+							
+							
 					</div>
 				</div>
 				
@@ -182,6 +197,7 @@
      </div>
    </div>
  </div>    
+</div>
     
 
     <!-- Footer -->

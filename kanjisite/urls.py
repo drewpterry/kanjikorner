@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
 #namespace specifies exactly where url is coming from - inluded on index page
     url(r'^$', 'homepage.views.index', name = "home"),
+    url(r'^faq/', 'homepage.views.faq_page', name = "faq"),
     url(r'^create-account/', include('homepage.urls', namespace = "create-account")),
     url(r'^login/', include('homepage.urls', namespace = "login")),
     url(r'^logout/', include('homepage.urls', namespace = "logout")),

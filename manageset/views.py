@@ -373,7 +373,11 @@ def word_search(request):
         return HttpResponse(data, content_type="application/json")
    
    
-
+def selected_words_view(request, full_name):
+    profile = request.user.userprofile
+    template = 'manageset/filtered_words.html'
+    selected_kanji = KnownKanji.objects.filter(user_profile = profile, selected_kanji = True).prefetch_related('kanji')
+    return render(request, template, {'selected_kanji':selected_kanji})
         
 
 #probably should rename
