@@ -14,7 +14,7 @@
                 </button>
 				<a class="navbar-brand topnav" href="#">
 					
-                        	<img id = "text-logo" style = "max-width:70%; margin-top: -3%" src="{% static "homepage/img/text_only_new.svg" %}" alt="">
+                        	<img id = "text-logo" style = "max-width:150px; margin-top: -3%" src="{% static "homepage/img/text_only_new.svg" %}" alt="">
 						
 								
 							
@@ -36,9 +36,9 @@
 					                </p>
 					        </li>
 							<li><a href = "/logout/complete/">Sign Out</a></li>
-							<li><a href = "{% url 'profile:index' full_name %}">Profile</a></li>
+							<li><a href = "{% url 'profile:index' full_name %}">Home</a></li>
 					{% else %}
-							<li><a href = "/homepage/faq">FAQ</a></li>
+							<li><a href = "/faq">FAQ</a></li>
 							<li><a href = "/">Home</a></li>
 						</ul>
 					{% endif %}

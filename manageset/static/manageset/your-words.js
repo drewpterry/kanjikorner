@@ -205,7 +205,10 @@ var update_filter_kanji = function(kanji_id){
 		if(filter_changed.state()){
 		
 			$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>");
-			$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words');
+			$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words', function(){
+				attach_word_info_click();
+				attach_word_button_click();
+			});
 			$('#filter-well').load('/profile/' + user_name + '/new-set/selected-words');
 			filter_changed.reset();
 		}else{
@@ -219,12 +222,15 @@ var update_filter_kanji = function(kanji_id){
 $('#your-words').on('click',function(){
 	
 	$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>");
-	$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words');
+	$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words', function(){
+		attach_word_info_click();
+		attach_word_button_click();
+	});
 	$(this).addClass('button-clicked');
 	$('#all-words').removeClass('button-clicked');
 	$('#your-words-filter').show();
 	$('#section-explanation').html("These words only consist of the kanji you've added organized by their relative frequency.");
-	// this.style.borderColor = 'rgba(170,170,170,1)';
+	
 	
 });
 

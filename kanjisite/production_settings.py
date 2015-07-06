@@ -30,7 +30,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = []
-ADMINS = (('Drew', 'drewpterry@yahoo.com'))
+ADMINS = (('Drew', 'drewpterry@yahoo.com'),)
 SERVER_EMAIL = 'thekanjisama@gmail.com'
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS

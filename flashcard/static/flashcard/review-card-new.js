@@ -38,7 +38,7 @@ var startpage_2 = function(){
 
 	initial_cards = ''
  	initial_cards +=						'<div class = "container">	'
- 	initial_cards +=						'	<div id ="flashcard-page-card-row" class = "row" style = "height:250px">'
+ 	initial_cards +=						'	<div id ="flashcard-page-card-row" class = "row">'
 	initial_cards +=	    				'  		<div class="col-xs-0 col-sm-3 col-md-3">'
  	initial_cards +=						'			<div class="flip-container">'
  	initial_cards +=						'				<div id = "array_place_' + wordnumber+1 + '" class="flipper mini-flipper">'
@@ -73,7 +73,9 @@ var startpage_2 = function(){
 	
 };
 
-
+$('#answer-form').submit(function(event){
+	event.preventDefault();
+});
 
 $('#answer-input').keydown(function(event){
 	if(input_ready === true && event.keyCode === 13){
@@ -188,35 +190,6 @@ $('#answer-input').keydown(function(event){
 
 
 
-//writes or hides the info box
-// var write_info_box = function(){
-//
-// 		definition_info = '';
-// 		for(var i = 0; i<3; i++){
-// 			if(current_word.definitions[i]){
-// 				definition_info += '<li>' + current_word.definitions[i] + '</li>';
-// 			};
-// 		};
-//
-// 		var kanji_symbols = '';
-// 		for(var i = 0; i<=current_word.kanjis.length; i++){
-// 			if(current_word.kanjis[i]){
-//
-// 				kanji_symbols += 			'<div class = "each-kanji information">';
-// 				kanji_symbols +=				'<div class = "actual-kanji">'+ current_word.kanjis[i] + '</div>';
-// 				kanji_symbols +=				'<div class = "kanji-meaning">'+ current_word.kanji_meanings[i] +'</div>';
-// 				kanji_symbols +=			'</div>';
-//
-// 			};
-// 		};
-//
-// 		$('#word-reading').html(current_word.hiragana);
-// 		$('#word-pos').html(current_word.part_of_speech.join('<br>'));
-// 		$('.list-definitions > ol').html(definition_info);
-// 		$('.kanji-info').html(kanji_symbols);
-//
-// };
-
 
 
 var next_card_2 = function(){
@@ -264,7 +237,7 @@ var rewrite_cards_2 = function(){
 	
 	var rewritecards = '';
 		rewritecards += '<div class = "container">	'
-		rewritecards += ' 				<div id = "flashcard-page-card-row" class = "row" style = "height:250px">'
+		rewritecards += ' 				<div id = "flashcard-page-card-row" class = "row">'
 		rewritecards += '		      		<div class="col-xs-0 col-sm-3 col-md-3">'
 		rewritecards += ' 						<div id = "first-card" class="flip-container">'
 		rewritecards += ' 							<div class="flipper mini-flipper">'

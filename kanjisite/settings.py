@@ -54,7 +54,6 @@ INSTALLED_APPS = (
     'southtut',    
     'endless_pagination',
     'registration',
-    'bootstrap_toolkit',
     'debug_toolbar',
 )
 

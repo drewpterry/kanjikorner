@@ -35,7 +35,7 @@ var startpage_2 = function(){
 
 	initial_cards = ''
  	initial_cards +=						'<div class = "container">	'
- 	initial_cards +=						'	<div id = "flashcard-page-card-row" class = "row" style = "height:250px">'
+ 	initial_cards +=						'	<div id = "flashcard-page-card-row" class = "row">'
 	initial_cards +=	    				'  		<div class="col-xs-0 col-sm-3 col-md-3">'
  	initial_cards +=						'			<div class="flip-container">'
  	initial_cards +=						'				<div id = "array_place_' + wordnumber+1 + '" class="flipper mini-flipper">'
@@ -256,7 +256,7 @@ var rewrite_cards_2 = function(){
 	
 	var rewritecards = '';
 		rewritecards += '<div class = "container">	'
-		rewritecards += ' 				<div id = "flashcard-page-card-row" class = "row" style = "height:250px">'
+		rewritecards += ' 				<div id = "flashcard-page-card-row" class = "row">'
 		rewritecards += '		      		<div class="col-xs-0 col-sm-3 col-md-3">'
 		rewritecards += ' 						<div id = "first-card" class="flip-container">'
 		rewritecards += ' 							<div class="flipper mini-flipper">'
