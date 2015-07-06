@@ -174,7 +174,9 @@ $('#answer-input').keydown(function(event){
 	};
 });
 
-
+$('#answer-form').submit(function(event){
+	event.preventDefault();
+});
 
 //writes word information
 var write_info_box = function(){
