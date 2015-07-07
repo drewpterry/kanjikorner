@@ -9,6 +9,27 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
+$('#stack-submit').on('click', function(){
+	
+});
+
+var stack_id_array = (function(){
+	var ids = [];
+	function add_or_remove_id(id){
+		var index = ids.indexOf(id);
+		if(index == -1){
+			ids.push(id);
+		}else{
+			ids.splice(index,1);
+		};
+	};
+	return {
+		values: ids,
+		update_array: function(id){
+			add_or_remove_id(id)
+		}	
+	}	
+})();
 
 var add_word_to_stack = function(element, word_id, word_meaning, full_word){
 	var already_clicked = element.data('clicked', true);
@@ -23,6 +44,15 @@ var add_word_to_stack = function(element, word_id, word_meaning, full_word){
 	stack_preview_card  +=	'<hr></div>';
 	$('#stack-preview').append(stack_preview_card);
 	
+	stack_id_array.update_array(word_id);
+	
+};
+
+var click_button_if_in_stack = function(){
+	
+	for(var i = 0; i < stack_id_array.values.length; i++){
+		$('.add-word-button[data-id=' + stack_id_array.values[i] + ']').addClass('add-word-button-clicked');
+	};
 };
 
 var remove_word_from_stack = function(element, word_id){
@@ -30,7 +60,8 @@ var remove_word_from_stack = function(element, word_id){
 	element.html('Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
 	$("#" + word_id).remove();
 	document.getElementById('chosenwords' + word_id).remove();
-	var already_clicked = element.data('clicked', false);	
+	var already_clicked = element.data('clicked', false);
+	stack_id_array.update_array(word_id);	
 };
 
 
@@ -194,7 +225,7 @@ var update_filter_kanji = function(kanji_id){
 		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: function(data){
 			
-	console.log(data);
+	// console.log(data);
 },
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -226,6 +257,7 @@ $('#your-words').on('click',function(){
 	$('#your-words-container').load('/profile/' + user_name + '/new-set/new-words', function(){
 		attach_word_info_click();
 		attach_entry_button_click();
+		click_button_if_in_stack();
 	});
 	$(this).addClass('button-clicked');
 	$('#all-words').removeClass('button-clicked');
@@ -256,6 +288,7 @@ var get_all_words = function(search_term){
 	$('#your-words-container').load('/profile/' + user_name + '/new-set/all-words',function(){
 		attach_word_info_click();
 		attach_entry_button_click();
+		click_button_if_in_stack();
 	});
 
 };
@@ -273,6 +306,8 @@ $.ajaxSetup({
     }
 });
 
+
+//on page load
 attach_kanji_info_click();
 attach_word_info_click();
 attach_entry_button_click();

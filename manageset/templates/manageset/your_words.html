@@ -51,7 +51,7 @@
 				
 			
 
-				<input type = "submit" class = "btn btn-primary" value = "Create Stack"></input>
+				<input id = "stack-submit" type = "submit" class = "btn btn-primary" value = "Create Stack"></input>
 				<div id = "stack-preview" class = "row">
 					
 					
@@ -218,6 +218,7 @@
             onCompleted: function() {
 				attach_word_info_click();
 				attach_entry_button_click();
+				click_button_if_in_stack();
             }
         });</script>
 
