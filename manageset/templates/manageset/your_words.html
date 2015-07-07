@@ -93,16 +93,16 @@
 							</div>
 						</div>	
 							
-						<!-- <div id = "your-words-filter" class="well well-sm" style = "overflow:auto;">
+						<div id = "your-words-search" style = "display:none;" class="well well-sm" style = "overflow:auto;">
 						    <div class="input-group">
-						      <input id = "search-input" type="text" class="form-control" placeholder="Search by kanji, hiragana, or keyword">
+						      <input id = "search-input" style = "height:33px;" type="text" class="form-control" placeholder="Search by kanji, hiragana, or keyword">
 						      <span class="input-group-btn">
-						        <button id = "search-button" class="btn btn-default" type="button">Go!</button>
+						        <button id = "search-button" class="btn btn-default" type="button">Search!</button>
 						      </span>
 						    </div>
 
 
-						</div> -->
+						</div>
 													
 							
 							
@@ -121,6 +121,7 @@
       	
 		
 	</div>
+	</br>
    
 
 
@@ -213,7 +214,12 @@
 	
 	<!-- Endless pagination -->
     <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>$.endlessPaginate();</script>
+    <script>$.endlessPaginate({
+            onCompleted: function() {
+				attach_word_info_click();
+				attach_entry_button_click();
+            }
+        });</script>
 
 </body>
 

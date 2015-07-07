@@ -31,9 +31,15 @@
 					
 					{% if full_name %}
 							<li>
+								{% if review_number == 0 %}
+					                <p class="navbar-btn">
+					                    <a href="{% url 'flashcard:srs_review_words' full_name %}" class="btn btn-default" disabled>Reviews <span class="badge">{{ review_number }}</span></a>
+					                </p>
+								{% else %}
 					                <p class="navbar-btn">
 					                    <a href="{% url 'flashcard:srs_review_words' full_name %}" class="btn btn-default">Reviews <span class="badge">{{ review_number }}</span></a>
 					                </p>
+								{% endif %}	
 					        </li>
 							<li><a href = "/logout/complete/">Sign Out</a></li>
 							<li><a href = "{% url 'profile:index' full_name %}">Home</a></li>
