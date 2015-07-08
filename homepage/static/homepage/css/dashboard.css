@@ -4,7 +4,7 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-//blue: background-color:#19befa;
+//blue: background-color:#19befa; rgba(25, 190, 250, 1)
 //white: #f8f8f8;
 //grey: rgba(233,233,233,1)
 //green #19fc5d
@@ -563,17 +563,17 @@ p.copyright {
 
 @media screen and (max-width: 500px) {
 	#card-container {
-		height:35vh;
+		height:32vh;
 		margin-top:5px;
 		margin-bottom:5px;
 	}
 	
 	.front-main, .back-main {
-		height:35vh;
+		height:32vh;
 	}
 
 	.front-main {
-		line-height:35vh;
+		line-height:32vh;
 		font-size:3.5em;
 	}
 	
@@ -582,7 +582,7 @@ p.copyright {
 	}
 	
 	#flashcard-page-card-row {
-		height:35vh;
+		height:32vh;
 	}
 	
 	#answer-input {

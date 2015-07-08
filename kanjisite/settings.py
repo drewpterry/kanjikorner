@@ -105,18 +105,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         #'NAME': '/desktop/djangotut/sqlite3.db)',
-#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'NAME': 'KanjiDB',
-#         'HOST':'kanjiapp.czbseelickqu.us-west-1.rds.amazonaws.com',
-#         'USER': 'drewterry',
-#         'PASSWORD': '!23kanjisama#21',
-#         'PORT':'5432',
-#     }
-# }
+
 
 
 # Internationalization
