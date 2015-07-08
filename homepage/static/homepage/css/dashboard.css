@@ -365,6 +365,8 @@ ol {
 	left:20px;	
 }
 
+
+
 .manage-card .kanji {
 	font-size:1.7em;
 	
@@ -376,7 +378,7 @@ ol {
 
 .manage-card .add-word-button-clicked {
 	background-color:#19fc5d;
-	border-color:#19fc5d;
+	border-color:rgba(0,227,68,1)
 }
 
 .manage-card .button-holder {
@@ -451,7 +453,17 @@ ol {
   
   
 #set-title {
-	width:100px;
+	width:150px;
+	margin-right:2px;
+	height:32px;
+	font-size:1.4em;
+	text-align:center;
+	border-style:none;
+	position:relative;
+	top:4px;
+	background-color:black;
+	color: rgba(100,100,100,1);
+	color:#f8f8f8;
 }
 
 
@@ -506,6 +518,10 @@ ol {
 	display:block;
 }
 
+.manage-set-page #section-explanation {
+	margin-bottom:0px;
+}
+
 .manage-set-page .button-clicked {
 	background-color:rgba(230,230,230,1);
 	border-color:rgba(170,170,170,1);
@@ -519,6 +535,9 @@ ol {
 	color: rgba(255,255,255,1);
 }
 
+.manage-card .well {
+	margin-bottom:0px;
+}
 
 footer {
     padding: 50px 0;
@@ -534,6 +553,10 @@ p.copyright {
 @media screen and (max-width: 1000px) {
 	.mini-card{
 		visibility:hidden;
+	}
+	
+	#set-title {
+		margin-bottom:7px;
 	}
 	
 }
@@ -589,6 +612,11 @@ p.copyright {
 		width:33%;
 	}
 	
+	#set-title {
+		width:100px;
+		font-size:1em;
+		margin-bottom:5px;
+	}
 	
 	
 	

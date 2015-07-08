@@ -1,3 +1,4 @@
+// allows you to remove entire nodes
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }
@@ -9,12 +10,18 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
-$('#stack-submit').on('click', function(){
-	
-});
+
+var disable_or_enable_submit_button = function(){
+	if(stack_id_array.values.length === 0){
+		document.getElementById('stack-submit').disabled = true;
+	}else{
+		document.getElementById('stack-submit').disabled = false;
+	};
+};
 
 var stack_id_array = (function(){
 	var ids = [];
+	
 	function add_or_remove_id(id){
 		var index = ids.indexOf(id);
 		if(index == -1){
@@ -23,10 +30,20 @@ var stack_id_array = (function(){
 			ids.splice(index,1);
 		};
 	};
+		
+	function disable_or_enable_submit_button(){
+		if(stack_id_array.values.length === 0){
+			document.getElementById('stack-submit').disabled = true;
+		}else{
+			document.getElementById('stack-submit').disabled = false;
+		};
+	};	
+	
 	return {
 		values: ids,
 		update_array: function(id){
-			add_or_remove_id(id)
+			add_or_remove_id(id);
+			disable_or_enable_submit_button();
 		}	
 	}	
 })();
@@ -45,13 +62,15 @@ var add_word_to_stack = function(element, word_id, word_meaning, full_word){
 	$('#stack-preview').append(stack_preview_card);
 	
 	stack_id_array.update_array(word_id);
-	
 };
 
 var click_button_if_in_stack = function(){
 	
 	for(var i = 0; i < stack_id_array.values.length; i++){
-		$('.add-word-button[data-id=' + stack_id_array.values[i] + ']').addClass('add-word-button-clicked');
+		var element = $('.add-word-button[data-id=' + stack_id_array.values[i] + ']');
+		element.addClass('add-word-button-clicked');
+		element.html('Add ✓');
+		element.data('clicked', true);
 	};
 };
 
@@ -65,7 +84,7 @@ var remove_word_from_stack = function(element, word_id){
 };
 
 
-
+// clicking the x button in top right hand corner of card
 $('.remove-word-button').on('click', function(){
 	var element = $(this);
 	var word_id = element.data('id');
@@ -86,7 +105,6 @@ var remove_word_or_undo = function(word_id, already_clicked, element){
 		var url_route = 'remove';
 		element.data('clicked',false);
 		element.removeClass('red-color');
-		
 	};
 	
 	$.ajax({
@@ -103,7 +121,6 @@ var remove_word_or_undo = function(word_id, already_clicked, element){
 var attach_kanji_info_click = function(){
 	$('.glyphicon-info-sign').on('click', function(){
 		var element = $(this).parent().find('.add-word-button');
-		// if (element.data('kanji')){
 		var kanji = element.data('kanji');
 		var meaning = element.data('meaning');
 		var grade = element.data('grade');
@@ -115,7 +132,6 @@ var attach_kanji_info_click = function(){
 		$('#grade').html(grade);
 		$('#strokes').html(strokes)
 		$('#myModal').modal('show');
-
 	})
 };
 
@@ -159,11 +175,8 @@ var attach_word_info_click = function(){
 		$('.list-definitions').html(definitions);
 		$('.kanji-info').html(kanji_symbols);
 		$('#infoModal').modal('show');
-		
 	});
 };
-
-
 
 
 $('#filter-button').on('click', function(){
@@ -185,8 +198,7 @@ var get_known_kanji = (function(signal){
 			update_filter_kanji(kanji_id);
 			filter_changed.change_filter(kanji_id);
 		});
-	});
-	
+	});	
 })();
 
 var filter_changed = (function(){
@@ -213,20 +225,18 @@ var filter_changed = (function(){
 			filter_array = [];
 		}
 	}
-
 })();
 
 var update_filter_kanji = function(kanji_id){
 	
 	$.ajax({
 		url:'/profile/upate-knownkanji-special',
-	//need to make this a post request
+	//should make this a post request
 		type:'GET',
 		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: function(data){
-			
-	// console.log(data);
-},
+
+		},
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
 		}
@@ -245,10 +255,8 @@ var update_filter_kanji = function(kanji_id){
 			filter_changed.reset();
 		}else{
 			console.log('do nothing')
-		}
-	
+		}	
 	})
-	
 };
 
 $('#your-words').on('click',function(){
@@ -264,8 +272,6 @@ $('#your-words').on('click',function(){
 	$('#your-words-filter').show();
 	$('#your-words-search').hide();
 	$('#section-explanation').html("These words only consist of the kanji you've added organized by their relative frequency.");
-	
-	
 });
 
 $('#all-words').on('click',function(){
@@ -290,7 +296,6 @@ var get_all_words = function(search_term){
 		attach_entry_button_click();
 		click_button_if_in_stack();
 	});
-
 };
 
 var csrftoken = $.cookie('csrftoken');
