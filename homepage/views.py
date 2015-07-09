@@ -67,7 +67,4 @@ def create_account_success(request):
     return render(request, 'homepage/create-account-success.html')      
     
 def faq_page(request):
-	return render(request, 'homepage/faq.html') 
-
-def contact_us_page(request):
-	return render(request, 'homepage/contact.html')
+	return render(request, 'homepage/faq.html')    
