@@ -199,11 +199,31 @@
    </div>
  </div>    
 </div>
+
+			<!-- <ol id="joyride-tutorial" style = "display:none">
+					  /* data-id needs to be the same as the parent it will attach to */
+					  <li data-id="new-words"><h1>New words</h1><p> This area shows all the words available to you based off of the kanji you've added. The words are organized by their relative frequency. </p>
+
+					   <li data-class="add-remove" data-options="tipLocation:left;"><h1>If you know it</h1><p>Click the <strong>know it</strong> button to remove the word so it won't show up anymore.</p>
+					   <li data-class="add-remove" data-options="tipLocation:left;"><h1>If you don't know it</h1><p>Click the <strong>add</strong> button to add the word to a stack. Hint - its usually best to keep stacks smaller, like 5 - 20 words.</p>
+
+
+						<li data-id="create-set-button" data-options="tipLocation:left;"><h1>Create your first stack</h1><p>Once you've added the words you want to learn, click this button to create the lesson! This is will take you back to the main page where you can then see your stack and practice it!</p>
+
+						<li data-id="kanji-bank" data-options="tipLocation:left;" data-button="Finish"><h1>Filter words by kanji</h1><p>If you want to see the words available to you for only specific kanji, go to this tab and click the checkmark for the kanji you want to filter by. Hint - this can be really helpful when you add new kanji you want to learn!</p>
+
+					  </li>
+
+
+					</ol> -->
     
 
     <!-- Footer -->
    {% include "footer_new.html" %}
-
+	
+	
+	
+	<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
     <!-- jQuery -->
     <script src="{% static "homepage/js/jquery.js" %}"></script>
 	<script src = "{% static 'homepage/jquery.cookie.js' %}"></script>
@@ -221,6 +241,25 @@
 				click_button_if_in_stack();
             }
         });</script>
+		
+					 // <script>
+		// 			$(window).load(function() {
+		// 			  $("#joyride-tutorial").joyride({
+		// 			    /* Options will go here */
+		// 				  {% if words_in_queue == False %}
+		// 				  autoStart : true,
+		// 				  {% else %}
+		// 				  autoStart : false,
+		// 				  {% endif %}
+		//
+		// 				  // modal:true,
+		// 				  // 'scrollSpeed': 1000,
+		// 	       	   	  // expose: true
+		// 			  });
+		// 			});
+		//
+		//
+		// 			</script>
 
 </body>
 

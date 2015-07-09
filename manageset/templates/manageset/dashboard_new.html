@@ -86,7 +86,7 @@
 			  	
 			  	
 		      	<div class="col-xs-6 col-sm-3 col-md-3">
-		      	  	<div class = "text-center stat-box">
+		      	  	<div id = "test" class = "text-center stat-box">
 					  	<div class = "big-number">{{ words_added_today }}</div>
 			  			<div class = "stat-label">New Words Added</div>
 			  		</div>	
@@ -223,10 +223,10 @@
     <div class = "container">
  	   <div class = "row">
 		   <div class = "col-xs-12 col-sm-12 col-md-12">
- 		   	<h2>Initial Review Stacks
-		   		   <a href = "{% url 'profile:new-words' full_name %}">
+ 		   	<h2>Initial Lessons
+		   		   <a id = "create-lesson-button" href = "{% url 'profile:new-words' full_name %}">
  		   		   <button class="btn btn-primary" type="button">
- 		   				  Create stack <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+ 		   				  Create lesson <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
  		   			</button>
 		   		</a>
  		   		</h2>
@@ -267,16 +267,60 @@
  	</div>
     <!-- /.content-section-a -->
 
-    
+	<!--Tutorial -->
+    <ol id="joyride-tutorial" style = "display:none;">
+	  
+	  
+	  <li><h1>Welcome to Kanjisama</h1> <p>This is a basic tutorial to help you get started with Kanjisama. You can close this tutorial any time by clicking the 'x' button in the top right hand corner. Otherwise click the next button to get going!</p></li>
+	  
+	  <li><h1>The Basics</h1> <p>This is the basic process when using Kanjisama:
+		  <ol>
+			  <li>Create a stack of words you want to learn, which we call a “lesson”</li><br>
+			  <li>Review and complete your lesson to gain familiarity with the words and to add them into your review queue</li><br>
+			  <li>Our system shows you words in your review queue at the optimal time for you to practice them again</li><br>
+			  <li>Repeat steps 1-3 until you are a samurai koala at Japanese kanji and vocab</li>
+		  </ol>
+	  
+	  </p></li>
+	  
+	  <li data-id = "create-lesson-button" data-options="tipLocation:right;"><h1>Creating Lessons</h1> <p>Create lessons using words you want to learn from a list of the 10,000 most common words organized by the kanji you already know.</p></li>
+	  
+	  <li data-id = "create-lesson-button" data-options="tipLocation:right;"><h1>Reviewing Lessons</h1> <p>After you create a lesson, come back here to review your lesson. When you review a lesson you'll go through all the words one time with the reading and definition shown, and then one more time without the that information. Once you complete a lesson all those words will be added to your  <em><strong> review queue </strong></em>.</p></li>
+	  
+	  <li data-id = "review-indicator-no-click" data-options="tipLocation:right;"><h1>The Review Queue</h1> <p>This is your review queue. Once you complete a lesson the words will be added to it. Kanjisama will automatically tell you when it's time to review your words. When words are ready to review they will appear here (just click!), so make sure to check back often!</p></li>
+	  
+	  <li data-id = "chart-tutorial-stop" class = "tutorial-width"><h1>Progress Chart</h1> <p>This area lets you visually keep track of your words through our SRS system. Once you complete a lesson, words will move from the "零" pile to the "一"　pile. Then as you review words from your review queue, words will either go up a level or down a level depending on if you successfully remembered the reading and meaning of the review word. As a word moves up each level, the time until you see the word will keep increasing. This way you will practice words you don't know well more frequently and words you know less frequently. When a word gets to the end it will no longer show up! </p></li>
+	  
+      <li data-id = "kanji-indicator" data-options="tipLocation:right;"><h1>Let's get started</h1> <p>This shows how many kanji you know! Right now we need to figure how many you already know (it's okay if you don't know any!). <strong>Click this circle </strong> to get started!  </p></li>
+    </ol>
 
     <!-- Footer -->
    {% include "footer_new.html" %}
-
+	
     <!-- jQuery -->
     <script src="{% static "homepage/js/jquery.js" %}"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+	
+	<!-- Joyride JavaScript, needs to be after jQuery -->
+	<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
+	
+				 <script>
+				$(window).load(function() {
+					
+				  $("#joyride-tutorial").joyride({
+				    
+					  autoStart : true,
+					  
+					  // modal:true,
+// 					  'scrollSpeed': 1000,
+// 		       	   	  expose: true
+				  });
+				});
+
+
+	 			</script>
 
 </body>
 
