@@ -30,7 +30,6 @@ h6 {
 
 .contact-info {
     margin-top:50px;
-    text-align:center;
     margin-bottom:0px;
 }
 
