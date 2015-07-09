@@ -185,11 +185,7 @@ DATABASES = {
 
         'PORT':'5432',
 
-<<<<<<< HEAD
-
-=======
     }
->>>>>>> bec8f15ee79b24bd1b3db1d057796ccc00acd0b0
 
 }
 

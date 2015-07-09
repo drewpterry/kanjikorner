@@ -37,30 +37,23 @@
 			
 			<div class="accordion">
 				<div class="accordion-section">
-					<a class="accordion-section-title" href="#accordion-0">Who is this for?</a>
-					<div id="accordion-0" class="accordion-section-content">
-						<p>This is for people serious about learning Japanese. Learning Japanese is not for the faint of heart and Kanjisama's goal is to help those who truly want to learn Japanese to learn it as quickly and effectively as possible. Due to the nature of spaced-repetition reviews, you won't be able to learn very much if you are only able to use the app a couple days a week. If you are just studying Japanese because you are visiting Japan in a few weeks or because you simply need to pass a Japanese class then you probably won't benefit from this application as much. However, you can give it a try for a few days and see if it works for you! </p>
-					</div><!--end .accordion-section-content-->
-				</div><!--end .accordion-section-->
-				
-				<div class="accordion-section">
-					<a class="accordion-section-title" href="#accordion-1">What do I need to know before I can do this?</a>
+					<a class="accordion-section-title" href="#accordion-1">What do I need to know before doing this?</a>
 					<div id="accordion-1" class="accordion-section-content">
 						<p>You should already know how to read hiragana and katakana, otherwise you should be good to go!</p>
 					</div><!--end .accordion-section-content-->
 				</div><!--end .accordion-section-->
 
-				<!-- <div class="accordion-section">
+				<div class="accordion-section">
 					<a class="accordion-section-title" href="#accordion-2">How will I learn from this?</a>
 					<div id="accordion-2" class="accordion-section-content">
-						<p>Blank</p> -->
-					<!-- </div>
-				</div> -->
+						<p>Blank</p>
+					</div><!--end .accordion-section-content-->
+				</div><!--end .accordion-section-->
 
 				<div class="accordion-section">
 					<a class="accordion-section-title" href="#accordion-3">What won't I learn from this?</a>
 					<div id="accordion-3" class="accordion-section-content">
-						<p>You will not learn how to write words and you won't learn grammar. Learning to write kanji is extremely time intensive and has very little payoff since most writing nowadays is done via keyboard (seriously think about how often you even have to handwrite english). In the same amount of time you could memorize learning one kanji you could have learned several words so it's better to focus your time learning other areas of Japanese. </p>
+						<p>You will not learn how to write words and you won't learn grammar. Learning to write kanji is extremely time intensive and has very little payoff since most writing nowadays is done via keyboard (seriously think about how often you even have to handwrite english) so it's better to focus your time learning other areas of Japanese. </p>
 					</div><!--end .accordion-section-content-->
 				</div><!--end .accordion-section-->
 				
@@ -88,14 +81,14 @@
 				<div class="accordion-section">
 					<a class="accordion-section-title" href="#accordion-7">Is there a mobile app for this?</a>
 					<div id="accordion-7" class="accordion-section-content">
-						<p>Yeah! This is what you would call an HTML5 application so you don't need to download it from an app store. Simply go to visit kanajisama.com on your mobile device and add it to your homescreen to install it on your phone. </p>
+						<p>uuuuhhh...not yet. But it is in the works!</p>
 					</div><!--end .accordion-section-content-->
 				</div><!--end .accordion-section-->
 				
 				<div class="accordion-section">
-					<a class="accordion-section-title" href="#accordion-8">Where are these words and definitions from?</a>
+					<a class="accordion-section-title" href="#accordion-8">Where are these definitions from?</a>
 					<div id="accordion-8" class="accordion-section-content">
-						<p>The base of our definitions come from the Jim Breem's JMdict files which is the largest and most widely used source of Japanese words and translations on the web and on mobile applications. However, we are constantly in the process of improving definitions and providing alternative definitions. If you have any suggestions feel free to email us at konnichiwa@kanjisama.com</p>
+						<p>The base of our definitions come from the Jim Breem's JMdict files which is the largest and most widely used source of Japanese words and translations on the web and on mobile applications. However, we are constantly in the process of improving definitions and providing alternative definitions. If you have any suggestions feel free to email us at thekanjisama.gmail.com</p>
 					</div><!--end .accordion-section-content-->
 				</div><!--end .accordion-section-->
 				
