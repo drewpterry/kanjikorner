@@ -70,6 +70,7 @@
             settings.$content_el = $(this);
             settings.$body = $(settings.tipContainer);
             settings.body_offset = $(settings.tipContainer).position();
+			// console.log(settings.body_offset);
             settings.$tip_content = $('> li', settings.$content_el);
             settings.paused = false;
             settings.attempts = 0;
@@ -482,8 +483,10 @@
               leftAdjustment = settings.tipSettings.tipAdjustmentX ? parseInt(settings.tipSettings.tipAdjustmentX) : 0;
 
             if (methods.bottom()) {
+				console.log('bottom');
+				console.log(nub_height, nub_width, settings.$target.outerHeight(), topAdjustment);
               settings.$next_tip.css({
-                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight() + topAdjustment),
+                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight() + topAdjustment) + 14,
                 left: settings.$target.offset().left + leftAdjustment});
 
               if (/right/i.test(settings.tipSettings.nubPosition)) {
@@ -493,23 +496,26 @@
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'top');
 
             } else if (methods.top()) {
-
+				console.log('top');
+				console.log(nub_height, nub_width);
               settings.$next_tip.css({
-                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height + topAdjustment),
+                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height + topAdjustment) - 14,
                 left: settings.$target.offset().left + leftAdjustment});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'bottom');
 
             } else if (methods.right()) {
-
+				console.log('right');
+				console.log(nub_height, nub_width);
               settings.$next_tip.css({
-                top: settings.$target.offset().top + topAdjustment,
-                left: (settings.$target.outerWidth() + settings.$target.offset().left + nub_width) + leftAdjustment});
+                top: settings.$target.offset().top + topAdjustment - 14,
+                left: (settings.$target.outerWidth() + settings.$target.offset().left + nub_width) + leftAdjustment + 14});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'left');
 
             } else if (methods.left()) {
-
+console.log('left')
+				console.log(nub_height, nub_width);
               settings.$next_tip.css({
                 top: settings.$target.offset().top + topAdjustment,
                 left: (settings.$target.offset().left - settings.$next_tip.outerWidth() - nub_width) + leftAdjustment});

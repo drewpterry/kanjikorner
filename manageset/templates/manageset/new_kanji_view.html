@@ -38,7 +38,7 @@
 	
 	<div class = "container" style = "padding-top:35px">
 		<ul class="nav nav-tabs" style = "padding-top:35px">
-		  <li role="presentation"><a href="{% url 'profile:new-words' full_name %}">Create Stacks / Add Words</a></li>
+		  <li role="presentation"><a id = "create-set-tab" href="{% url 'profile:new-words' full_name %}">Create Stacks / Add Words</a></li>
 		  <li role="presentation" class = "active"><a href="{% url 'profile:add-known-kanji' full_name %}">Kanji</a></li>
 		  
 		</ul>
@@ -49,7 +49,7 @@
 				
 			
 
-				<input type = "submit" class = "btn btn-primary btn-lg" value = "Add Kanji"></input>
+				<input id ="add-kanji-button" type = "submit" class = "btn btn-primary btn-lg" value = "Add Kanji"></input>
 				<div id = "stack-preview" class = "row">
 					<!-- <div class = "col-xs-12 col-sm-12 col-md-12">
 						<span class = "pull-left">Hello</span><span class = "pull-right">definition</span>
@@ -143,7 +143,29 @@
       </div>
     </div>
   </div>  
- </div>    
+ </div>
+ 
+ 
+ 
+<!--Tutorial -->
+ <ol id="joyride-tutorial" style = "display:none;">
+  
+  
+  <li><h1>Kanji Page</h1> <p>Kanjisama shows you words based on kanji you already know and currently are learning. In order to do this we need to know which kanji those are. </p></li>
+  
+
+  <li data-id = "add-kanji-button" data-options="tipLocation:right;"><h1>Adding Kanji</h1> <p>To get started, take a few minutes to add all the kanji you are fairly comfortable with (if you already are pretty advanced this might take a while but you only need to do it once!) and then click this "Add Kanji" button. Don't worry you can change anything later by visiting added kanji button on the right As you become ready to learn more kanji you can come back and add them later.
+  <br>
+  <br>
+  
+  If you're brand new we recommend adding 6-10 kanji to get started.
+  </p></li>
+  
+  <li data-id = "create-set-tab" data-options="tipLocation:right;" data-button = "close"><h1>Adding Kanji</h1> <p>Once your finished, go on and click this tab to create your first lesson.
+  </p></li>
+  
+ 
+ </ol>    
     
 
     <!-- Footer -->
@@ -166,6 +188,20 @@
 				
             }
         });</script>
+		
+	<!-- Joyride JavaScript, needs to be after jQuery -->
+	<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
+	
+				 <script>
+				$(window).load(function() {
+				  $("#joyride-tutorial").joyride({
+					  autoStart : true,
+					  scroll:false,
+					  modal:true,
+					  // 'scrollSpeed': 1000,
+		       	   	  expose: true
+				  });
+				});</script>	
 </body>
 
 </html>
