@@ -192,16 +192,26 @@
 	<!-- Joyride JavaScript, needs to be after jQuery -->
 	<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
 	
-				 <script>
-				$(window).load(function() {
-				  $("#joyride-tutorial").joyride({
-					  autoStart : true,
-					  scroll:false,
-					  modal:true,
-					  // 'scrollSpeed': 1000,
-		       	   	  expose: true
-				  });
-				});</script>	
+<script>
+
+	if(localStorage.getItem("tutorial2") === "incomplete" || localStorage.getItem("tutorial2") == null){
+		
+		localStorage.setItem("tutorial2", "incomplete");
+		
+		$(window).load(function() {
+			$("#joyride-tutorial").joyride({
+			  	 autoStart : true,
+			 	 modal:true,
+				scroll:false,
+				'postRideCallback': function(){localStorage.setItem("tutoria2", "complete")},
+			 	 // 'scrollSpeed': 1000,
+		         	 	 expose: true
+		  	});
+		});
+	};
+		
+</script>
+		
 </body>
 
 </html>

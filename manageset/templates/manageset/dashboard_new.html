@@ -306,21 +306,24 @@
 	<!-- Joyride JavaScript, needs to be after jQuery -->
 	<script src = "{% static 'manageset/joyride-master/jquery.joyride-2.1.js' %}"></script>
 	
-				 <script>
-				$(window).load(function() {
-					
-				  $("#joyride-tutorial").joyride({
-				    
-					  autoStart : true,
-					  
-					  modal:true,
-					  'scrollSpeed': 1000,
-		       	   	  expose: true
-				  });
-				});
-
-
-	 			</script>
+	<script>
+	
+		if(localStorage.getItem("tutorial1") === "incomplete" || localStorage.getItem("tutorial1") == null){
+			
+			localStorage.setItem("tutorial1", "incomplete");
+			
+			$(window).load(function() {
+				$("#joyride-tutorial").joyride({
+				  	 autoStart : true,
+				 	 modal:true,
+					'postRideCallback': function(){localStorage.setItem("tutoria1", "complete")},
+				 	 'scrollSpeed': 1000,
+			         	 	 expose: true
+			  	});
+			});
+		};
+			
+	</script>
 
 </body>
 

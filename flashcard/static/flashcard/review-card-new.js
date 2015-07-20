@@ -297,11 +297,6 @@ var rewrite_cards_2 = function(){
 var write_info_box = function(){
 		var previous_word = vocab[wordnumber-1]
 		definition_info = previous_word.definitions.join(", ");
-		// for(var i = 0; i<3; i++){
-// 			if(previous_word.definitions[i]){
-// 				definition_info += '<li>' + previous_word.definitions[i] + '</li>';
-// 			};
-// 		};
 		
 		var kanji_symbols = '';
 		for(var i = 0; i<=previous_word.kanjis.length; i++){

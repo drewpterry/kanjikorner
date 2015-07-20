@@ -182,11 +182,7 @@ $('#answer-form').submit(function(event){
 var write_info_box = function(){
 
 		definition_info = '';
-		for(var i = 0; i<3; i++){
-			if(current_word.definitions[i]){
-				definition_info += '<li>' + vocab[[wordnumber]].definitions[i] + '</li>';
-			};	
-		};
+		definition_info = current_word.definitions.join(", ");
 		
 		var kanji_symbols = '';
 		for(var i = 0; i<=current_word.kanjis.length; i++){
@@ -202,7 +198,7 @@ var write_info_box = function(){
 		
 		$('#word-reading').html(current_word.hiragana);
 		$('#word-pos').html(current_word.part_of_speech.join('<br>'));
-		$('.list-definitions > ol').html(definition_info);
+		$('.list-definitions').html(definition_info);
 		$('.kanji-info').html(kanji_symbols);
 		
 };
