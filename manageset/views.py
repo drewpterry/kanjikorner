@@ -46,21 +46,8 @@ def main_profile(request,full_name):
         known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
         one_day_ago = datetime.now() - timedelta(days = 1)
-        print one_day_ago.day
-        # number_words_added_today = KnownWords.objects.filter(user_profile = userprofile, date_added__gte = one_day_ago).count()
-        utc_now = datetime.now()
-        print utc_now 
-        utc_now = utc_now + timedelta(hours = 0)
-        print utc_now.day
-        words_reviewed_today = utc_now
-        if utc_now.day > one_day_ago.day:
-            print "its greater yo"
-        now = timezone.now()
-        current_date = date.today()
-        current_time = datetime.utcnow().strftime('%H:%M:%S')
-        print now
-        print current_time
-        print current_date, "hello"
+        words_reviewed_today = request.user.userprofile.number_words_practiced_today
+        
         total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
         total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
         try:
@@ -102,7 +89,26 @@ def main_profile(request,full_name):
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
           'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent})
  
- 
+def update_words_practiced_today(request,full_name):
+    if not request.user.is_authenticated() or request.user.username != full_name:
+        return HttpResponse("you are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+
+                timezone_adjustment = int(request.GET['timezone_offset'])
+                update_only = True
+                
+                userprofile = request.user.userprofile
+                userprofile.check_if_new_day(timezone_adjustment)
+                userprofile.save()
+                
+                data = userprofile.number_words_practiced_today
+
+            except KeyError:
+                return HttpResponse("there was an error")
+            return HttpResponse(data, content_type="application/json")
+    return 
  
  
 ####################### NAVIGATION TO WORD AND KANJI VIEWS ################################        

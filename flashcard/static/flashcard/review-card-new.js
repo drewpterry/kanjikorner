@@ -4,6 +4,14 @@ vocab.sets_until_complete = 0;
 var wordnumber = 0;
 var current_word = vocab[wordnumber];
 var input_ready = true;
+var timezone_offset = (function(){
+	var x = new Date();
+	console.log(x.getTimezoneOffset())
+	var currentTimeZoneOffsetInHours = x.getTimezoneOffset()/60
+	return currentTimeZoneOffsetInHours
+})();
+
+console.log(timezone_offset);
 
 
 //to do: add set complete popup, edit css of cards etc
@@ -371,27 +379,28 @@ var levenshteinenator = (function () {
 }());
 
 
-
+//basically just marks the end, doesn't reset
 var reset_2 = function(){
-	
+
 	if(vocab.sets_until_complete == 0){
 		update_words();
 		$('#myModal').modal('show');
-		
+
 	};
 };
+
 
 
 var update_word_object = function(object_id, increase_level){
-	
 	user_name = document.getElementById('user-name').value;
+	
 	$.ajax({
 		
-		// need to pass csrf_token
+		// need to pass csrf_token, POST?
 		
 		url:'/profile/' + user_name + '/tier-level-update',
 		type:'GET',
-		data:{ csrfmiddlewaretoken: csrftoken, known_object_id: object_id, increase_level: increase_level},
+		data:{ csrfmiddlewaretoken: csrftoken, known_object_id: object_id, increase_level: increase_level, timezone_offset:timezone_offset},
 		success: update_words_success, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
@@ -404,26 +413,24 @@ var update_word_object = function(object_id, increase_level){
 		
 };
 
-var update_words = function(signal){
-	set_name = document.getElementById('set-name').value
-	user_name = document.getElementById('user-name').value
-	console.log(set_name, user_name)
-	$.ajax({
-		// need to pass variable to template that I can grab with javascript to replace this url
-		// will not work on other profiles
-		url:'/profile/' + user_name + '/' + set_name + '/complete-stack',
-		type:'POST',
-		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: csrftoken, set_name: set_name},
-		success: update_words_success, 
-		failure: function(data){
-			alert("Sorry got an error on the AJAX")
-		}
-	});
-	
-	var update_words_success = function(data){
-		console.log(data);
-	};
-};
+// var update_words = function(signal){
+// 	set_name = document.getElementById('set-name').value
+// 	user_name = document.getElementById('user-name').value
+// 	console.log(set_name, user_name)
+// 	$.ajax({
+// 		url:'/profile/' + user_name + '/' + set_name + '/complete-stack',
+// 		type:'POST',
+// 		data:{wordlist: JSON.stringify(vocab), csrfmiddlewaretoken: csrftoken, set_name: set_name},
+// 		success: update_words_success,
+// 		failure: function(data){
+// 			alert("Sorry got an error on the AJAX")
+// 		}
+// 	});
+//
+// 	var update_words_success = function(data){
+// 		console.log(data);
+// 	};
+// };
 
 
 var csrftoken = $.cookie('csrftoken');

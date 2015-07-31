@@ -131,7 +131,7 @@ def tier_level_update(request, full_name):
         if request.is_ajax():
             try:
 
-            
+                timezone_adjustment = int(request.GET['timezone_offset'])
                 known_id = request.GET['known_object_id']
                 increase_level = int(request.GET['increase_level'])
                 selected_word = KnownWords.objects.get(id = known_id)
@@ -139,9 +139,14 @@ def tier_level_update(request, full_name):
                 selected_word.save()
                 
                 userprofile = request.user.userprofile
-                timezone_adjustment = 5
+                print timezone_adjustment
                 print "here"
                 userprofile.update_words_practiced_today(timezone_adjustment)
+                # userprofile.words_practied_today_time_marker = datetime.now() - timedelta(hours = 7)
+                userprofile.save()
+                print userprofile.words_practied_today_time_marker
+                # userprofile.save()
+                print "test"
                 print userprofile.number_words_practiced_today
                 
                 data = 1

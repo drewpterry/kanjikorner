@@ -5,6 +5,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import random
 from datetime import datetime, timedelta, time
+from django.utils import timezone
+# timezone.make_aware(words_practied_today_time_marker, timezone.get_current_timezone())
 
 
 # Create your models here.
@@ -93,22 +95,37 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     user_sets = models.ManyToManyField(Sets, blank = True)
     number_words_practiced_today = models.IntegerField(default = 0)
-    words_practied_today_time_marker = models.DateTimeField(auto_now = True)
-    # words_practied_today_time_marker = models.DateTimeField()
+    #SPELLING ERROR!!!! YAAAY
+    words_practied_today_time_marker = models.DateTimeField(auto_now_add = True)
     most_words_practiced_in_day = models.IntegerField(default = 0)
 
 # to do from client side esnd timezone adjustment, logic for when to make add and not add to practiced
     def update_words_practiced_today(self, timezone_adjustment):
-        current_datetime = datetime.now() + timedelta(hours = timezone_adjustment)
+        current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day
-        if self.words_practied_today_time_marker.day < current_day:
+
+        if self.words_practied_today_time_marker.day != current_day:
             self.number_words_practiced_today = 0
-        else:    
+        else:
             self.number_words_practiced_today += 1
             if self.number_words_practiced_today > self.most_words_practiced_in_day:
                 self.most_words_practiced_in_day = self.number_words_practiced_today
+        
+        self.words_practied_today_time_marker = current_datetime
+          
         return
     
+    def check_if_new_day(self,timezone_adjustment):
+        
+        current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
+        current_day = current_datetime.day
+        
+        if self.words_practied_today_time_marker.day != current_day:
+            self.number_words_practiced_today = 0
+        
+        self.words_practied_today_time_marker = current_datetime    
+        return    
+        
     
     def __unicode__(self):
         return unicode(self.user)
