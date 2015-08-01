@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^(?P<full_name>\w*)/new-set/word-bank$', views.word_bank_view, name='view_word_bank'),
     url(r'^(?P<full_name>\w*)/new-set/all-words$', views.all_words, name='all_words'),
     url(r'^(?P<full_name>\w*)/new-set/selected-words$', views.selected_words_view, name='selected_words'),
+    url(r'^(?P<full_name>\w*)/update-words-practiced-today$', views.update_words_practiced_today, name='update_words_practiced_today'),
     
     
     

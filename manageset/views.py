@@ -9,13 +9,17 @@ from django.db.models import Q
 import json
 from flashcard.views import srs_get_and_update
 from django.core import serializers
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from django.utils.timezone import utc
 import time
+from django.utils import timezone
 from django.core.context_processors import csrf
 from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 from django.views.generic import View
+# from django.utils.timezone import activate
+# activate(pytz.timezone(""))
 
 
 
@@ -42,7 +46,8 @@ def main_profile(request,full_name):
         known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
         one_day_ago = datetime.now() - timedelta(days = 1)
-        number_words_added_today = KnownWords.objects.filter(user_profile = userprofile, date_added__gte = one_day_ago).count()
+        words_reviewed_today = request.user.userprofile.number_words_practiced_today
+        
         total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
         total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
         try:
@@ -69,7 +74,6 @@ def main_profile(request,full_name):
         next_review = KnownWords.objects.filter(user_profile = userprofile, time_until_review__range = (0,86400)).values('time_until_review').order_by('time_until_review')
         due_tomorrow = len(next_review) + number_of_reviews
         kanji_percent = round(number_of_added_kanji /21.36, 2) 
-        print kanji_percent, "kanji perecent"
         if number_of_reviews == 0:
   
             if next_review.exists():
@@ -83,9 +87,28 @@ def main_profile(request,full_name):
         
         return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
-          'word_count':total_word_count, 'words_added_today':number_words_added_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent})
+          'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent})
  
- 
+def update_words_practiced_today(request,full_name):
+    if not request.user.is_authenticated() or request.user.username != full_name:
+        return HttpResponse("you are not authenticated")
+    else:
+        if request.is_ajax():
+            try:
+
+                timezone_adjustment = int(request.GET['timezone_offset'])
+                update_only = True
+                
+                userprofile = request.user.userprofile
+                userprofile.check_if_new_day(timezone_adjustment)
+                userprofile.save()
+                
+                data = userprofile.number_words_practiced_today
+
+            except KeyError:
+                return HttpResponse("there was an error")
+            return HttpResponse(data, content_type="application/json")
+    return 
  
  
 ####################### NAVIGATION TO WORD AND KANJI VIEWS ################################        
