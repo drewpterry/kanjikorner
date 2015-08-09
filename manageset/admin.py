@@ -16,7 +16,9 @@ class SetsAdmin(admin.ModelAdmin):
     # inlines = [WordsInline]
 
 class WordsAdmin(admin.ModelAdmin):
-    fields = ('real_word', 'meaning', 'hiragana', 'kanji')
+    fields = ('real_word', 'meaning', 'hiragana', 'kanji', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
+    search_fields = ['real_word', 'meaning', 'hiragana']
+    ordering = ['-combined_frequency']
     extra = 5
     
 class KanjiAdmin(admin.ModelAdmin):
