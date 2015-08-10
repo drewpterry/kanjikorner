@@ -43,7 +43,8 @@
 		</style>
 </head>
 
-<body>
+<body class = "review-background review-cards-practice-page">
+	<div id = "background-opacity"></div>
 
     <!-- Navigation -->
    
@@ -58,12 +59,12 @@
 				
 
 			   <div class = "container-fluid">
-				   <row>
+				   <row style = "color:white">
 	      			   <div class="col-xs-3 col-sm-3 col-md-3 col-md-offset-3 text-center">
-	      			   	<span id = "remaining-count" data-remaining = {{ words|length }}>{{ words|length }}</span><span class = "glyphicon glyphicon-flag" aria-hidden="true" style = "margin-left:5px"></span>
+	      			   	<span style = "color:white" id = "remaining-count" data-remaining = {{ words|length }}>{{ words|length }}</span><span class = "glyphicon glyphicon-flag" aria-hidden="true" style = "margin-left:5px"></span>
 	      			   </div>
 	      			   <div class="col-xs-3 col-sm-3 col-md-3 text-center">
-	      			   	<span id = "completed-word-count" data-complete = 0>0</span><span class = "glyphicon glyphicon-ok-sign" aria-hidden="true" style = "margin-left:5px"></span>
+	      			   	<span style = "color:white" id = "completed-word-count" data-complete = 0>0</span><span class = "glyphicon glyphicon-ok-sign" aria-hidden="true" style = "margin-left:5px"></span>
 	      			   </div>
 	      			   <div class="col-xs-3 col-sm-3 col-md-3 pull-right">
 	 		   		   		<a href = '/'><button class="btn btn-primary btn-sm pull-right" type="button" style = "margin-top:5px">

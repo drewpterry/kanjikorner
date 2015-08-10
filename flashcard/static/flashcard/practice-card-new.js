@@ -380,7 +380,7 @@ var reset_2 = function(){
 			vocab[i].hiragana_attempt = false;
 		};
 		
-		$("#word-info-panel").hide();
+		$("#word-info-panel").css('visibility','hidden');
 		shuffleArray(vocab);
 		$('#remaining-count').data('remaining', vocab.original_length);
 		$('#remaining-count').html(vocab.original_length);

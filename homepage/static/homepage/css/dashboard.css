@@ -197,7 +197,7 @@ a:link {
 /* ----------------             Contact Page ----------------------	*/
 
 .contact .row-fluid {
-	background: url(/static/manageset/img/gundam.JPG);
+	background: url(/static/homepage/img/gundam.JPG);
 	background-repeat:no-repeat;
 	background-position: center center;
 	/*background-size:100% 100%;*/
@@ -223,8 +223,46 @@ a:link {
 
 
 /*   ----------------------------------------------Practice Card Page--------------------------------------------   -->*/
+.top-bar {
+	margin-bottom:5%;
+}
+
+#background-opacity {
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0);
+}
+
+
+.review-cards-practice-page {
+	background: url(/static/flashcard/img/train.jpg);
+}
+
+.review-cards-page {
+	background: url(/static/flashcard/img/rocks.jpg);
+	
+}
+
+.review-background {
+	background-repeat:no-repeat;
+	background-position: center -70px;
+	background-size:100% 100%;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height:650px;
+}
 
 .review-card {
+	background-color:white;
 	border-color:grey;
 	border-width:1px;
 	border-radius:5px;
@@ -285,6 +323,9 @@ a:link {
 	
 }
 
+#word-info-panel {
+	color:white;
+}
 .word-info-header {
 /*	text-decoration:underline;*/
 	font-size:1.5em;
@@ -313,6 +354,7 @@ ol {
 
 .information {
 	font: 1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	
 }
 
 
@@ -589,6 +631,10 @@ p.copyright {
 }
 
 @media screen and (max-width: 500px) {
+	.top-bar {
+		margin-bottom: 0%;
+	}
+	
 	#card-container {
 		height:32vh;
 		margin-top:5px;
