@@ -275,7 +275,8 @@ $('#your-words').on('click',function(){
 });
 
 $('#all-words').on('click',function(){
-	get_all_words();
+	// get_all_words();
+	$('#your-words-container').html("<div class = 'row text-center'><h2>Search for words and they'll appear here!</h2></div>")
 	$(this).addClass('button-clicked');
 	$('#your-words').removeClass('button-clicked');
 	$('#section-explanation').html('These are all the words organized by relative frequency.');
@@ -285,17 +286,21 @@ $('#all-words').on('click',function(){
 
 $('#search-button').on('click', function(){
 	search_term = document.getElementById('search-input').value;
+	console.log(search_term)
 	get_all_words(search_term);
 });
 
 var get_all_words = function(search_term){
 	user_name = document.getElementById('user-name').value;
 	$('#your-words-container').html("<img class = 'center-block' src = '/static/manageset/ajax-loader.gif'>");
-	$('#your-words-container').load('/profile/' + user_name + '/new-set/all-words',function(){
-		attach_word_info_click();
-		attach_entry_button_click();
-		click_button_if_in_stack();
-	});
+	$.post('/profile/' + user_name + '/new-set/all-words',{ search_word: search_term })
+		.done(function( data ) {
+			console.log(data)
+			$('#your-words-container').html(data)
+			attach_word_info_click();
+			attach_entry_button_click();
+			click_button_if_in_stack();		
+	  });
 };
 
 var csrftoken = $.cookie('csrftoken');

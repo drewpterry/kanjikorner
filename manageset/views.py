@@ -18,6 +18,7 @@ from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 from django.views.generic import View
+import re
 # from django.utils.timezone import activate
 # activate(pytz.timezone(""))
 
@@ -350,13 +351,51 @@ def all_words(request,full_name):
     template = 'manageset/known_kanji_bank.html'
     page_template = 'manageset/entry_index_words.html'
     known_word_list = KnownWords.objects.values_list('words', flat = True)
-    data = Words.objects.all().exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').distinct()   
-    
-    print data    
-    if request.is_ajax():
-        template = page_template
 
-        
+    search_word = request.POST['search_word']
+    search_word = search_word.encode('utf-8')
+    
+    hiragana_katakana_list = {u'あ', u'い', u'う', u'え', u'お', u'か', u'き', u'く', u'け', u'こ', u'さ', u'し', u'す', u'せ',\
+    u'そ', u'ま', u'み', u'む', u'め', u'も', u'や', u'ゆ', u'よ', u'わ', u'を', u'た', u'ち', u'つ', u'て', u'と', u'な', u'に',\
+    u'ぬ', u'ね', u'の', u'は', u'ひ', u'ふ', u'へ', u'ほ', u'ら', u'り', u'る', u'れ', u'ろ', u'ん', u'ょ', u'ゅ', u'ゃ', u'っ',\
+    u'ア', u'イ', u'ウ', u'エ', u'オ', u'カ', u'キ', u'ク', u'ケ', u'コ', u'サ', u'シ', u'ス', u'セ', u'ソ', u'ナ', u'ニ', u'ヌ',\
+    u'ネ', u'ノ', u'ラ', u'リ', u'ル', u'レ', u'ロ', u'タ', u'チ', u'ツ', u'テ', u'ト', u'マ', u'ミ', u'ム', u'メ', u'モ', u'ハ',\
+    u'ヒ', u'フ', u'ヘ', u'ホ', u'ヤ', u'ユ', u'ヨ', u'ヲ', u'ワ', u'ン', u'ョ', u'ュ', u'ャ', u'ッ'}
+    
+    all_letters = True
+    all_hiragana_or_katakana = True
+    
+    #check if the whole search word is english
+    for letter in search_word:
+
+        if not re.match('^[\w -]+$', letter):
+            all_letters = False
+            break
+           
+    if all_letters:
+        data = Words.objects.filter(meaning__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+        search_done = True
+    
+    else: #check if all in hiragana/katakana
+        search_word = search_word.decode('utf-8')
+        for each in search_word:
+  
+            if each not in hiragana_katakana_list:
+                all_hiragana_or_katakana = False
+                break   
+                              
+        if all_hiragana_or_katakana: #search by hiragana reading
+            data = Words.objects.filter(hiragana__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+            
+        else: #submit full search word and see if word is in database
+            data = Words.objects.filter(real_word__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+    
+    if request.is_ajax() and data:
+        template = page_template
+    else:
+        data = "<div class = 'row text-center'><h3>Oh no! No matches were found. The samurai koala is disappointed in you.</h3></div>"
+        return HttpResponse(data)    
+    print data    
     return render(request, template, {'full_name':full_name, 'page_template': page_template, 'data': data})
     
 
