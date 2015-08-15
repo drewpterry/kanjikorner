@@ -271,7 +271,7 @@ $('#your-words').on('click',function(){
 	$('#all-words').removeClass('button-clicked');
 	$('#your-words-filter').show();
 	$('#your-words-search').hide();
-	$('#section-explanation').html("These words only consist of the kanji you've added organized by their relative frequency.");
+	$('#section-explanation').html("These words only consist of the kanji you've added organized by their relative frequency.　Any words that you've removed or are studying won't show up.");
 });
 
 $('#all-words').on('click',function(){

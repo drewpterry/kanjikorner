@@ -339,8 +339,6 @@ def new_words_view(request, full_name):
     data = special_words + words_list
 
 
-        
-    
     if request.is_ajax():
         template = page_template               
     return render(request, template, {'full_name':full_name, 'data':data, 'page_template':page_template, 'usersets':usersets, 'selected_kanji':selected_kanji, 'review_number': number_of_reviews})        
@@ -394,8 +392,7 @@ def all_words(request,full_name):
         template = page_template
     else:
         data = "<div class = 'row text-center'><h3>Oh no! No matches were found. The samurai koala is disappointed in you.</h3></div>"
-        return HttpResponse(data)    
-    print data    
+        return HttpResponse(data)       
     return render(request, template, {'full_name':full_name, 'page_template': page_template, 'data': data})
     
 
