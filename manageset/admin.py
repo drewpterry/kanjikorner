@@ -16,10 +16,17 @@ class SetsAdmin(admin.ModelAdmin):
     # inlines = [WordsInline]
 
 class WordsAdmin(admin.ModelAdmin):
+    # ef get_kanji(self, obj):
+#         return "\n".join([p.kanji_name for p in obj.kanji.all()])
+    list_display = ('real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
+    list_editable = ('meaning', 'combined_frequency', 'frequency_thousand', 'published')
     fields = ('real_word', 'meaning', 'hiragana', 'kanji', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
     search_fields = ['real_word', 'meaning', 'hiragana']
     ordering = ['-combined_frequency']
     extra = 5
+    
+    # def get_kanji(self, obj):
+#         return "\n".join([p.kanji_name for p in obj.kanji.all()])
     
 class KanjiAdmin(admin.ModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
