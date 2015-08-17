@@ -26,10 +26,6 @@ server {
                 expires 7d;
         }
 
-        location /static/admin/ {
-                alias /opt/venv/lib/python2.7/site-packages/django/contrib/admin/static/;
-                access_log off;
-                expires 7d;
-        }
+        
 }
 
