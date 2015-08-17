@@ -383,7 +383,7 @@ var levenshteinenator = (function () {
 var reset_2 = function(){
 
 	if(vocab.sets_until_complete == 0){
-		update_words();
+		// update_words();
 		$('#myModal').modal('show');
 
 	};
@@ -404,7 +404,9 @@ var update_word_object = function(object_id, increase_level){
 		success: update_words_success, 
 		failure: function(data){
 			alert("Sorry got an error on the AJAX")
-		}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+		        alert("Oh no, something went wrong and this word wasn't submitted! This could be an error on our end but sometimes happens if you lose your internet connection.");
 	});
 	
 	var update_words_success = function(data){

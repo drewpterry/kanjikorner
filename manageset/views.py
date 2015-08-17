@@ -297,8 +297,6 @@ def new_words_view(request, full_name):
     
     special_words = Words.objects.filter(kanji__in = new_kanji).exclude(published = False).exclude(id__in = known_word_list).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).prefetch_related('kanji').order_by('-combined_frequency')
     
-    for each in special_words:
-        print each.wordmeanings_set.all()
 
     special_words = list(special_words)
     for each in list(special_words):
@@ -415,7 +413,7 @@ def word_search(request):
 
 
                 known_kanji_list = get_known_kanji_list(request)
-                print known_kanji_list, "hello"
+                
                 for each in list(data):
 
                     if each[u'pk'] in known_kanji_list:
@@ -554,7 +552,7 @@ def get_new_words(request):
                                 data.remove(each)
                                 data.insert(i,each)
                                 i = i + 1
-                # print i, "hello"
+               
                 data = data[:10]
                 data = json.dumps(data)
 
@@ -608,7 +606,7 @@ def add_words_to_set(request,full_name):
     
     chosenwords = request.POST.getlist('chosenwords')
     thechosenwords = []
-    print thechosenwords, "hello"
+   
     for words in chosenwords:
         obj1 = Words.objects.get(id = words)
         new_known_kanji = KnownWords(words = obj1, user_profile = userprofile, date_added = datetime.now(), tier_level = 0, last_practiced = datetime.now())
@@ -639,7 +637,7 @@ def add_known_word(request, full_name):
                 obj1 = Words.objects.get(id = word_id)
                 
                 new_known_word = KnownWords(words = obj1, user_profile = profile, date_added = datetime.now(), tier_level = 10, last_practiced = datetime.now())
-                # print "hello"
+               
                 new_known_word.save()
                 data = 1
             except KeyError:
@@ -663,18 +661,12 @@ def add_known_kanji(request, full_name):
             
     for kanjis in knownkanji:
         
-        # if KnownKanji.objects.filter(user_profile = 10).kanji.filter(id = kanjis).exists() == False:
         obj1 = Kanji.objects.get(id = kanjis)
         new_known_kanji = KnownKanji(date_added = datetime.now())
         new_known_kanji.save()
         new_known_kanji.kanji.add(obj1)
         new_known_kanji.user_profile.add(userprofile)
-            # KnownKanji.objects.get(user_profile = 10).kanji.add(obj1)
-    
-    print theknownkanji
-    # userprofile.known_kanji.add(*theknownkanji)
-    
-    #submit known kanji
+         
     return new_kanji_view(request, full_name)
     
    
@@ -686,11 +678,10 @@ def remove_known_kanji(request,full_name):
     userprofiles = User.objects.get(username = full_name).userprofile.id
 
     deletekanji = request.POST.getlist('chosenwords')
-    # print deletekanji, "not work"
+
     for each in deletekanji:
         the_kanji_object = Kanji.objects.get(id = each)
-        print the_kanji_object
-        # print KnownKanji.objects.filter(user_profile = userprofiles, kanji = the_kanji_object)
+  
         KnownKanji.objects.get(user_profile = userprofiles, kanji = the_kanji_object).delete()
     
     return known_kanji_view(request, full_name)
@@ -710,7 +701,6 @@ def remove_known_word(request, full_name):
                 the_word = Words.objects.get(id = word_id)
                 obj1 = KnownWords.objects.get(user_profile = profile, words = the_word)
                 obj1.delete()
-                # print "hello"
                 
                 data = 1
             except KeyError:

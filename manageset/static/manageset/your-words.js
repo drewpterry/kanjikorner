@@ -286,9 +286,20 @@ $('#all-words').on('click',function(){
 
 $('#search-button').on('click', function(){
 	search_term = document.getElementById('search-input').value;
-	console.log(search_term)
 	get_all_words(search_term);
 });
+
+$('#search-input').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+		search_term = document.getElementById('search-input').value;
+		get_all_words(search_term);
+    }
+});
+
+
+
+
 
 var get_all_words = function(search_term){
 	user_name = document.getElementById('user-name').value;

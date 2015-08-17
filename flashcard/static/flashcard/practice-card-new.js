@@ -367,8 +367,9 @@ var reset_2 = function(){
 	
 	if(vocab.sets_until_complete == 0){
 		update_words();
+		$('#completed-count').html(vocab.original_length)
 		$('#myModal').modal('show');
-		console.log("woooork")
+		// console.log("woooork")
 		
 	}else{
 		vocab.sets_until_complete = vocab.sets_until_complete - 1;
@@ -396,7 +397,6 @@ var reset_2 = function(){
 var update_words = function(signal){
 	set_name = document.getElementById('set-name').value
 	user_name = document.getElementById('user-name').value
-	console.log(set_name, user_name)
 	$.ajax({
 		// need to pass variable to template that I can grab with javascript to replace this url
 		// will not work on other profiles

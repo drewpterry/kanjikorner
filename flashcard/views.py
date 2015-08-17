@@ -139,15 +139,11 @@ def tier_level_update(request, full_name):
                 selected_word.save()
                 
                 userprofile = request.user.userprofile
-                print timezone_adjustment
-                print "here"
+                
                 userprofile.update_words_practiced_today(timezone_adjustment)
                 # userprofile.words_practied_today_time_marker = datetime.now() - timedelta(hours = 7)
                 userprofile.save()
-                print userprofile.words_practied_today_time_marker
-                # userprofile.save()
-                print "test"
-                print userprofile.number_words_practiced_today
+                
                 
                 data = 1
 
