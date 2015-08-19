@@ -77,7 +77,10 @@ var startpage_2 = function(){
 	                                 
 	document.getElementById('card-container').innerHTML = initial_cards;
 	
-	write_info_box();
+	try{write_info_box()}
+	catch(err){
+		console.log("there was an error");
+	}
 	
 };
 
@@ -234,7 +237,10 @@ var next_card_2 = function(){
 	};
 	
 	rewrite_cards_2();
-	write_info_box();
+	try{write_info_box()}
+	catch(err){
+		console.log("there was an error");
+	}
 };
 
 
@@ -295,7 +301,11 @@ var rewrite_cards_2 = function(){
 	window.setTimeout(function(){
 		document.getElementById('card-container').innerHTML = rewritecards;
 		$('.glyphicon-info-sign').on('click', function(){
-			write_info_box()
+			try{write_info_box()}
+			catch(err){
+				console.log("there was an error");
+			}
+			
 			$('#infoModal').modal();
 		});
 		$("#first-card").hide().fadeIn();
@@ -406,7 +416,7 @@ var update_word_object = function(object_id, increase_level){
 			alert("Sorry got an error on the AJAX")
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-		        alert("Oh no, something went wrong and this word wasn't submitted! This could be an error on our end but sometimes happens if you lose your internet connection.");
+		        alert("Oh no something went wrong with that last word and we weren't able to record it! Sometimes it's because you lost your internet connection!");}
 	});
 	
 	var update_words_success = function(data){
