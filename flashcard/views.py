@@ -98,6 +98,7 @@ def srs_get_and_update(request, full_name):
     words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
     words_list = []
     known_word_id = []
+    difference = 0
     
     for word in words:
         last_practiced = word.last_practiced

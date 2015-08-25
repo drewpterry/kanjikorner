@@ -31,7 +31,17 @@
 			<div class="row">
 				
 			  <!-- <div class="col-lg-12 col-m-12 col-sm-12" style = "border-style:solid"> -->
-			   {% if usersets.count == 0 and the_count.0 == 0  %} 
+				  
+ 			   {% if usersets.count == 0 and the_count.0 == 0 and word_count == 0 %} 
+ 		      	<div id = "review-queue" class="col-xs-6 col-sm-3 col-md-3">
+ 		      	  <div class = "text-center stat-box">
+ 			  			<div class = "big-number">Infinity</div>
+ 			  			<div class = "stat-label">Time Until Words Available</div>
+ 			  		</div>
+ 		      	</div>  
+				  
+				  
+			   {% elif usersets.count == 0 and the_count.0 == 0  %} 
 		      	<div id = "review-queue" class="col-xs-6 col-sm-3 col-md-3">
 		      	  <div class = "text-center stat-box">
 			  			<div class = "big-number">{{ next_review }}</div>
