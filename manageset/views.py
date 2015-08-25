@@ -212,7 +212,7 @@ def new_words_view(request, full_name):
     usersets = profile.user_sets.all().count()
     kanji_in = KnownKanji.objects.filter(user_profile = profile).values_list('kanji__pk', flat = True)
 
-    known_word_list = KnownWords.objects.values_list('words', flat = True)
+    known_word_list = KnownWords.objects.filter(user_profile = profile).values_list('words', flat = True)
     # print known_word_list
     # kanji_in = []
     # exclude_kanji = []
@@ -310,27 +310,27 @@ def new_words_view(request, full_name):
         if the_list:
             special_words.remove(each)
 
-
+            
     if len(special_words) == 0:        
 
         words = Words.objects.filter(kanji__in = kanji_in).exclude(id__in = known_word_list).exclude(published = False).exclude(frequency_thousand = None).exclude(frequency_thousand__gte = 21).order_by('-combined_frequency').prefetch_related('kanji').distinct()[0:1000]
-
+        
         words_list = list(words)
-     
+       
         i = 0
         for each in list(words):
-        
+
             kanji = each.kanji.all()
             id_list = set()
             for kanji_id in kanji:
                 id_list.add(kanji_id.id)
-        
-        
+
+
             the_one_list = list(id_list - set(kanji_in))
-        
+
             if the_one_list:
                 words_list.remove(each)
-        
+              
     else:
         words_list = []
         
