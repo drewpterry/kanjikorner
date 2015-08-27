@@ -121,6 +121,12 @@ a:link {
 	margin-top:10px;
 }
 
+#best-daily {
+	position:absolute;
+	right:40px;
+	top:5px;
+}
+
 .review-ready .big-number {
 	margin-top:0px;
 }
@@ -253,6 +259,17 @@ a:link {
 .review-background {
 	background-repeat:no-repeat;
 	background-position: center -70px;
+	background-size:100% 100%;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height:650px;
+}
+
+.review-background-practice {
+	background-repeat:no-repeat;
+	background-position: center center;
 	background-size:100% 100%;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -439,6 +456,15 @@ ol {
 .manage-card .kanji {
 	font-size:1.7em;
 	
+}
+
+.manage-card .kanji-jlpt-lvl {
+	position:absolute;
+	left:20px;
+	top:0px;
+	color:rgba(200,200,200,1);
+	font-size:.9em;
+	font-weight:normal;
 }
 
 .manage-card .meaning {

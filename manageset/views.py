@@ -48,6 +48,7 @@ def main_profile(request,full_name):
         total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
         one_day_ago = datetime.now() - timedelta(days = 1)
         words_reviewed_today = request.user.userprofile.number_words_practiced_today
+        words_reviewed_today_best = request.user.userprofile.most_words_practiced_in_day
         
         total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
         total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
@@ -88,7 +89,7 @@ def main_profile(request,full_name):
         
         return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
-          'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent})
+          'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent,"words_reviewed_today_best":words_reviewed_today_best})
  
 def update_words_practiced_today(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
