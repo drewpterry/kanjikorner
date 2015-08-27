@@ -70,4 +70,7 @@ def faq_page(request):
 	return render(request, 'homepage/faq.html') 
     
 def contact_us_page(request):
-	return render(request, 'homepage/contact.html')       
+	return render(request, 'homepage/contact.html')
+
+def highscores_page(request):
+    return render(request, 'homepage/highscores.html')       
