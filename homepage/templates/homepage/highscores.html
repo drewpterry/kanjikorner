@@ -2,18 +2,16 @@
 
 {% block page_content %}
 {% load staticfiles %}
+<html lang="en">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Highscores for Kanjisama" content="">
+        <meta name="Steffan" content="">
         <title>Kanjisama - High Scores</title>
 
-        <!-- Bootstrap Core CSS -->
-        <link href="{% static "homepage/css/lavish-bootstrap.css" %}" rel="stylesheet">
-
-        <!-- Custom CSS -->
-        <link href="{% static "homepage/css/landing-page.css" %}" rel="stylesheet">
-        <link href="{%static "homepage/css/accordion.css" %}" rel="stylesheet">
-
-        <!-- Custom Fonts -->
-        <link href="{% static "homepage/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
-        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+        {% include "css.html" %}
+        {% include "favicon.html" %}
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,11 +29,17 @@
                 </h1>
             </div>
         </div>
+        <h3>Should be 3 equal columns</h3>
+        <div class="row" style = "padding-top:50px">
 
-        <div class="main" style = "padding-top:50px">
-
-            <div id = "tables" class = ".col-md-4 .col-md-4 .col-md-4">
-                
+            <div class = "Most words reviewed in a day">.col-md-4>
+                "stuff"
+            </div>
+            <div class = "Most words all time">.col-md-4>
+                "stuff2"
+            </div>
+            <div class = "Most words mastered">.col-md-4>
+                "stuff3"
             </div>
 
         </div>
@@ -47,5 +51,5 @@
     <script type="text/javascript" src="{%static "homepage/js/accordion.js" %}"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
-
+</html>
 {% endblock %}
