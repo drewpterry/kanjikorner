@@ -25,21 +25,29 @@
         {% include "nav_bar.html" %}
         <div class = "container">
             <div class = "row text-center" style = "margin-top:40px; margin-bottom:0px">
-                <h1>High Scores
+                <h1 style = "font-size:400%">High Scores
                 </h1>
             </div>
         </div>
-        <h3>Should be 3 equal columns</h3>
-        <div class="row" style = "padding-top:50px">
+        <div class = "row text-center">
+            <h3 style = "color:lightblue">Here are the top Samurai Koala on the site!</h3>
+            <img id = "koala" classs="img-responsive center-block" style = "height:200px" src="{% static "homepage/img/koala_only_edited.svg" %}" alt="">
+        </div>
+        <div class="row" style = "intro-header">
 
-            <div class = "Most words reviewed in a day">.col-md-4>
-                "stuff"
+            <div class = "col-md-4"><h3-custom>Most All-Time Reviews</h3-custom>
+                <h4>Name of Number One - </h4>
             </div>
-            <div class = "Most words all time">.col-md-4>
-                "stuff2"
+            <div class = "col-md-4"><h3-custom>Most Reviews In A Day</h3-custom>
+                <h4>"stuff2"</h4>
+                <!-- UserProfile.most_words_practiced_in_day.get(highestScore) -->
             </div>
-            <div class = "Most words mastered">.col-md-4>
-                "stuff3"
+            <div class = "col-md-4"><h3-custom>Most Mastered Words</h3-custom>
+                <h4>Name of Number One - Mastered Words</h4>
+
+                <h4>stuff 4</h4>
+
+                <h4>stuff 5</h4>
             </div>
 
         </div>
