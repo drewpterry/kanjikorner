@@ -1,5 +1,7 @@
 from django.contrib import admin
 from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 # Register your models here.
 
@@ -10,6 +12,8 @@ from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings
 
 # class SetsInline(admin.TabularInline):
 #     model = Sets
+
+UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
 
 class SetsAdmin(admin.ModelAdmin):
     fields = ('name','description', 'pub_date', 'words', 'kanji')
@@ -30,7 +34,6 @@ class WordsAdmin(admin.ModelAdmin):
     ]
     search_fields = ['real_word', 'meaning', 'hiragana']
     ordering = ['-combined_frequency']
-    extra = 5
     
     # def get_kanji(self, obj):
 #         return "\n".join([p.kanji_name for p in obj.kanji.all()])
@@ -39,10 +42,15 @@ class WordsAdmin(admin.ModelAdmin):
     
 class KanjiAdmin(admin.ModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
-    extra = 5
+    list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo')
+    list_editable = ('kanji_meaning',)
+    list_filter = ('jlpt_level',)
+    search_fields = ('kanji_name', 'kanji_meaning')
+    ordering = ['jlpt_level', 'grade', 'newspaper_frequency']
     
 class UserProfileAdmin(admin.ModelAdmin):
-    fields = ('user', 'user_sets')   
+    list_display = ('user', 'most_words_practiced_in_day', 'test_extra')   
+    fields = ('user', 'user_sets', 'most_words_practiced_in_day')   
     # inlines = [SetsInline]     
 
 
