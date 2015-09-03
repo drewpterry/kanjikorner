@@ -2,6 +2,8 @@ from django.contrib import admin
 from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
@@ -13,7 +15,17 @@ from django.contrib.auth.models import User
 # class SetsInline(admin.TabularInline):
 #     model = Sets
 
-UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
+
+class UserResource(resources.ModelResource):
+
+    class Meta:
+        model = User
+
+class UserAdmin(ImportExportModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
+    resource_class = UserResource
+           
+# UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
 
 class SetsAdmin(admin.ModelAdmin):
     fields = ('name','description', 'pub_date', 'words', 'kanji')
@@ -22,7 +34,12 @@ class SetsAdmin(admin.ModelAdmin):
 class MeaningsInline(admin.TabularInline):
     model = WordMeanings
 
-class WordsAdmin(admin.ModelAdmin):
+class WordsResource(resources.ModelResource):
+
+    class Meta:
+        model = Words
+
+class WordsAdmin(ImportExportModelAdmin):
     # ef get_kanji(self, obj):
 #         return "\n".join([p.kanji_name for p in obj.kanji.all()])
     list_display = ('real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
@@ -34,28 +51,36 @@ class WordsAdmin(admin.ModelAdmin):
     ]
     search_fields = ['real_word', 'meaning', 'hiragana']
     ordering = ['-combined_frequency']
+    resource_class = WordsResource
     
     # def get_kanji(self, obj):
 #         return "\n".join([p.kanji_name for p in obj.kanji.all()])
 
-
     
-class KanjiAdmin(admin.ModelAdmin):
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'most_words_practiced_in_day')   
+    fields = ('user', 'user_sets', 'most_words_practiced_in_day')   
+    # inlines = [SetsInline]     
+
+class KanjiResource(resources.ModelResource):
+
+    class Meta:
+        model = Kanji
+
+class KanjiAdmin(ImportExportModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
     list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo')
     list_editable = ('kanji_meaning',)
     list_filter = ('jlpt_level',)
     search_fields = ('kanji_name', 'kanji_meaning')
     ordering = ['jlpt_level', 'grade', 'newspaper_frequency']
-    
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'most_words_practiced_in_day', 'test_extra')   
-    fields = ('user', 'user_sets', 'most_words_practiced_in_day')   
-    # inlines = [SetsInline]     
-
+    resource_class = KanjiResource
+    pass
 
 admin.site.register(Sets, SetsAdmin)
 admin.site.register(Words, WordsAdmin)
 admin.site.register(Kanji, KanjiAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 # admin.site.register(WordMeanings, WordMeaningsAdmin)

@@ -55,6 +55,8 @@ INSTALLED_APPS = (
     'endless_pagination',
     'registration',
     'debug_toolbar',
+    'import_export',
+    
 )
 
 ENDLESS_PAGINATION_LOADING = """<img src= '/static/manageset/ajax-loader.gif' alt="loading" />"""
