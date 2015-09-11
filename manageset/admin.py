@@ -22,7 +22,9 @@ class UserResource(resources.ModelResource):
         model = User
 
 class UserAdmin(ImportExportModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff', 'userprofile_foo')
+    def userprofile_foo(self, x):
+            return x.userprofile.most_words_practiced_in_day
     resource_class = UserResource
            
 # UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
