@@ -1,0 +1,63 @@
+{% extends "overall_site_temp.html" %}
+
+{% block page_content %}
+{% load staticfiles %}
+<html lang="en">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Highscores for Kanjisama" content="">
+        <meta name="Steffan" content="">
+        <title>Kanjisama - High Scores</title>
+
+        {% include "css.html" %}
+        {% include "favicon.html" %}
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        {% include "nav_bar.html" %}
+        <div class = "container">
+            <div class = "row text-center" style = "margin-top:40px; margin-bottom:0px">
+                <h1 style = "font-size:400%">High Scores
+                </h1>
+            </div>
+        </div>
+        <div class = "row text-center">
+            <h3 style = "color:lightblue">Here are the top Samurai Koala on the site!</h3>
+            <img id = "koala" classs="img-responsive center-block" style = "height:200px" src="{% static "homepage/img/koala_only_edited.svg" %}" alt="">
+        </div>
+        <div class="row" style = "intro-header">
+
+            <div class = "col-md-4"><h3-custom>Most All-Time Reviews</h3-custom>
+                <h4>Name of Number One - </h4>
+            </div>
+            <div class = "col-md-4"><h3-custom>Most Reviews In A Day</h3-custom>
+                <h4>"stuff2"</h4>
+                <!-- UserProfile.most_words_practiced_in_day.get(highestScore) -->
+            </div>
+            <div class = "col-md-4"><h3-custom>Most Mastered Words</h3-custom>
+                <h4>Name of Number One - Mastered Words</h4>
+
+                <h4>stuff 4</h4>
+
+                <h4>stuff 5</h4>
+            </div>
+
+        </div>
+    </body>
+    
+    {% include "footer_new.html" %}
+    <!-- jQuery -->
+    <script src="{% static "homepage/js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{%static "homepage/js/accordion.js" %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+</html>
+{% endblock %}
