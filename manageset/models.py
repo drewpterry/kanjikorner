@@ -201,7 +201,7 @@ class KnownWords(models.Model):
         
         self.last_practiced = datetime.now()
         self.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
-                    
+            
         return
         
     def times_practiced(self):
