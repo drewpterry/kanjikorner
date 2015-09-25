@@ -3,6 +3,7 @@
 {% block page_content %}
 {% load staticfiles %}
 <html lang="en">
+    <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +13,7 @@
 
         {% include "css.html" %}
         {% include "favicon.html" %}
+        <link rel="stylesheet" type="text/css" href="homepage/static/homepage/css/highscores.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,25 +32,40 @@
             </div>
         </div>
         <div class = "row text-center">
-            <h3 style = "color:lightblue">Here are the top Samurai Koala on the site!</h3>
-            <img id = "koala" classs="img-responsive center-block" style = "height:200px" src="{% static "homepage/img/koala_only_edited.svg" %}" alt="">
+            <h3 style = "color:blue">Here are the top Samurai Koala on the site!</h3>
         </div>
-        <div class="row" style = "intro-header">
+        <div class="row" align = "center">
 
-            <div class = "col-md-4"><h3-custom>Most All-Time Reviews</h3-custom>
+            <!-- <div class = "col-md-4 custom-test"><section-titles-font>Most All-Time Reviews</section-titles-font>
+            </div> -->
+            <div class = "col-md-4 col-md-offset-4" align = "center"><section-titles-font>Most Reviews In A Day</section-titles-font>
+            </div>
+            <!-- <div class = "col-md-4 custom-test"><section-titles-font>Most Mastered Words</section-titles-font>
+            </div> -->
+        </div>
+        <div class="row" align = "center">
+            <!-- <div class="col-md-4 custom-test">
                 <h4>Name of Number One - </h4>
+            </div> -->
+            <div class="col-md-4 col-md-offset-4" align = "center">
+                <img id = "one rect"  style = "height:100px" src="{% static "homepage/img/one rect.png" %}" alt=""> <rank-1-font> {{ mostInDayScores.0.user }} {{ mostInDayScores.0.most_words_practiced_in_day }} </rank-1-font>
+                <img id = "two rect"  style = "height:90px" src="{% static "homepage/img/two rect.png" %}" alt=""><rank-2-font> {{ mostInDayScores.1.user }} {{ mostInDayScores.1.most_words_practiced_in_day }} </rank-2-font>
+                <img id = "three rect"  style = "height:80px" src="{% static "homepage/img/three rect.png" %}" alt=""><rank-3-font> {{ mostInDayScores.2.user }} {{ mostInDayScores.2.most_words_practiced_in_day }} </rank-3-font>
+                <img id = "four rect"  style = "height:70px" src="{% static "homepage/img/four rect.png" %}" alt=""><rank-4-font> {{ mostInDayScores.3.user }} {{ mostInDayScores.3.most_words_practiced_in_day }} </rank-4-font>
+                <img id = "five rect"  style = "height:60px" src="{% static "homepage/img/five rect.png" %}" alt=""><rank-5-font> {{ mostInDayScores.4.user }} {{ mostInDayScores.4.most_words_practiced_in_day }} </rank-5-font>
+                <img id = "six rect"  style = "height:50px" src="{% static "homepage/img/six rect.png" %}" alt=""><rank-6-and-lower-font> {{ mostInDayScores.5.user }} {{ mostInDayScores.5.most_words_practiced_in_day }} </rank-6-and-lower-font>
+                <img id = "seven rect"  style = "height:50px" src="{% static "homepage/img/seven rect.png" %}" alt=""><rank-6-and-lower-font> {{ mostInDayScores.6.user }} {{ mostInDayScores.6.most_words_practiced_in_day }} </rank-6-and-lower-font>
+                <img id = "eight rect"  style = "height:50px" src="{% static "homepage/img/eight rect.png" %}" alt=""><rank-6-and-lower-font> {{ mostInDayScores.7.user }} {{ mostInDayScores.7.most_words_practiced_in_day }} </rank-6-and-lower-font>
+                <img id = "nine rect"  style = "height:50px" src="{% static "homepage/img/nine rect.png" %}" alt=""><rank-6-and-lower-font> {{ mostInDayScores.8.user }} {{ mostInDayScores.8.most_words_practiced_in_day }} </rank-6-and-lower-font>
+                <img id = "ten rect"  style = "height:50px" src="{% static "homepage/img/ten rect.png" %}" alt=""><rank-6-and-lower-font> {{ mostInDayScores.9.user }} {{ mostInDayScores.9.most_words_practiced_in_day }} </rank-6-and-lower-font>
             </div>
-            <div class = "col-md-4"><h3-custom>Most Reviews In A Day</h3-custom>
-                <h4>"stuff2"</h4>
-                <!-- UserProfile.most_words_practiced_in_day.get(highestScore) -->
-            </div>
-            <div class = "col-md-4"><h3-custom>Most Mastered Words</h3-custom>
+            <!-- <div class="col-md-4 custom-test">
                 <h4>Name of Number One - Mastered Words</h4>
 
                 <h4>stuff 4</h4>
 
                 <h4>stuff 5</h4>
-            </div>
+            </div> -->
 
         </div>
     </body>
