@@ -42,9 +42,13 @@
         
 	<input id = "set-name" type = "hidden" value = "{{ set_name }}"></input>
 	<input id = "user-name" type = "hidden" value = "{{ full_name }}"></input>
-			
+   		<div class="progress">
+   		  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+   		    0%
+   		  </div>
+   		</div>
  			   <div class = "container-fluid top-bar">
- 				   <row>
+				   
  	      			   <div class="col-xs-3 col-sm-3 col-md-3 col-md-offset-3 text-center">
  	      			   	<span id = "remaining-count" data-remaining = {{ words|length }}>{{ words|length }}</span><span class = "glyphicon glyphicon-flag" aria-hidden="true" style = "margin-left:5px"></span>
  	      			   </div>

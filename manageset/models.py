@@ -35,6 +35,7 @@ class Words(models.Model):
     frequency_two = models.IntegerField(db_index = True, null = True, blank = True)
     combined_frequency = models.IntegerField(db_index = True, null = True, blank = True)
     frequency_thousand = models.IntegerField(db_index = True, null = True, blank = True)
+    # jlpt_level = models.IntegerField(db_index = True, null = True, blank = True)
     part_of_speech = models.CharField(max_length = 200, null = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)

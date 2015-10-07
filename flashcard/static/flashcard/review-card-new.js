@@ -162,7 +162,7 @@ $('#answer-input').keydown(function(event){
 			input_ready = false;
 			
 			wanakana.bind(inputIME);
-			//reinserts word back into vocab list if any part is incorrect
+			//reinserts word back into vocab list if hiragana or meaning is incorrect
 			if(current_word.english_def_correct === false || current_word.hiragana_correct === false){
 				if(current_word.first_time){
 					update_word_object(current_word.know_word_object_id, 0);
@@ -189,6 +189,9 @@ $('#answer-input').keydown(function(event){
 					var completed_words = $('#completed-word-count').data('complete');
 					$('#completed-word-count').data('complete', completed_words + 1);
 					$('#completed-word-count').html(completed_words + 1);
+					complete_percent = (completed_words + 1)*100/vocab.original_length;
+					$('.progress-bar').html(complete_percent.toFixed(0) + '%');
+					$('.progress-bar').css('width',complete_percent.toFixed(2) + '%');
 				};
 			};
 			

@@ -258,7 +258,7 @@ a:link {
 
 .review-background {
 	background-repeat:no-repeat;
-	background-position: center -70px;
+	background-position: center -30px;
 	background-size:100% 100%;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -430,7 +430,16 @@ ol {
 
 }
 
+.review-cards-page .progress {
+	background:black;
+	height:15px;
+}
 
+.review-cards-page .progress-bar {
+	font-size: .7em;
+	line-height:15px;
+	background: #fc0527;	
+}
 
 /*------------------------------- MANAGE CARD PAGES ---------------------------*/
 .manage-card{
