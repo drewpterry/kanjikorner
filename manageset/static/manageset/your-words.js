@@ -154,7 +154,7 @@ var attach_entry_button_click = function(){
 var attach_word_info_click = function(){
 	$('.word-info-click').on('click', function(){
 		var element = $(this).parent().find('.add-word-button');
-		var word = element.data('word');
+		var word = element.data('entry');
 		var reading = element.data('readings');
 		var definitions = element.data('definitions');
 		var pos = element.data('pos');
@@ -168,8 +168,8 @@ var attach_word_info_click = function(){
 				kanji_symbols +=				'<div class = "kanji-meaning">'+ kanji_meanings[i] +'</div>';
 				kanji_symbols +=			'</div>';
 		};
-		
-		$('#word-info-header').html(word);
+		console.log(word);
+		$('#myModalKanji').html(word);
 		$('#word-reading').html(reading);
 		$('#word-pos').html(pos);
 		$('.list-definitions').html(definitions);
