@@ -39,6 +39,7 @@ class Words(models.Model):
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)
     published = models.BooleanField(default = True)
+    jlpt_level = models.IntegerField(db_index = True, null = True, blank = True)
     
     def combine_frequencies(self):
         
