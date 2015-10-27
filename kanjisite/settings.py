@@ -56,8 +56,11 @@ INSTALLED_APPS = (
     'registration',
     # 'debug_toolbar',
     'import_export',
+    'django.contrib.sites',
     
 )
+
+SITE_ID = 1
 
 ENDLESS_PAGINATION_LOADING = """<img src= '/static/manageset/ajax-loader.gif' alt="loading" />"""
 
@@ -104,9 +107,7 @@ DATABASES = {
         'USER': os.environ['USER_NAME'],
         'PASSWORD': os.environ['DATABASE_PW'],
         'PORT':'5432',
-
     }
-
 }
 
 
