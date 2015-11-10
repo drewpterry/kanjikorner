@@ -155,6 +155,8 @@ var attach_word_info_click = function(){
 	$('.word-info-click').on('click', function(){
 		var element = $(this).parent().find('.add-word-button');
 		var word = element.data('entry');
+		var jlpt_level = element.data('jlpt');
+		var freq = element.data('freq');
 		var reading = element.data('readings');
 		var definitions = element.data('definitions');
 		var pos = element.data('pos');
@@ -170,6 +172,8 @@ var attach_word_info_click = function(){
 		};
 		console.log(word);
 		$('#myModalKanji').html(word);
+		$('#jlpt-tag').html("JLPT " + jlpt_level);
+		$('#freq-tag').html("Freq " + freq);
 		$('#word-reading').html(reading);
 		$('#word-pos').html(pos);
 		$('.list-definitions').html(definitions);

@@ -11,7 +11,7 @@ import sys
 
 def scrape(word_object):
     # count = 0
-    words_to_without_levels = Words.objects.filter(jlpt_level__isnull = True)
+    # words_to_without_levels = Words.objects.filter(jlpt_level__isnull = True)
     headers = {'User-Agent' : "Mozilla/5.0 (Windows NT 6.0; WOW64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.16 Safari/534.24"}
     # for each in words_to_without_levels:
     # print each.real_word
@@ -33,7 +33,19 @@ def scrape(word_object):
     raw_html = r.text
     soup = BeautifulSoup(raw_html,"html.parser")
     try:
-        jlpt_level = soup.find("span", class_="concept_light-tag label").contents
+        list_of_words = soup.find_all("span","text")
+        for each in list_of_words:
+            # if each.contents. == word_object.real_word:
+                
+            tree_object = each.contents
+            print tree_object[0].strip()
+            print word_object.real_word
+            if tree_object[0] == word_object.real_word:
+                print each.contents
+            else:
+                print "not working"    
+        # jlpt_level = soup.find("span", class_="concept_light-tag label").contents
+        # print jlpt_level
         jlpt_level = jlpt_level[0][-1]
     except:
         jlpt_level = "n/a"      
@@ -44,24 +56,24 @@ def write_csv(output_file):
     count = 0
     with open(output_file,'wt') as fp:
         wr = csv.writer(fp, delimiter=";")
-        wr.writerow(['count', 'url', 'word', 'meaning', 'jlpt level'])  
-        words_to_without_levels = Words.objects.filter(jlpt_level__isnull = True)
-        # for each in words_to_without_levels:
- #            count += 1
- #            scraped_info = scrape(each)
- #            wr.writerow([count,scraped_info[0].encode('utf-8'),scraped_info[1].encode('utf-8'),scraped_info[2].encode('utf-8'),scraped_info[3]])
- #            fp.flush()
- #            print count, scraped_info
-        
+        wr.writerow(['count', 'url', 'word', 'meaning', 'jlpt level'])
+        words_to_without_levels = Words.objects.all()
+        for each in words_to_without_levels:
+            count += 1
+            scraped_info = scrape(each)
+            wr.writerow([count,scraped_info[0].encode('utf-8'),scraped_info[1].encode('utf-8'),scraped_info[2].encode('utf-8'),scraped_info[3]])
+            fp.flush()
+            # print count, scraped_info
+
         error_words = Words.objects.filter(jlpt_level = 6)
-         
+
         for each in error_words:
             count += 1
             scraped_info = scrape(each)
             wr.writerow([count,scraped_info[0].encode('utf-8'),scraped_info[1].encode('utf-8'),scraped_info[2].encode('utf-8'),scraped_info[3]])
             fp.flush()
-            print count, scraped_info   
-write_csv("jlpt_word_test2.csv")    
+            # print count, scraped_info
+write_csv("jlpt_word_test_new.csv")   
 
 # with open('xmltodict/word_list.json') as data_file:
 #     data = json.load(data_file)

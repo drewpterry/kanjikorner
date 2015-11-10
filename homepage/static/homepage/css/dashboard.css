@@ -350,8 +350,9 @@ a:link {
 }
 
 .kanji-info{
-	width:100px;
+	width:150px;
 	height:40px;
+	margin-left:18%;
 /*	text-align:center;*/
 /*	float:left;*/
 }
@@ -457,23 +458,42 @@ ol {
 	box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
 }
 
-.manage-card .word-frequency {
+
+.word-frequency, .jlpt-word-level {
 	position:absolute;
-	bottom: 20px;
-	left:20px;
 	font-size:.7em;	
 	font-weight:normal;
 }
 
-.manage-card .jlpt-word-level {
-	position:absolute;
+.jlpt-word-level {
 	top:4px;
 	left:20px;
 	color:white;
-	font-size:.7em;
-	font-weight:normal;	
 	background-color:black;
 }
+
+/*.word-frequency {
+	bottom:20px;
+	left:20px;
+}*/
+
+.modal-header .jlpt-word-level {
+	top:18px;
+	float:left;
+	margin-left:5px;
+	font-size:1em;
+}
+
+.modal-header .word-frequency {
+	position:absolute;
+	font-size:.7em;	
+	font-weight:normal;
+	top:18px;
+/*	top:4px;*/
+	left:100px;
+	font-size:1em;
+}
+
 
 
 

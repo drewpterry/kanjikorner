@@ -12,10 +12,16 @@
 						
 						
 						<br>
-						<span class = "kanji-jlpt-lvl">jlpt: {{ each.jlpt_level}}</span>
+						{% if each.jlpt_level == None %}
+					
+						{% else %}	
+							<div class = "jlpt-word-level label label-default">JLPT {{ each.jlpt_level}}</div>
+						
+						{% endif %}
 						<div class = 'kanji'> {{ each.kanji_name }} </div>
 						<div class = 'meaning'> {{ each.kanji_meaning }} </div>
-						<div class = 'meaning'> {{ each.grade }} </div>
+						<!-- <div class = 'meaning'> {{ each.grade }} </div> -->
+						<div class = 'word-frequency label label-default'>Grade {{ each.grade }}</div>
 						<div class = "row">
 						
 						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
