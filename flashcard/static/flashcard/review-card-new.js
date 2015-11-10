@@ -332,6 +332,11 @@ var write_info_box = function(){
 		};
 		
 		$('#myModalKanji').html(previous_word.word);
+		if(previous_word.jlpt_level < 6){
+			$('#jlpt-tag').html("JLPT " + previous_word.jlpt_level);
+			console.log("asdfasdf");
+		};
+		$('#freq-tag').html("Freq " + previous_word.frequency_thousand);
 		$('#word-reading').html(previous_word.hiragana);
 		$('#word-pos').html(previous_word.part_of_speech.join('<br>'));
 		$('.list-definitions').html(definition_info);

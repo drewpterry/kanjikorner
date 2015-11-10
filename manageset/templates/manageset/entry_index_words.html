@@ -26,7 +26,7 @@
 						<div class = "row">
 						
 						<div class="col-xs-12 col-sm-12 col-md-12 button-holder">
-							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-entry= {{ each.real_word }} data-meaning = '{{ each.meaning }}'  data-pos = "{% for pos in each.wordpos_set.all reversed %}{{pos.pos}}</br>{% endfor %}" data-readings = {{ each.hiragana }} data-definitions = "{% for defs in each.wordmeanings_set.all reversed %} {% if not forloop.last %}{{defs.meaning}}, {% else %} {{defs.meaning}} {% endif %}{% endfor %}" data-kanjis = '{% for kanji in each.kanji.all %}{{ kanji.kanji_name }}{% endfor %}' data-kanji-meaning = '{% for kanji in each.kanji.all %}{{ kanji.kanji_meaning }},{% endfor %}'>Add 
+							<div class = "btn btn-primary btn-sm add-word-button " data-clicked = false data-id = {{ each.pk }} data-entry= {{ each.real_word }} data-meaning = '{{ each.meaning }}' data-jlpt = {{ each.jlpt_level }} data-freq = {{ each.frequency_thousand }} data-pos = "{% for pos in each.wordpos_set.all reversed %}{{pos.pos}}</br>{% endfor %}" data-readings = {{ each.hiragana }} data-definitions = "{% for defs in each.wordmeanings_set.all reversed %} {% if not forloop.last %}{{defs.meaning}}, {% else %} {{defs.meaning}} {% endif %}{% endfor %}" data-kanjis = '{% for kanji in each.kanji.all %}{{ kanji.kanji_name }}{% endfor %}' data-kanji-meaning = '{% for kanji in each.kanji.all %}{{ kanji.kanji_meaning }},{% endfor %}'>Add 
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</div>
 						</div>
