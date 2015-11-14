@@ -335,6 +335,8 @@ var write_info_box = function(){
 		if(previous_word.jlpt_level < 6){
 			$('#jlpt-tag').html("JLPT " + previous_word.jlpt_level);
 			console.log("asdfasdf");
+		}else{
+			$('#jlpt-tag').html("");
 		};
 		$('#freq-tag').html("Freq " + previous_word.frequency_thousand);
 		$('#word-reading').html(previous_word.hiragana);
