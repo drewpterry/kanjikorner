@@ -90,7 +90,7 @@ $('#answer-form').submit(function(event){
 
 $('#answer-input').keydown(function(event){
 	if(input_ready === true && event.keyCode === 13){
-		var answer_input = document.getElementById('answer-input')
+		var answer_input = document.getElementById('answer-input');
 		var answer_input_value = document.getElementById('answer-input').value.toLowerCase();
 		var english_def = current_word.definitions;
 		
@@ -115,19 +115,34 @@ $('#answer-input').keydown(function(event){
 				answer_input.style.color = "#19fc5d";
 				
 				reset_input_bar("meaning", false, 500);
+				wanakana.unbind(inputIME);
+				current_word.hiragana_attempt = true;
 				
 			//if user submits incorrect answer	
 			}else{
-				answer_input.style.color = "#fc0527";
-				$("#main-card").toggleClass("flip");
-				vocab.first_time = false;
-				input_ready = false;
-				reset_input_bar("meaning",true,2000);
+				var roman_letter = false;
+				//check if answer contains accidental roman letter
+				for(var i = 0; i < answer_input_value.length; i++){
+					if(wanakana._isCharConsonant(answer_input_value[i]) || wanakana._isCharVowel(answer_input_value[i])){
+						// need to add some kind of signal
+						answer_input.value = answer_input_value;
+						roman_letter = true;
+						break;
+					};	
+				};
 				
+				//if no roman letter mark the answer as incorrect and move on
+				if(roman_letter === false){
+					answer_input.style.color = "#fc0527";
+					$("#main-card").toggleClass("flip");
+					vocab.first_time = false;
+					input_ready = false;
+					reset_input_bar("meaning",true,2000);
+					wanakana.unbind(inputIME);
+					current_word.hiragana_attempt = true;
+				};	
 			};
 			
-			wanakana.unbind(inputIME);
-			current_word.hiragana_attempt = true;
 		
 		//if user is submitting answer for definition	
 		}else{
@@ -334,7 +349,7 @@ var write_info_box = function(){
 		$('#myModalKanji').html(previous_word.word);
 		if(previous_word.jlpt_level < 6){
 			$('#jlpt-tag').html("JLPT " + previous_word.jlpt_level);
-			console.log("asdfasdf");
+			
 		}else{
 			$('#jlpt-tag').html("");
 		};
