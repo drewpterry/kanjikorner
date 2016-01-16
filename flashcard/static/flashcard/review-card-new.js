@@ -222,30 +222,33 @@ $('#answer-input').keydown(function(event){
 
 
 var next_card_2 = function(){
-	$(".mini-flipper").animate({
-		"left":"275px",	
-	},1);
-	
-	$(".main-flipper").animate({
-		"left":"550px",	
-	},1);
-	
-	$(".mini-card").animate({
-		"height":"270px",
-		"width":"520px",
-		"margin-top":"0px",
-		"line-height":"270px",
-		"font-size":"4em",
-	},600);
-	
-	$(".front-main").animate({
-		"height":"135px",
-		"width":"245px",
-		"margin-top":"75px",
-		"line-height":"115px",
-		"font-size":"2em",
-	},600);
-	
+    if($('.mini-card').is(':visible') == true){
+	    $(".mini-flipper").animate({
+	    	"left":"275px",	
+	    },1);
+	    
+	    $(".main-flipper").animate({
+	    	"left":"550px",	
+	    },1);
+	    
+	    $(".mini-card").animate({
+	    	"height":"270px",
+	    	"width":"520px",
+	    	"margin-top":"0px",
+	    	"line-height":"270px",
+	    	"font-size":"4em",
+	    },600);
+	    
+	    $(".front-main").animate({
+	    	"height":"135px",
+	    	"width":"245px",
+	    	"margin-top":"75px",
+	    	"line-height":"115px",
+	    	"font-size":"2em",
+	    },600);
+    }else{
+        $(".front-main").fadeOut()
+    };
 	wordnumber += 1;
 	current_word = vocab[wordnumber];
 	input_ready = true;

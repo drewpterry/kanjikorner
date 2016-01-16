@@ -370,7 +370,7 @@ def all_words(request,full_name):
             break
            
     if all_letters:
-        data = Words.objects.filter(meaning__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+        data = Words.objects.filter(meaning__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).distinct()
         search_done = True
     
     else: #check if all in hiragana/katakana
@@ -382,10 +382,10 @@ def all_words(request,full_name):
                 break   
                               
         if all_hiragana_or_katakana: #search by hiragana reading
-            data = Words.objects.filter(hiragana__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+            data = Words.objects.filter(hiragana__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).distinct()
             
         else: #submit full search word and see if word is in database
-            data = Words.objects.filter(real_word__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).exclude(frequency_thousand = None).distinct()
+            data = Words.objects.filter(real_word__contains = search_word).exclude(id__in = known_word_list).order_by('-combined_frequency').exclude(published = False).distinct()
     
     if request.is_ajax() and data:
         template = page_template

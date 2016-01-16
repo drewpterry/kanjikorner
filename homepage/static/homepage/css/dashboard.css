@@ -692,6 +692,7 @@ p.copyright {
 @media screen and (max-width: 1000px) {
 	.mini-card{
 		visibility:hidden;
+        display:none;
 	}
 	
 	#set-title {
