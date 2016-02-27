@@ -13,11 +13,8 @@ class UserCreateForm(UserCreationForm):
             super(UserCreateForm, self).__init__(*args, **kwargs)
             self.fields['username'].error_messages = {'invalid': 'This name is not a name!'}
             self.fields['password1'].error_messages = {'required': 'required, man'}
-            
-    
+
     email = forms.EmailField(required=True)
-
-
 
     class Meta:
         model = User
