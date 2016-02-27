@@ -50,13 +50,14 @@ INSTALLED_APPS = (
     'homepage',
     'manageset',
     'flashcard',
-    'south',
-    'southtut',    
-    'endless_pagination',
+    # 'south',
+    # 'southtut',
+    # 'endless_pagination',
     'registration',
     # 'debug_toolbar',
     'import_export',
-    'django.contrib.sites',
+    # 'django.core.context_processors.request',
+    'el_pagination',
     
 )
 

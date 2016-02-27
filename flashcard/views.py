@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords
 from django.contrib.auth.models import User
-from django.utils import simplejson
+# from django.utils import simplejson
 from django.core import serializers
 import json
 import random
@@ -12,6 +12,8 @@ from django.core.context_processors import csrf
 from django.utils.timezone import utc
 from django.db.models import F
 from django.views.decorators.cache import cache_control
+from forms import WordMeaningUpdate
+
 
 
 # Create your views here.
@@ -84,9 +86,7 @@ def srs_review_words(request, full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("you are not authenticated")
     else:
-        
             words_list = srs_get_and_update(request, full_name)
-               
     return render(request, 'flashcard/review-cards-new.html', {'full_name':full_name, 'words':words_list})
     
 
@@ -95,7 +95,7 @@ def srs_get_and_update(request, full_name):
    
     profile = request.user.userprofile
     now = datetime.utcnow().replace(tzinfo=utc)
-    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 9).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
+    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 7).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
     words_list = []
     known_word_id = []
     difference = 0

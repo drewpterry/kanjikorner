@@ -104,8 +104,6 @@ h6 {
 	
 }
 
-
-
 .review-ready:hover {
 	background-color:#16abe1;
 	border-color:#19fc5d
@@ -344,7 +342,6 @@ a:link {
 	color:white;
 }
 .word-info-header {
-/*	text-decoration:underline;*/
 	font-size:1.5em;
 	
 }
@@ -353,8 +350,6 @@ a:link {
 	width:150px;
 	height:40px;
 	margin-left:18%;
-/*	text-align:center;*/
-/*	float:left;*/
 }
 
 .each-kanji {
@@ -383,10 +378,7 @@ ol {
 .flip-container {
 	perspective: 1000;
 }
-	/* flip the pane when hovered */
-	/*.flip-container:hover .flipper, .flip-container.hover .flipper {
-		transform: rotateY(180deg);
-	}*/
+
 	 .flip-container.hover .flipper, .flip-container.flip .flipper {
 		transform: rotateY(180deg);
 		-webkit-transform: rotateY(180deg);
@@ -472,10 +464,10 @@ ol {
 	background-color:black;
 }
 
-/*.word-frequency {
-	bottom:20px;
-	left:20px;
-}*/
+.word-frequency {
+    bottom:20px;
+    left:20px;
+}
 
 .modal-header .jlpt-word-level {
 	top:18px;
@@ -485,13 +477,14 @@ ol {
 }
 
 .modal-header .word-frequency {
-	position:absolute;
 	font-size:.7em;	
 	font-weight:normal;
-	top:18px;
-/*	top:4px;*/
+/*    top:18px;*/
 	left:100px;
 	font-size:1em;
+    top:18px;
+    height:21px;
+/*    float:left;*/
 }
 
 
@@ -761,8 +754,5 @@ p.copyright {
 		font-size:1em;
 		margin-bottom:5px;
 	}
-	
-	
-	
-	
+
 }

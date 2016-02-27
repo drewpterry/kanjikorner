@@ -236,7 +236,9 @@
  					definitions,asdfjsa
  				</div>
  			</div>
-			
+            {% if user.is_superuser %}
+                <a id = "edit-word" href ="/admin/manageset/words/35048/" target = '_blank'>test<a/>
+            {% endif %}
 
  	</div>
        <div class="modal-footer">
@@ -307,6 +309,7 @@
 	vocab.push({
 		//I need to fix this so it works under all circumstances, both practice and reviews
 		word: '{{ word.real_word }}',
+        id: '{{ word.pk }}',
 		hiragana: '{{ word.hiragana }}',
 		meaning: '{{ word.meaning}}',
 		jlpt_level: '{{ word.jlpt_level }}',
@@ -327,7 +330,7 @@
 
 	</script>
 
-	<script src = "{% static 'flashcard/review-card-new.js' %}"></script>
+	<script src = "{% static 'flashcard/review-card.js' %}"></script>
 	<script src = "{% static 'flashcard/wanakana.min.js' %}"></script>
 	<script>
 	//binds IME to answer input
