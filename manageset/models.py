@@ -22,7 +22,7 @@ class Kanji(models.Model):
     jlpt_level = models.IntegerField(null = True)
     jinmeiyo = models.BooleanField(default = False)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
-    
+
     def __unicode__(self):
         return self.kanji_name
 
@@ -41,25 +41,20 @@ class Words(models.Model):
     duplicate_word = models.BooleanField(default = False)
     published = models.BooleanField(default = True)
     jlpt_level = models.IntegerField(db_index = True, null = True, blank = True)
-    
+    sentence_scrape = models.BooleanField(default = False)
+    scrape_failed = models.BooleanField(default = False)
+
     def combine_frequencies(self):
-        
-        
         frequency_bonus = 0
         frequency_again = 0
         if self.frequency_two == None:
             frequency_again = 0
         else:
             frequency_again = self.frequency_two
-
-        # print self.frequency
-
         if self.frequency > 0:
-           
             frequency_bonus = self.frequency - 49
             frequency_bonus = frequency_bonus * (-1)
             frequency_bonus = frequency_bonus * 5 + 230
-
         self.combined_frequency = frequency_bonus + frequency_again
         return self.combined_frequency
             
@@ -70,7 +65,7 @@ class Words(models.Model):
 class WordMeanings(models.Model):
     word = models.ForeignKey(Words)
     meaning = models.CharField(max_length = 500)
-    
+
     def __unicode__(self):
         return self.meaning
     
@@ -83,15 +78,13 @@ class Sets(models.Model):
     kanji = models.ManyToManyField(Kanji, blank = True)
     times_practiced = models.IntegerField()
     # userprofile = models.ForeignKey(UserProfile)
-    
+
     def __unicode__(self):
         return self.name
         
 class WordPos(models.Model):
     word = models.ForeignKey(Words)
     pos = models.CharField(max_length = 500)
-          
-      
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
@@ -112,16 +105,14 @@ class UserProfile(models.Model):
             self.number_words_practiced_today += 1
             if self.number_words_practiced_today > self.most_words_practiced_in_day:
                 self.most_words_practiced_in_day = self.number_words_practiced_today
-        
         self.words_practied_today_time_marker = current_datetime
-          
         return
-    
+
     def check_if_new_day(self,timezone_adjustment):
-        
+
         current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day
-        
+
         if self.words_practied_today_time_marker.day != current_day:
             self.number_words_practiced_today = 0
         
@@ -145,7 +136,7 @@ class KnownKanji(models.Model):
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
-    
+
     #im not sure what this is for....
     number_of_chosen_words = models.IntegerField(null = True)
     
@@ -155,7 +146,7 @@ class KnownKanji(models.Model):
     def display_kanji(self):
         return unicode(self.kanji)   
 
-    
+
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
     user_profile = models.ForeignKey(UserProfile)
@@ -168,8 +159,7 @@ class KnownWords(models.Model):
     times_answered_correct = models.IntegerField(default = 0)
     times_answered_wrong = models.IntegerField(default = 0)
     correct_percentage = models.FloatField(null = True)
-    
-    
+
     def update_tier_and_review_time(self, correct):
         options = {     0 : None,
                         1 : 3.5,
@@ -203,16 +193,28 @@ class KnownWords(models.Model):
         
         self.last_practiced = datetime.now()
         self.time_until_review = timedelta(hours = new_hours).total_seconds() * random_multiplier
-            
         return
-        
+
     def times_practiced(self):
         total_times_practiced = self.times_answered_correct + self.times_answered_wrong
         return total_times_practiced
-        
-   
-    
+
     def __unicode__(self):
         return self.words.real_word
 
-            
+
+class SentenceOwner(models.Model):
+    name = models.CharField(max_length = 50, default=' ', null=True)
+
+class Sentence(models.Model):
+    japanese_sentence = models.TextField(null=True)
+    english_sentence = models.TextField(null=True)
+    words = models.ManyToManyField(Words)
+    sentence_owner = models.ForeignKey(SentenceOwner, null=True)
+    date_added = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+    source_url = models.CharField(max_length = 70, null=True)
+    source_id = models.PositiveIntegerField(null=True)
+    comment_exists = models.BooleanField(default = False)
+    audio = models.URLField(max_length=200, null=True)
+
