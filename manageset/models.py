@@ -21,6 +21,10 @@ class Kanji(models.Model):
     newspaper_frequency = models.IntegerField(null = True)
     jlpt_level = models.IntegerField(null = True)
     jinmeiyo = models.BooleanField(default = False)
+    twitter_frequency = models.FloatField(null = True)
+    aozora_frequency = models.FloatField(null = True)
+    wikipedia_frequency = models.FloatField(null = True)
+    news_frequency = models.FloatField(null = True)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
 
     def __unicode__(self):
@@ -205,6 +209,9 @@ class KnownWords(models.Model):
 
 class SentenceOwner(models.Model):
     name = models.CharField(max_length = 50, default=' ', null=True)
+    
+    def __unicode__(self):
+        return self.name
 
 class Sentence(models.Model):
     japanese_sentence = models.TextField(null=True)
