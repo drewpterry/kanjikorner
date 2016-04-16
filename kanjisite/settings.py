@@ -67,7 +67,6 @@ INSTALLED_APPS = (
     'homepage',
     'manageset',
     'flashcard',
-    'registration',
     # 'debug_toolbar',
     'import_export',
     'el_pagination',
