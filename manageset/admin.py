@@ -1,20 +1,9 @@
 from django.contrib import admin
-from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings
+from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings, Sentence
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
-# Register your models here.
-
-# class WordsInline(admin.TabularInline):
-#     model = Words
-#     #adds the number of choice additions you can add at once
-#     extra = 3
-
-# class SetsInline(admin.TabularInline):
-#     model = Sets
-
 
 class UserResource(resources.ModelResource):
 
@@ -27,11 +16,8 @@ class UserAdmin(ImportExportModelAdmin):
             return x.userprofile.most_words_practiced_in_day
     resource_class = UserResource
            
-# UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
-
 class SetsAdmin(admin.ModelAdmin):
     fields = ('name','description', 'pub_date', 'words', 'kanji')
-    # inlines = [WordsInline]
 
 class MeaningsInline(admin.TabularInline):
     model = WordMeanings
@@ -42,8 +28,6 @@ class WordsResource(resources.ModelResource):
         model = Words
 
 class WordsAdmin(ImportExportModelAdmin):
-    # ef get_kanji(self, obj):
-#         return "\n".join([p.kanji_name for p in obj.kanji.all()])
     list_display = ('real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
     list_editable = ('combined_frequency', 'frequency_thousand', 'published')
     fields = ('real_word', 'meaning', 'hiragana', 'kanji', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
@@ -55,14 +39,9 @@ class WordsAdmin(ImportExportModelAdmin):
     ordering = ['-combined_frequency']
     resource_class = WordsResource
     
-    # def get_kanji(self, obj):
-#         return "\n".join([p.kanji_name for p in obj.kanji.all()])
-
-    
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'most_words_practiced_in_day')   
     fields = ('user', 'user_sets', 'most_words_practiced_in_day')   
-    # inlines = [SetsInline]     
 
 class KanjiResource(resources.ModelResource):
 
@@ -71,7 +50,7 @@ class KanjiResource(resources.ModelResource):
 
 class KanjiAdmin(ImportExportModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
-    list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo')
+    list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo', 'twitter_frequency', 'aozora_frequency', 'news_frequency', 'wikipedia_frequency')
     list_editable = ('kanji_meaning',)
     list_filter = ('jlpt_level',)
     search_fields = ('kanji_name', 'kanji_meaning')
@@ -79,10 +58,30 @@ class KanjiAdmin(ImportExportModelAdmin):
     resource_class = KanjiResource
     pass
 
+
+class SentenceResource(resources.ModelResource):
+
+    class Meta:
+        model = Sentence
+
+class SentenceAdmin(ImportExportModelAdmin):
+
+    def get_owner(self, obj):
+        return obj.sentence_owner.name
+
+    fields = ('japanese_sentence', 'english_sentence', 'sentence_owner', 'source_url', 'comment_exists', 'audio',)
+    list_display = ('japanese_sentence', 'english_sentence', 'sentence_owner', 'source_url', 'comment_exists', 'audio',)
+    search_fields = ('japanese_sentence', 'english_sentence', 'sentence_owner__name')
+    list_filter = ('sentence_owner',)
+    resource_class = SentenceResource
+    pass
+
+
 admin.site.register(Sets, SetsAdmin)
 admin.site.register(Words, WordsAdmin)
 admin.site.register(Kanji, KanjiAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Sentence, SentenceAdmin)
 # admin.site.register(WordMeanings, WordMeaningsAdmin)
