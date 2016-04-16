@@ -39,6 +39,11 @@ coverage.xml
 
 # Mr Developer
 .mr.developer.cfg
+
+#swap files
+*~
+*.swp
+*.swo
 .project
 .pydevproject
 
@@ -51,6 +56,8 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+**/.DS_Store
 
 #/kanjisite/settings.py
 #kanjisite/settings.py
