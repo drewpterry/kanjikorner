@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 
 from homepage import views
 
-urlpatterns = patterns('',
+urlpatterns = [ 
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
     # ex: /login/
     url(r'^$', views.create_account, name='index'),
@@ -12,6 +12,4 @@ urlpatterns = patterns('',
     # url(r'^login/$', views.login, name = 'login'),
     url(r'^auth/$', views.auth_view),
     url(r'^invalid/$', views.invalid_login),
-
-    
-)    
+]

@@ -7,7 +7,7 @@ from django.core import serializers
 import json
 import random
 from datetime import datetime, timedelta, time
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 # import pytz
 from django.utils.timezone import utc
 from django.db.models import F

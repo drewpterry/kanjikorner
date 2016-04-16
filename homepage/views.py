@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import Kanji
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth.models import User
 from forms import UserCreateForm

@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, date
 from django.utils.timezone import utc
 import time
 from django.utils import timezone
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
