@@ -26,6 +26,7 @@ class Kanji(models.Model):
     wikipedia_frequency = models.FloatField(null = True)
     news_frequency = models.FloatField(null = True)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
+    master_order = models.IntegerField(null = True)
 
     def __unicode__(self):
         return self.kanji_name
@@ -47,6 +48,8 @@ class Words(models.Model):
     jlpt_level = models.IntegerField(db_index = True, null = True, blank = True)
     sentence_scrape = models.BooleanField(default = False)
     scrape_failed = models.BooleanField(default = False)
+    master_order = models.IntegerField(null = True)
+    reviewed = models.BooleanField(default = False)
 
     def combine_frequencies(self):
         frequency_bonus = 0
@@ -224,4 +227,5 @@ class Sentence(models.Model):
     source_id = models.PositiveIntegerField(null=True)
     comment_exists = models.BooleanField(default = False)
     audio = models.URLField(max_length=200, null=True)
+    in_production = models.BooleanField(default = False)
 

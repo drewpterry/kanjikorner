@@ -92,7 +92,6 @@ def srs_review_words(request, full_name):
 
 def srs_get_and_update(request, full_name):
     
-   
     profile = request.user.userprofile
     now = datetime.utcnow().replace(tzinfo=utc)
     words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 7).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
@@ -108,8 +107,6 @@ def srs_get_and_update(request, full_name):
 
         time_remaining = word.time_until_review - difference
 
-       
-        # word.save()
         if time_remaining <= 0:
             #using this so i can update right or wrong words
             #need to add normal id to put definitions etc
@@ -117,7 +114,6 @@ def srs_get_and_update(request, full_name):
 
             words_list.append(word.words)
             
-       
     words.update(last_practiced = now,time_until_review = F('time_until_review') - difference)
             
     return words_list 

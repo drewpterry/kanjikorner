@@ -23,10 +23,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'django.core.context_processors.request',
-)
+# from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+# TEMPLATE_CONTEXT_PROCESSORS += (
+    # 'django.core.context_processors.request',
+    # 'django.contrib.auth.context_processors.auth',
+# )
 
 # Application definition
 
@@ -50,6 +51,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -67,10 +69,10 @@ INSTALLED_APPS = (
     'homepage',
     'manageset',
     'flashcard',
+    'admin_data_collection',
     # 'debug_toolbar',
     'import_export',
     'el_pagination',
-    
 )
 
 SITE_ID = 1

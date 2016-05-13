@@ -1,0 +1,69 @@
+{% extends "overall_site_temp.html" %}
+
+{% block page_content %}
+{% load staticfiles %}
+		  
+    <title>Word and Sentence Review</title>
+
+    {% include "css.html" %}
+	
+	{% include "favicon.html" %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12"> 
+                
+                      <!--{%for form in forms %}-->
+               <form action="test" method="POST">
+                  {% csrf_token %}
+
+                    <div class="col-sm-3 col-md-3"> 
+						<div class="form-group">
+                            <h2>Word</h2>
+                            {% for field in form.0 %}
+                                {{ field }}
+                            {% endfor %}
+                            <h2>Meanings</h2>
+                            {% for field in form.1 %}
+                                {{ field }}
+                            {% endfor %}
+						 </div>
+                    </div>
+                    <div class="col-sm-8 col-md-8"> 
+						<div class="form-group">
+                            {% for field in form.2 %}
+                                {{ field }}
+                            {% endfor %}
+						 </div>
+                    </div>
+                <br style="clear:both;">
+                  <input type="submit" class="btn" value="Save" />
+                </form> 
+                <hr style="clear:both;">
+                      <!--{%endfor%}-->
+
+            </div>
+        </div>        
+    </div>
+
+    <script src="{% static "homepage/js/bootstrap.min.js" %}"></script>
+
+</body>
+
+                  <!--<ul>-->
+                      <!--{%for form in forms %}-->
+                      <!--{%for each in form %}-->
+                        <!--{{each}}-->
+                      <!--{%endfor%}-->
+                      <!--{%endfor%}-->
+                  <!--</ul><hr>-->
+{% endblock %}

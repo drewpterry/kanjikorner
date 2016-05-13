@@ -30,7 +30,7 @@ class WordsResource(resources.ModelResource):
 class WordsAdmin(ImportExportModelAdmin):
     list_display = ('real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
     list_editable = ('combined_frequency', 'frequency_thousand', 'published')
-    fields = ('real_word', 'meaning', 'hiragana', 'kanji', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
+    fields = ('real_word', 'meaning', 'hiragana', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
     list_filter = ('published',)
     inlines = [
         MeaningsInline,
