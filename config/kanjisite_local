@@ -1,14 +1,10 @@
-upstream kanjisite {
-        server 127.0.0.1:8001;
+tream kanjisite {
+        server 0.0.0.0:8001;
 }
 
-server {
-        server_name www.kanjisama.com;
-        return 301 $scheme://kanjisama.com$request_uri;
-}
 
 server {
-        server_name kanjisama.com localhost 127.0.0.1;
+        server_name kanjisama.com localhost 0.0.0.0;
 
         index index.html;
 
@@ -26,6 +22,9 @@ server {
                 expires 7d;
         }
 
-        
+        location /static/admin/ {
+                alias /opt/venv/lib/python2.7/site-packages/django/contrib/admin/static/;
+                access_log off;
+                expires 7d;
+        }
 }
-
