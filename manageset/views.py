@@ -19,9 +19,6 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 from django.views.generic import View
 import re
-# from django.utils.timezone import activate
-# activate(pytz.timezone(""))
-
 
 
 def verify_profiles(request,full_name):
@@ -73,11 +70,9 @@ def main_profile(request,full_name):
         due_tomorrow = len(next_review) + number_of_reviews
         kanji_percent = round(number_of_added_kanji /21.36, 2) 
         if number_of_reviews == 0:
-  
             if next_review.exists():
                 next_review = next_review[0]
                 next_review = next_review['time_until_review']
-
                 next_review = str(timedelta(seconds = next_review)).split('.')[0]
         else:
             next_review = "Now"
