@@ -31,29 +31,39 @@ def index(request):
 def sentence_review(request):
     words = Words.objects.filter(jlpt_level = 5, id__lte=400)
     form_objects = []
-    test_query = Words.objects.get(real_word = "お金")
-    test_sentence = Sentence.objects.filter(words = test_query)
-    sentence_object = Sentence.objects.get(id = 46349)
+    # words_object = Words.objects.get(id = 194)
     for word in words:
         full_form = []
+
         word_form = WordsForm(instance=word)
+        word_form.id = word.id
         full_form.append(word_form)
+
         meaningset = modelformset_factory(WordMeanings, form=MeaningsForm, extra=4, max_num=8)
-        meaningset= meaningset(queryset=WordMeanings.objects.filter(word=word))
+        meaningset = meaningset(queryset=WordMeanings.objects.filter(word=word))
         full_form.append(meaningset)
+        
         sentence_formset = modelformset_factory(Sentence, form=SentenceForm)
         no_sentence_owner_object = SentenceOwner.objects.get(name=" ")
         sentence_formset = sentence_formset(queryset=Sentence.objects.filter(words=word).exclude(sentence_owner=no_sentence_owner_object))
         full_form.append(sentence_formset)
+
         form_objects.append(full_form)
         sentence_formset = modelformset_factory(Sentence, form=SentenceForm)
-        for form in form_objects:
-            for field in form[0]:
-                pass
     return render(request, 'admin_data_collection/word_def_sentence_review.html', {"forms": form_objects} ) 
 
 def save_sentence_review_form(request):
-    return
+    c = {}
+    c.update(csrf(request))
+    print "hello"
+    if request.method == 'POST':
+        # data = request.POST['form_data']
+        data = 277
+        # print data 
+        print request.POST
+    # except KeyError:
+        # return HttpResponse("there was an error")
+    return HttpResponse(data, content_type="application/json")
  
 @staff_member_required
 def question_answer_screen(request):

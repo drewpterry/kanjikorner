@@ -236,7 +236,7 @@ var update_filter_kanji = function(kanji_id){
 	$.ajax({
 		url:'/profile/upate-knownkanji-special',
 	//should make this a post request
-		type:'GET',
+		type:'POST',
 		data:{theid: kanji_id , csrfmiddlewaretoken: '{{ csrf_token }}'},
 		success: function(data){
 
