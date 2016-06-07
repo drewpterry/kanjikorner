@@ -23,35 +23,34 @@
         <div class="row">
             <div class="col-sm-12 col-md-12"> 
                 
-                      <!--{%for form in forms %}-->
-               <form action="submit-form/" method="POST" class="formone">
+            {% for form in forms %}
+            <form action="submit-form/" method="POST" id="form_{{form.word_form.id}}"class="formone">
                   {% csrf_token %}
 
                     <div class="col-sm-3 col-md-3"> 
 						<div class="form-group">
                             <h2>Word</h2>
-                            {{form.0.id}}
-                            {% for field in form.0 %}
-                                {{ field }}
-                            {% endfor %}
+                            <input type="hidden" name='word_id' value="{{form.word_form.id}}">
+                            {{form.word_form}}
+                           
                             <h2>Meanings</h2>
-                            {% for field in form.1 %}
-                                {{ field }}
-                            {% endfor %}
+                            {{form.meaningset}}
 						 </div>
                     </div>
                     <div class="col-sm-8 col-md-8"> 
 						<div class="form-group">
-                            {% for field in form.2 %}
-                                {{ field }}
+                            {{ form.sentence_formset.management_form}}
+                            {% for each in form.sentence_formset%}
+                                {{each}}
+                                <br style="clear:both;">
                             {% endfor %}
 						 </div>
                     </div>
                 <br style="clear:both;">
-                  <input type="submit" class="btn" value="Save" />
+                <input type="submit" class="btn" value="Save" form-id="{{form.word_form.id}}">
                 </form> 
                 <hr style="clear:both;">
-                      <!--{%endfor%}-->
+            {% endfor %}
 
             </div>
         </div>        
