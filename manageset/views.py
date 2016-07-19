@@ -163,7 +163,13 @@ class KnownKanjiFilter(View):
              self.template = self.page_template
              number_of_reviews = ''
              for each in known_kanji:
+                 # print each.date_added
+                 # print each.id
+                 # print each.kanji.id
+                 # print each.number_of_chosen_words
                  individual_kanji = each.kanji.get()
+                 # individual_kanji = each.kanji.all()
+                 print individual_kanji
                  individual_kanji.selected_kanji = each.selected_kanji
                  kanji_objects.append(individual_kanji)
          else:    
