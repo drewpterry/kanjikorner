@@ -5,8 +5,8 @@ import sys
 import os
 # print os.path.dirname(os.path.abspath(__file__))
 # with open('../data/Kanji/kanji_order', 'r') as csvfile:
-print os.listdir("../data/Kanji/")
-with open('../data/Kanji/kanji-order-libre.csv', 'rU') as csvfile:
+# print os.listdir("../data/Kanji/")
+with open('kanji_order_NOV6.csv', 'rU') as csvfile:
     reader = csv.reader(csvfile, delimiter = ',')
     row_count = 0
     for row in reader:

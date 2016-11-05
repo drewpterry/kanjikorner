@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     # 'debug_toolbar',
     'import_export',
     'el_pagination',
+    # 'manageset.management.commands',
 )
 
 SITE_ID = 1
