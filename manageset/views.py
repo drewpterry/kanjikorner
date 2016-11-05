@@ -485,7 +485,10 @@ def update_knownkanji_special(request):
         if request.is_ajax():
             try:
                 profile = request.user.userprofile.id
-                theid = request.GET['theid']
+                theid = request.POST['theid']
+                # theid = request.GET
+                print "i hot here"
+                print theid 
                 data = KnownKanji.objects.filter(user_profile = profile, kanji = theid)
                 for each in data:
                     if each.selected_kanji == False:
