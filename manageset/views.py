@@ -129,8 +129,11 @@ def word_bank_view(request,full_name):
             return not_auth
     else:
         profile = request.user.userprofile
-        profile_known_words = 2
-        
+        # profile_known_words = 2
+        profile = request.user.userprofile.id
+        profile_known_words= KnownWords.objects.filter(user_profile = profile).order_by('date_added')
+        # print profile_known_words.query
+        print profile_known_words[40:]
         number_of_reviews = len(srs_get_and_update(request, full_name))
         return render(request, "manageset/known_word_bank.html", {'full_name':full_name, 'known_kanji': profile_known_words, 'review_number': number_of_reviews})           
 
@@ -513,6 +516,7 @@ def add_words_to_set(request,full_name):
     description = ''
     
     chosenwords = request.POST.getlist('chosenwords')
+    print chosenwords.reverse()
     thechosenwords = []
    
     for words in chosenwords:

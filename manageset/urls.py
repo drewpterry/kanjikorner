@@ -5,10 +5,10 @@ urlpatterns = [
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
     # ex: /profile/
     url(r'^(?P<full_name>\w*)$', views.main_profile, name='index'),
+
     
     #four main views of new word, word bank, new kanji, and kanji bank
     url(r'^(?P<full_name>\w*)/new-kanji$', views.new_kanji_view, name='view_new_kanji'),
-    # url(r'^(?P<full_name>\w*)/new-set/known-kanji$', views.known_kanji_view, name='known-kanji'),
     url(r'^(?P<full_name>\w*)/new-set/known-kanji$', views.KnownKanjiView.as_view(), name='known-kanji'),
     url(r'^(?P<full_name>\w*)/new-set/known-kanji-filter$', views.KnownKanjiFilter.as_view(), name='known-kanji-filter'),
     url(r'^(?P<full_name>\w*)/new-set/new-words$', views.new_words_view, name='new-words'),
