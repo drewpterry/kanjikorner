@@ -61,3 +61,7 @@ docs/_build/
 
 #/kanjisite/settings.py
 #kanjisite/settings.py
+#
+#
+xmltodict/*
+clean_up/*
