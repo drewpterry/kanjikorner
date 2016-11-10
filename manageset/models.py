@@ -84,6 +84,7 @@ class Sets(models.Model):
     words = models.ManyToManyField(Words, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     times_practiced = models.IntegerField()
+    master_order = models.IntegerField(null = True)
     # userprofile = models.ForeignKey(UserProfile)
 
     def __unicode__(self):
