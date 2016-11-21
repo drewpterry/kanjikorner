@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def _upload_kanji_order(self):
         script_dir = os.path.dirname(__file__)
-        rel_path = "kanji_order_NOV6.csv"
+        rel_path = "kanji_orderNOV21_16.csv"
         abs_file_path = os.path.join(script_dir, rel_path)
 
         with open(abs_file_path, 'rU') as csvfile:
@@ -22,6 +22,7 @@ class Command(BaseCommand):
                     pass
                 else:
                     kanji = row[2].decode("utf-8")
+                    print row_count, kanji
                     try:
                         kanji = Kanji.objects.get(kanji_name=kanji)
                         kanji.master_order = row[0]
