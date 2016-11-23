@@ -141,6 +141,7 @@ user_registered.connect(createUserProfile)
 class KnownKanji(models.Model):
     #should be a foreign key
     kanji = models.ManyToManyField(Kanji)
+    kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)

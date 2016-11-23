@@ -57,7 +57,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-**/.DS_Store
+*.DS_Store
 
 #/kanjisite/settings.py
 #kanjisite/settings.py
