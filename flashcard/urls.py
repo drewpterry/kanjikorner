@@ -9,4 +9,5 @@ urlpatterns =[
     url(r'^(?P<full_name>\w*)/(?P<set_name>[-\w ]+)/complete-stack$', views.complete_stack, name='complete-stack'),
     url(r'^(?P<full_name>\w*)/SRS-review$', views.srs_review_words, name='srs_review_words'),
     url(r'^(?P<full_name>\w*)/tier-level-update$', views.tier_level_update, name='tier_level_update'),
+    url(r'^lvl-([0-9]{2})/([0-2]{2})$', views.view_review_deck, name='view_review_deck'),
 ]   
