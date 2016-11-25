@@ -95,12 +95,8 @@
 		      	</div>
 			  
 			 </div>
-		 <!-- </div>  -->
-<!--end row -->
-			  
 			 	
         </div>
-        <!-- /.container -->
 <br>
 
    <div class = "container">
@@ -244,7 +240,7 @@
 		   		{% for each in usersets %}
 		   		
 	       		<div class="col-xs-4 col-sm-2 col-m-2">
-	       		  <div class = "text-center stack">{{ each }}
+	       		  <div class = "text-center stack">{{ each.level}}
 		   				<div>{{ each.words.count }} words</div>
 	  	   			   <a href = "{% url 'flashcard:practice-stack' full_name each %}">
 		   				   <button class="btn btn-primary" type="button">

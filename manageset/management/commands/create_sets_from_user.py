@@ -37,7 +37,7 @@ class Command(BaseCommand):
     def create_stacks_from_master_order(self):
         print "creating stacks..." 
         words = Words.objects.exclude(master_order = None).order_by("master_order")
-        count = 1
+        count = 0
         stacks_created = 0
         level = 1
         sub_level = 1
@@ -60,10 +60,10 @@ class Command(BaseCommand):
                 words_to_add = []
                 stacks_created += 1
                 sub_level += 1
-
-            if stacks_created % 20 == 0 & stacks_created != 0:
-                level += 1
-                sub_level = 1
+                if stacks_created % 20 == 0 and stacks_created != 0:
+                    level += 1
+                    print "here", level
+                    sub_level = 1
         print "stacks created"
 
     def delete_master_stacks(self):
