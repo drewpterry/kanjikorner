@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^logout/', include('homepage.urls', namespace = "logout")),
     url(r'^profile/', include('manageset.urls', namespace = "profile")),
     url(r'^profile/', include('flashcard.urls', namespace = "flashcard")),
+    url(r'^review/', include('flashcard.urls', namespace = "review")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^register/$',RegistrationView.as_view(form_class=RegistrationFormUniqueEmail),name='registration_register'),

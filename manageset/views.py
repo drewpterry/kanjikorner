@@ -18,6 +18,8 @@ from collections import deque
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_control
 from django.views.generic import View
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 import re
 
 
@@ -34,17 +36,17 @@ def main_profile(request,full_name):
             return not_auth
     else:
         
-        userprofiles = User.objects.get(username = full_name).id
-       
-        userprofile = UserProfile.objects.get(user = userprofiles)
-        usersets = userprofile.user_sets.all().order_by('pub_date').prefetch_related('words')
+        userprofile = UserProfile.objects.get(user = request.user)
+        #delete once finished
+        # usersets = userprofile.user_sets.all().order_by('pub_date').prefetch_related('words')
+        decks = Sets.objects.exclude(master_order = None).order_by('master_order')
         
         user_known_words = KnownWords.objects.filter(user_profile = userprofile)
         known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
         total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
         one_day_ago = datetime.now() - timedelta(days = 1)
-        words_reviewed_today = request.user.userprofile.number_words_practiced_today
-        words_reviewed_today_best = request.user.userprofile.most_words_practiced_in_day
+        words_reviewed_today = userprofile.number_words_practiced_today
+        words_reviewed_today_best = userprofile.most_words_practiced_in_day
         
         total_review_right = user_known_words.aggregate(Sum('times_answered_correct'))
         total_review_wrong = user_known_words.aggregate(Sum('times_answered_wrong'))
@@ -78,10 +80,10 @@ def main_profile(request,full_name):
             next_review = "Now"
             
         
-        return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets':usersets, 'review_number': number_of_reviews, \
+        return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets': decks, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
           'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent,"words_reviewed_today_best":words_reviewed_today_best})
- 
+
 def update_words_practiced_today(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("you are not authenticated")

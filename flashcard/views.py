@@ -13,6 +13,7 @@ from django.utils.timezone import utc
 from django.db.models import F
 from django.views.decorators.cache import cache_control
 from forms import WordMeaningUpdate
+from django.http import JsonResponse
 
 
 
@@ -36,6 +37,14 @@ def practice_stack(request, full_name, set_name):
         
         return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names, 'words_in_queue':words_in_queue})
         
+def get_review_deck(request, level, sub_level):
+    users = UserProfile.objects.all()
+    data = serializers.serialize('json', users)
+    data = json.loads(data)
+    return JsonResponse(data, safe=False)
+
+def view_review_deck(request, level, sub_level):
+    return render(request, 'flashcard/practicecards.html')
 
 def complete_stack(request, full_name, set_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
