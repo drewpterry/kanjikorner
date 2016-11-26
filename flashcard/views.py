@@ -38,8 +38,8 @@ def practice_stack(request, full_name, set_name):
         return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names, 'words_in_queue':words_in_queue})
         
 def get_review_deck(request, level, sub_level):
-    users = UserProfile.objects.all()
-    data = serializers.serialize('json', users)
+    deck = Sets.objects.filter(level=level, sub_level=sub_level).prefetch_related('words')
+    data = serializers.serialize('json', deck)
     data = json.loads(data)
     return JsonResponse(data, safe=False)
 
