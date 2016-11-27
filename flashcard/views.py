@@ -14,6 +14,12 @@ from django.db.models import F
 from django.views.decorators.cache import cache_control
 from forms import WordMeaningUpdate
 from django.http import JsonResponse
+from api.serializers import SetsSerializer
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.decorators import renderer_classes 
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+from rest_framework.response import Response
 
 
 
@@ -37,11 +43,12 @@ def practice_stack(request, full_name, set_name):
         
         return render(request, 'flashcard/practicecards.html', {'full_name':full_name, 'words':words, 'set_name': set_name, 'kanji_names': kanji_names, 'words_in_queue':words_in_queue})
         
+@api_view(['GET'])
 def get_review_deck(request, level, sub_level):
-    users = UserProfile.objects.all()
-    data = serializers.serialize('json', users)
-    data = json.loads(data)
-    return JsonResponse(data, safe=False)
+    deck = Sets.objects.filter(level=level, sub_level=sub_level)
+    serializer = SetsSerializer(deck, many=True)
+    data = serializer.data
+    return Response(data)
 
 def view_review_deck(request, level, sub_level):
     return render(request, 'flashcard/practicecards.html')

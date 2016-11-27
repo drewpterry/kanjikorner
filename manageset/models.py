@@ -70,7 +70,7 @@ class Words(models.Model):
         return self.real_word
 
 class WordMeanings(models.Model):
-    word = models.ForeignKey(Words)
+    word = models.ForeignKey(Words, related_name = "the_meanings")
     meaning = models.CharField(max_length = 500)
 
     def __unicode__(self):
@@ -92,7 +92,7 @@ class Sets(models.Model):
         return self.name
         
 class WordPos(models.Model):
-    word = models.ForeignKey(Words)
+    word = models.ForeignKey(Words, related_name="thepos")
     pos = models.CharField(max_length = 500)
 
 class UserProfile(models.Model):

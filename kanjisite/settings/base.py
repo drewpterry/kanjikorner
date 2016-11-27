@@ -58,11 +58,19 @@ INSTALLED_APPS = (
     'manageset',
     'flashcard',
     'admin_data_collection',
-    # 'debug_toolbar',
+    'rest_framework',
     'import_export',
     'el_pagination',
-    # 'manageset.management.commands',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 SITE_ID = 1
 
