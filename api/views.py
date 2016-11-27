@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User, Group
-from manageset.models import *
 from rest_framework import viewsets
 from api.serializers import * 
 
@@ -13,22 +12,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 class SetsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Sets.objects.all()
+    queryset = Sets.objects.filter(master_order=1)
     serializer_class = SetsSerializer
 
 class WordsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Sets.objects.all()
-    serializer_class = SetsSerializer
+    queryset = Words.objects.all()
+    serializer_class = WordsSerializer
+
+class WordMeaningsViewSet(viewsets.ModelViewSet):
+    queryset = WordMeanings.objects.all()
+    serializer_class = WordMeaningsSerializer

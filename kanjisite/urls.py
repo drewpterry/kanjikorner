@@ -13,7 +13,8 @@ router = routers.DefaultRouter()
 router.register(r'users', api_views.UserViewSet)
 router.register(r'groups', api_views.GroupViewSet)
 router.register(r'sets', api_views.SetsViewSet)
-router.register(r'word', api_views.SetsViewSet)
+router.register(r'word', api_views.WordsViewSet)
+router.register(r'word-meanings', api_views.WordMeaningsViewSet)
 
 admin.autodiscover()
 

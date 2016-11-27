@@ -1,4 +1,3 @@
-#profile
 from django.conf.urls import patterns, url
 from flashcard.views import * 
 

@@ -14,19 +14,27 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ('url', 'name')
 
-# class WordMeaningsSerializer(serializers.HyperlinkedModelSerializer):
-    # class Meta:
-        # model = WordMeanings 
-        # fields = ('meaning', 'master_order')
+class WordPosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WordPos
+        fields = ('pos',)
 
-class WordsSerializer(serializers.HyperlinkedModelSerializer):
-    word_meanings = serializers.StringRelatedField(many=True)
+class WordMeaningsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WordMeanings 
+        fields = ('meaning',)
+
+class WordsSerializer(serializers.ModelSerializer):
+    kanji = serializers.StringRelatedField(many=True)
+    meanings = WordMeaningsSerializer(source='the_meanings', read_only=True, many=True)
+    pos = WordPosSerializer(source='thepos', read_only=True, many=True)
+    
     class Meta:
         model = Words 
-        fields = ('word_meanings', 'master_order')
+        fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order')
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):
     words = WordsSerializer(many=True, read_only = True)
     class Meta:
         model = Sets 
-        fields = ('name', 'level', 'sub_level', 'words', 'master_order')
+        fields = ('id', 'name', 'level', 'sub_level', 'words', 'master_order')
