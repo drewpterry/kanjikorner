@@ -26,3 +26,7 @@ class WordsViewSet(viewsets.ModelViewSet):
 class WordMeaningsViewSet(viewsets.ModelViewSet):
     queryset = WordMeanings.objects.all()
     serializer_class = WordMeaningsSerializer
+
+class KnownWordsViewSet(viewsets.ModelViewSet):
+    queryset = KnownWords.objects.all()
+    serializer_class = KnownWordsSerializer

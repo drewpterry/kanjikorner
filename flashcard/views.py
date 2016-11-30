@@ -14,7 +14,7 @@ from django.db.models import F
 from django.views.decorators.cache import cache_control
 from forms import WordMeaningUpdate
 from django.http import JsonResponse
-from api.serializers import SetsSerializer
+from api.serializers import SetsSerializer, KnownWordsSerializer
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
@@ -52,6 +52,19 @@ def get_review_deck(request, level, sub_level):
 
 def view_review_deck(request, level, sub_level):
     return render(request, 'flashcard/practicecards.html')
+
+@api_view(['GET'])
+def get_srs_review(request):
+    profile = request.user.userprofile
+    now = datetime.utcnow().replace(tzinfo=utc)
+    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 7).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
+    serializer = KnownWordsSerializer(words, many=True)
+    data = serializer.data
+    return Response(data)
+
+def view_srs_review(request):
+    return render(request, 'flashcard/practicecards.html')
+
 
 def complete_stack(request, full_name, set_name):
     if not request.user.is_authenticated() or request.user.username != full_name:

@@ -15,6 +15,7 @@ router.register(r'groups', api_views.GroupViewSet)
 router.register(r'sets', api_views.SetsViewSet)
 router.register(r'word', api_views.WordsViewSet)
 router.register(r'word-meanings', api_views.WordMeaningsViewSet)
+router.register(r'known-words', api_views.KnownWordsViewSet)
 
 admin.autodiscover()
 
