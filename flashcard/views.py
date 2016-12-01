@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords
+from manageset.utils import * 
 from django.contrib.auth.models import User
 # from django.utils import simplejson
 from django.core import serializers
@@ -56,8 +57,8 @@ def view_review_deck(request, level, sub_level):
 @api_view(['GET'])
 def get_srs_review(request):
     profile = request.user.userprofile
-    now = datetime.utcnow().replace(tzinfo=utc)
-    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 7).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review').select_related('words')
+    update_word_queue(user)
+    words = KnownWords.objects.filter(user_profile = profile, tier_level__lte = 7, time_until_review__lte = 0).exclude(tier_level = 0).exclude(time_until_review = None).order_by('time_until_review')
     serializer = KnownWordsSerializer(words, many=True)
     data = serializer.data
     return Response(data)
