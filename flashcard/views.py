@@ -9,7 +9,6 @@ import json
 import random
 from datetime import datetime, timedelta, time
 from django.template.context_processors import csrf
-# import pytz
 from django.utils.timezone import utc
 from django.db.models import F
 from django.views.decorators.cache import cache_control
@@ -66,7 +65,24 @@ def get_srs_review(request):
 def view_srs_review(request):
     return render(request, 'flashcard/practicecards.html')
 
+@api_view(['POST'])
+def update_review_word(request):
+    profile = request.user.userprofile
+    timezone_adjustment = int(request.GET['timezone_offset'])
+    known_id = request.GET['known_object_id']
+    increase_level = int(request.GET['increase_level'])
+    #TODO this probably shouldn't accept knownID, it will probably find word based off of Word assocation
+    selected_word = KnownWords.objects.get(id = known_id, profile = user)
+    selected_word.update_tier_and_review_time(increase_level)
+    selected_word.save()
+    
+    profile.update_words_practiced_today(timezone_adjustment)
+    profile.save()
+    return Response(data)
 
+
+
+#replacing all of these views
 def complete_stack(request, full_name, set_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("you are not authenticated")
