@@ -52,7 +52,7 @@ def scrape(word_object):
             sentence = ""    
     except:
         jlpt_level = "n/a"      
-    return [target_url, word_object.real_word,, sentence, jlpt_level]
+    return [target_url, word_object.real_word, sentence, jlpt_level]
 
 
 def write_csv(output_file):
