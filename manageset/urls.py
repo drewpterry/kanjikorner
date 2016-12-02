@@ -33,4 +33,13 @@ urlpatterns = [
 
     url(r'^view-set/get-set-words$', views.view_stack_search, name='view_stack_search'),
     url(r'^(?P<full_name>[-\w]+)/(?P<set_name>[-\w \']+)/view$', views.view_stack, name='view_stack'),
+
+
+
+
+
+    url(r'^/$', views.view_dashboard, name='dashboard'),    
+
+
+
 ]   

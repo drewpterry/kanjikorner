@@ -25,10 +25,13 @@ import re
 
 def verify_profiles(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
-            return False
+        return False
             
 not_auth = HttpResponse("you are not authenticated")
 
+def view_dashboard(request):
+    return render(request,'manageset/dashboard.html')
+    
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def main_profile(request,full_name):
@@ -38,8 +41,8 @@ def main_profile(request,full_name):
         
         userprofile = UserProfile.objects.get(user = request.user)
         #delete once finished
-        # usersets = userprofile.user_sets.all().order_by('pub_date').prefetch_related('words')
-        decks = Sets.objects.exclude(master_order = None).order_by('master_order')
+        usersets = userprofile.user_sets.all().order_by('pub_date').prefetch_related('words')
+        # decks = Sets.objects.exclude(master_order = None).order_by('master_order')
         
         user_known_words = KnownWords.objects.filter(user_profile = userprofile)
         known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
@@ -80,7 +83,7 @@ def main_profile(request,full_name):
             next_review = "Now"
             
         
-        return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets': decks, 'review_number': number_of_reviews, \
+        return render(request,'manageset/dashboard_new.html', {'full_name':full_name, 'usersets': usersets, 'review_number': number_of_reviews, \
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
           'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent,"words_reviewed_today_best":words_reviewed_today_best})
 

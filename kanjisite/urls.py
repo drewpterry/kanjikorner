@@ -15,6 +15,7 @@ router.register(r'groups', api_views.GroupViewSet)
 router.register(r'sets', api_views.SetsViewSet)
 router.register(r'word', api_views.WordsViewSet)
 router.register(r'word-meanings', api_views.WordMeaningsViewSet)
+router.register(r'known-words', api_views.KnownWordsViewSet)
 
 admin.autodiscover()
 
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^create-account/', include('homepage.urls', namespace = "create-account")),
     url(r'^login/', include('homepage.urls', namespace = "login")),
     url(r'^logout/', include('homepage.urls', namespace = "logout")),
+    url(r'^dashboard', include('manageset.urls', namespace = "dashboard")),
     url(r'^profile/', include('manageset.urls', namespace = "profile")),
     url(r'^profile/', include('flashcard.urls', namespace = "flashcard")),
     url(r'^review/', include('flashcard.urls', namespace = "review")),

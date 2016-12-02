@@ -5,7 +5,6 @@ from datetime import datetime, timedelta, date
 import csv
 import sys
 import os
-print os.path.dirname(os.path.abspath(__file__))
 class Command(BaseCommand):
     help = 'create master stacks from user'
 
@@ -16,7 +15,8 @@ class Command(BaseCommand):
         self.delete_master_stacks()
         words = self.get_user_word_list(user_id)
         self.assign_word_master_order(words)
-        self.create_stacks_from_master_order()
+        # TODO add back later or move into different place
+        # self.create_stacks_from_master_order()
         print "complete!"
         
     def get_user_word_list(self, user_id):

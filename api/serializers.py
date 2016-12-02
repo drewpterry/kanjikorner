@@ -34,7 +34,13 @@ class WordsSerializer(serializers.ModelSerializer):
         fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order')
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):
-    words = WordsSerializer(many=True, read_only = True)
+    words = WordsSerializer(many=True, read_only=True)
     class Meta:
         model = Sets 
         fields = ('id', 'name', 'level', 'sub_level', 'words', 'master_order')
+
+class KnownWordsSerializer(serializers.HyperlinkedModelSerializer):
+    words = WordsSerializer(read_only=True)
+    class Meta:
+        model = KnownWords 
+        fields = ('id', 'words', 'tier_level')
