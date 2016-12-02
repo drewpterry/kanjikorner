@@ -28,9 +28,9 @@ class WordsResource(resources.ModelResource):
         model = Words
 
 class WordsAdmin(ImportExportModelAdmin):
-    list_display = ('real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
+    list_display = ('id', 'master_order', 'real_word' ,'meaning', 'hiragana', 'combined_frequency', 'frequency_thousand', 'published')
     list_editable = ('combined_frequency', 'frequency_thousand', 'published')
-    fields = ('real_word', 'meaning', 'hiragana', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word')
+    fields = ('real_word', 'meaning', 'hiragana', 'frequency', 'frequency_two', 'combined_frequency', 'frequency_thousand','part_of_speech','published','duplicate_word', 'master_order')
     list_filter = ('published',)
     inlines = [
         MeaningsInline,
@@ -50,7 +50,7 @@ class KanjiResource(resources.ModelResource):
 
 class KanjiAdmin(ImportExportModelAdmin):
     fields = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'grade')
-    list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo', 'twitter_frequency', 'aozora_frequency', 'news_frequency', 'wikipedia_frequency')
+    list_display = ('kanji_name', 'kanji_meaning','readings', 'strokes', 'on_kun_readings', 'grade', 'jlpt_level', 'newspaper_frequency', 'jinmeiyo', 'twitter_frequency', 'aozora_frequency', 'news_frequency', 'wikipedia_frequency', 'master_order')
     list_editable = ('kanji_meaning',)
     list_filter = ('jlpt_level',)
     search_fields = ('kanji_name', 'kanji_meaning')
