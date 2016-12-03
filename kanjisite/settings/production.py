@@ -12,7 +12,6 @@ SERVER_EMAIL = os.environ['SERVER_EMAIL']
 
 EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
-# EMAIL_USE_SSL = os.environ['EMAIL_SSL']
 EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ['EMAIL_HOST']
 EMAIL_HOST_USER = os.environ['EMAIL_USER']
