@@ -87,6 +87,20 @@ def main_profile(request,full_name):
          'the_count':count_dict, 'next_review':next_review, 'due_tomorrow':due_tomorrow, 'added_kanji_count': number_of_added_kanji,\
           'word_count':total_word_count, 'words_reviewed_today':words_reviewed_today, 'total_reviews_ever':total_reviews_ever, 'kanji_percent':kanji_percent,"words_reviewed_today_best":words_reviewed_today_best})
 
+
+#this is a temporary view only used for intial word selection 
+def view_all_selected_words(request):
+    userprofile = request.user.userprofile
+    sets = Sets.objects.filter(userprofile = userprofile).prefetch_related('words')
+    words = []
+    for each in sets:
+       set_words = each.words.all()
+       for each in set_words:
+           words.append(each)
+    data = words
+    return render(request, 'manageset/selected_words_master_order.html', {'data':data})
+
+    
 def update_words_practiced_today(request,full_name):
     if not request.user.is_authenticated() or request.user.username != full_name:
         return HttpResponse("you are not authenticated")

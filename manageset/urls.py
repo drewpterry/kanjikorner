@@ -6,6 +6,8 @@ urlpatterns = [
     # ex: /profile/
     url(r'^(?P<full_name>\w*)$', views.main_profile, name='index'),
 
+    url(r'^selected-word-order$', views.view_all_selected_words, name='view_selected_words'),
+
     
     #four main views of new word, word bank, new kanji, and kanji bank
     url(r'^(?P<full_name>\w*)/new-kanji$', views.new_kanji_view, name='view_new_kanji'),
