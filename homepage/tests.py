@@ -15,6 +15,8 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'homepage/index.html')
 
+    def test_get_index_loggedin(self):
+        # Issue a GET request.
         self.user = User.objects.create_user(username='testuser', password='12345') 
         self.user.save() 
         login = self.client.login(username='testuser', password='12345')
