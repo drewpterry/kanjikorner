@@ -6,9 +6,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from forms import UserCreateForm
 from manageset.models import UserProfile
-from manageset.views import main_profile
-
-
+from manageset.views import view_dashboard 
 
 def index(request):
     full_name = request.user.username
@@ -16,12 +14,8 @@ def index(request):
     c.update(csrf(request))
     template = 'homepage/index.html'
     if request.user.is_authenticated():
-        
-        return main_profile(request,full_name)
-        
-    thekanji = Kanji.objects.all()[0:2136]
-        
-    return render(request, template, {'full_name':full_name, 'kanji_objects': thekanji})
+        return view_dashboard(request)
+    return render(request, template, {'full_name':full_name})
      
 
 def auth_view(request):

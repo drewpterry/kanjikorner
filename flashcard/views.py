@@ -3,7 +3,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords
 from manageset.utils import * 
 from django.contrib.auth.models import User
-# from django.utils import simplejson
 from django.core import serializers
 import json
 import random
@@ -20,8 +19,6 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
-
-
 
 # Create your views here.
 def practice_stack(request, full_name, set_name):
