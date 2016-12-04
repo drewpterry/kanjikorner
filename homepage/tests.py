@@ -7,6 +7,8 @@ class HomePageTest(TestCase):
     def setUp(self):
         # Every test needs a client.
         self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345') 
+        self.user.save() 
 
     def test_get_index(self):
         # Issue a GET request.
@@ -17,8 +19,6 @@ class HomePageTest(TestCase):
 
     def test_get_index_loggedin(self):
         # Issue a GET request.
-        self.user = User.objects.create_user(username='testuser', password='12345') 
-        self.user.save() 
         login = self.client.login(username='testuser', password='12345')
 
         response = self.client.get('/')

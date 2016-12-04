@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.db import connection
 from django.db.models import Q
 import json
-from flashcard.views import srs_get_and_update
 from django.core import serializers
 from datetime import datetime, timedelta, date
 from django.utils.timezone import utc
