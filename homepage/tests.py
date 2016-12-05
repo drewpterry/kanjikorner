@@ -1,5 +1,4 @@
 from django.test import TestCase
-import unittest
 from django.test import Client
 from django.contrib.auth.models import User
 
@@ -18,7 +17,6 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'homepage/index.html')
 
     def test_get_index_loggedin(self):
-        # Issue a GET request.
         login = self.client.login(username='testuser', password='12345')
 
         response = self.client.get('/')

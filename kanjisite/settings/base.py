@@ -104,6 +104,9 @@ DATABASES = {
         'USER': os.environ['USER_NAME'],
         'PASSWORD': os.environ['DATABASE_PW'],
         'PORT':'5432',
+        'TEST': {
+                    'NAME': 'KanjiTestDB',
+                },
     }
 }
 
