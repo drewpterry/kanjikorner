@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Level {{ $route.params.lvl }} </h2>
+    <h2>SR REVEW</h2>
     <h2>Ecosystem</h2>
     <ul>
       <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
@@ -14,10 +14,10 @@
 
 <script>
 export default {
-  name: 'me',
+  name: 'srsreview',
   data () {
     return {
-      msg: 'The route works'
+      msg: 'SRS REview'
     }
   }
 }
