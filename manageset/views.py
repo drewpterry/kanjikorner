@@ -32,7 +32,7 @@ not_auth = HttpResponse("you are not authenticated")
 
 @login_required
 def view_dashboard(request):
-    return render(request,'manageset/dashboard.html')
+    return render(request,'dist/index.html')
     
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
