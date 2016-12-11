@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'hello',
+  name: 'test',
   data () {
     return {
       msg: 'The route works'
