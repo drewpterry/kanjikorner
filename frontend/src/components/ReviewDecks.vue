@@ -2,13 +2,12 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>Level {{ $route.params.lvl }} </h2>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <h2>{{ currentWord.real_word }}</h2>
+    <tbody>
+      <!--<tr v-for="word in reviewDeck.words">-->
+        <td></td>
+      <!--</tr>-->
+    </tbody>
   </div>
 </template>
 
@@ -17,7 +16,33 @@ export default {
   name: 'me',
   data () {
     return {
-      msg: 'The route works'
+      initialFetchComplete: false,
+      msg: 'The route works',
+      reviewDeck: [],
+      currentWord: '',
+      errors: null
+    }
+  },
+  // props: ['companyId'],
+  created () {
+    this.getReviewDeck()
+  },
+  methods: {
+    getReviewDeck () {
+      var level = this.$route.params.lvl
+      var sublevel = this.$route.params.sublevel
+      var url = '/review/lvl-' + level + '/' + sublevel + '/get'
+      this.$http.get(url)
+      .then(response => {
+        this.errors = null
+        this.reviewDeck = response.data[0]
+        this.initialFetchComplete = true
+        this.currentWord = this.reviewDeck.words[0]
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
+        this.initialFetchComplete = true
+      })
     }
   }
 }
