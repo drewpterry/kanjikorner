@@ -31,7 +31,8 @@ export default {
     getReviewDeck () {
       var level = this.$route.params.lvl
       var sublevel = this.$route.params.sublevel
-      var url = '/review/lvl-' + level + '/' + sublevel + '/get'
+      var url = '/api/review/lvl-' + level + '/' + sublevel + '/get'
+      // var url = '/api/all-decks'
       this.$http.get(url)
       .then(response => {
         this.errors = null

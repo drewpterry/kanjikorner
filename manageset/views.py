@@ -20,6 +20,13 @@ from django.views.generic import View
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 import re
+from django.http import JsonResponse
+from api.serializers import SetsSerializer, KnownWordsSerializer, SetsSerializerWithoutWords
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.decorators import renderer_classes 
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 
 
@@ -34,6 +41,12 @@ not_auth = HttpResponse("you are not authenticated")
 def view_dashboard(request):
     return render(request,'dist/index.html')
     
+@api_view(['GET'])
+def get_master_review_decks(request):
+    decks = Sets.objects.exclude(master_order__isnull=True)
+    serializer = SetsSerializerWithoutWords(decks, many=True)
+    data = serializer.data
+    return Response(data)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required 
