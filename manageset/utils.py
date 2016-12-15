@@ -1,6 +1,5 @@
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords
 from django.contrib.auth.models import User
-import random
 from datetime import datetime, timedelta, time
 from django.template.context_processors import csrf
 from django.utils.timezone import utc

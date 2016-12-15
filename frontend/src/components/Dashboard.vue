@@ -65,7 +65,7 @@
         <p class="dark-title">WORDS REVIEWED</p>
         <div class="panel panel-double">
           <div class="panel-double__left">
-            <p class="panel__title">211</p>
+            <p class="panel__title">{{ userProfile.number_words_practiced_today }}</p>
             <p class="panel__text">Today</p>
           </div>
           <div class="panel-double__right">
@@ -81,7 +81,7 @@
         <div class="panel">
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed</p>
-            <p class="graph-stat__number">11124</p>
+            <p class="graph-stat__number">{{ userProfile.total_words_reviewed_ever }}</p>
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed correct</p>
@@ -206,30 +206,39 @@ export default {
   name: 'DASBOARD',
   data () {
     return {
-      initialFetchComplete: false,
       msg: 'The route works',
       reviewDeck: [],
       reviewDeckLevels: 0,
+      userProfile: [],
       errors: null
     }
   },
   created () {
     this.getReviewDeck()
+    this.getUserProfile()
   },
   methods: {
     getReviewDeck () {
-      var url = '/api/all-decks'
+      var url = '/api/all-decks/get'
       this.$http.get(url)
       .then(response => {
         this.errors = null
         this.reviewDeck = response.data
         this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].level
-        console.log(this.reviewDeckLevels)
-        this.initialFetchComplete = true
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'
-        this.initialFetchComplete = true
+      })
+    },
+    getUserProfile () {
+      var url = '/api/dashboard-data/get'
+      this.$http.get(url)
+      .then(response => {
+        this.errors = null
+        this.userProfile  = response.data
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
       })
     }
   }

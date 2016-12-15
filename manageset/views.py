@@ -26,6 +26,7 @@ from rest_framework.decorators import renderer_classes
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
+from utils import update_word_queue 
 
 
 def verify_profiles(request,full_name):
@@ -47,16 +48,33 @@ def get_master_review_decks(request):
     return Response(data)
 
 @api_view(['GET'])
-def get_dashboard_data(request):
-    userprofile = UserProfile.objects.get(user = request.user)
+def get_profile_data(request):
+    userprofile = request.user.userprofile
     serializer = UserProfileSerializer(userprofile)
-    user_known_words = KnownWords.objects.filter(user_profile = userprofile)
-    known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
-    total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
-    one_day_ago = datetime.now() - timedelta(days = 1)
-    
     data = serializer.data
     return Response(data)
+
+@api_view(['GET'])
+def get_review_data(request):
+    userprofile = request.user.userprofile
+    update_word_queue(userprofile)
+    known_words = KnownWords.objects.filter(user_profile = userprofile)
+    reviews_due_count = known_words.filter(time_until_review__lte = 0).count()
+    reviews_24_hours = (known_words.filter(
+        user_profile = userprofile,
+        #within the next day
+        time_until_review__range = (0,86400))
+        .values('time_until_review')
+        .order_by('time_until_review')
+        )
+    next_review_time = reviews_24_hours.first()
+    reviews_24_hours_count = reviews_24_hours.count() + reviews_due_count 
+    if reviews_due_count == 0 and next_review_time:
+        next_review = str(timedelta(seconds = next_review_time)).split('.')[0]
+    else:
+        next_review = reviews_due_count 
+    
+    return JsonResponse({'next_review':next_review, '24hours':reviews_24_hours_count})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required 
