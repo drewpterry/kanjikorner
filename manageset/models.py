@@ -98,9 +98,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     user_sets = models.ManyToManyField(Sets, blank = True)
     number_words_practiced_today = models.IntegerField(default = 0)
-    #SPELLING ERROR!!!! YAAAY
-    words_practied_today_time_marker = models.DateTimeField(auto_now_add = True)
+    words_practiced_today_time_marker = models.DateTimeField(auto_now_add = True)
     most_words_practiced_in_day = models.IntegerField(default = 0)
+    total_words_reviewed_ever = models.IntegerField(default=0)
+    total_correct_reviews = models.IntegerField(default=0)
+    total_incorrect_reviews  = models.IntegerField(default=0)
 
 # to do from client side esnd timezone adjustment, logic for when to make add and not add to practiced
     def update_words_practiced_today(self, timezone_adjustment):
@@ -117,16 +119,13 @@ class UserProfile(models.Model):
         return
 
     def check_if_new_day(self,timezone_adjustment):
-
         current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day
 
         if self.words_practied_today_time_marker.day != current_day:
             self.number_words_practiced_today = 0
-        
         self.words_practied_today_time_marker = current_datetime    
         return    
-        
     
     def __unicode__(self):
         return unicode(self.user)

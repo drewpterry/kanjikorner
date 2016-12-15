@@ -4,9 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords
 from django.db.models import Count, Min, Sum, Avg
 from django.contrib.auth.models import User
-from django.db import connection
 from django.db.models import Q
-import json
 from django.core import serializers
 from datetime import datetime, timedelta, date
 from django.utils.timezone import utc
@@ -21,7 +19,7 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 import re
 from django.http import JsonResponse
-from api.serializers import SetsSerializer, KnownWordsSerializer, SetsSerializerWithoutWords
+from api.serializers import * 
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
@@ -45,6 +43,18 @@ def view_dashboard(request):
 def get_master_review_decks(request):
     decks = Sets.objects.exclude(master_order__isnull=True)
     serializer = SetsSerializerWithoutWords(decks, many=True)
+    data = serializer.data
+    return Response(data)
+
+@api_view(['GET'])
+def get_dashboard_data(request):
+    userprofile = UserProfile.objects.get(user = request.user)
+    serializer = UserProfileSerializer(userprofile)
+    user_known_words = KnownWords.objects.filter(user_profile = userprofile)
+    known_words = user_known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+    total_word_count = user_known_words.exclude(tier_level__in = [0,10]).count()
+    one_day_ago = datetime.now() - timedelta(days = 1)
+    
     data = serializer.data
     return Response(data)
 
