@@ -11,7 +11,7 @@ Vue.use(VueResource)
 /* eslint-disable no-new */
 const routes = [
   { path: '/', component: Dashboard },
-  { path: '/review/lvl-:lvl/:sublevel', component: ReviewDeck },
+  { path: '/review/lvl-:lvl/:sublevel', name: 'deck', component: ReviewDeck },
   { path: '/review/srs', component: SrsReview }
 ]
 

@@ -49,3 +49,8 @@ class KnownWordsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = KnownWords 
         fields = ('id', 'words', 'tier_level')
+
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserProfile 
+        fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day')

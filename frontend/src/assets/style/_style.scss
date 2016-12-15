@@ -222,7 +222,7 @@
       width: 26px;
       top: -5px;
       right: -5px;
-      background-image: url(/../img/icons/icon-check.svg);
+      background-image: url(~assets/img/icons/icon-check.svg);
       background-size: cover;
     }
   }
@@ -256,26 +256,26 @@
 
   .slick-next {
     right: -13px;
-    background-image: url(/../img/icons/icon-arrow-right.svg);
+    background-image: url(~assets/img/icons/icon-arrow-right.svg);
 
     &:hover {
-      background-image: url(/../img/icons/icon-arrow-right-hovered.svg);
+      background-image: url(~assets/img/icons/icon-arrow-right-hovered.svg);
     }
   }
 
   .slick-prev {
     left: -13px;
-    background-image: url(/../img/icons/icon-arrow-left.svg);
+    background-image: url(~assets/img/icons/icon-arrow-left.svg);
 
     &:hover {
-      background-image: url(/../img/icons/icon-arrow-left-hovered.svg);
+      background-image: url(~assets/img/icons/icon-arrow-left-hovered.svg);
     }
   }
 }
 
 .green-cover {
   background-color: $light-green;
-  background-image: url(/../img/bg/green-cover-bg.png);
+  background-image: url(~assets/img/bg/green-cover-bg.png);
   background-position: bottom;
   background-size: contain;
   background-repeat: no-repeat;

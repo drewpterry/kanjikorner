@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^api/', include('manageset.urls', namespace='api')),
     # url(r'^api/', include('flashcard.urls', namespace='api-flashcard')),
     url(r'^faq/', homepage_views.faq_page, name = "faq"),
     url(r'^highscores/', homepage_views.highscores_page, name = "high-scores"),
