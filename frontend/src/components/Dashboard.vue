@@ -44,12 +44,12 @@
     <div class="container">
       <div class="col-md-2 graph__side">
         <div class="panel">
-          <p class="panel__title">1124</p>
+          <p class="panel__title">{{ reviewData.next_review }}</p>
           <p class="panel__text">Reviews Due Now</p>
         </div>
         <div class="panel">
-          <p class="panel__title">1124</p>
-          <p class="panel__text">Reviews Due Now</p>
+          <p class="panel__title">{{ reviewData.next_day }}</p>
+          <p class="panel__text">Due Next 24 Hrs</p>
         </div>
         <p class="dark-title">NEW WORDS ADDED</p>
         <div class="panel panel-double">
@@ -210,12 +210,14 @@ export default {
       reviewDeck: [],
       reviewDeckLevels: 0,
       userProfile: [],
+      reviewData: [],
       errors: null
     }
   },
   created () {
     this.getReviewDeck()
     this.getUserProfile()
+    this.getReviewData()
   },
   methods: {
     getReviewDeck () {
@@ -231,11 +233,22 @@ export default {
       })
     },
     getUserProfile () {
-      var url = '/api/dashboard-data/get'
+      var url = '/api/profile-data/get'
       this.$http.get(url)
       .then(response => {
         this.errors = null
         this.userProfile  = response.data
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
+      })
+    },
+    getReviewData () {
+      var url = '/api/review-data/get'
+      this.$http.get(url)
+      .then(response => {
+        this.errors = null
+        this.reviewData = response.data
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'

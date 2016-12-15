@@ -74,7 +74,7 @@ def get_review_data(request):
     else:
         next_review = reviews_due_count 
     
-    return JsonResponse({'next_review':next_review, '24hours':reviews_24_hours_count})
+    return JsonResponse({'next_review':next_review, 'next_day':reviews_24_hours_count})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required 
