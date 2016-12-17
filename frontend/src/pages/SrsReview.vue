@@ -20,9 +20,7 @@
     <div class="container green-cover__body">
       <div class="row ">
         <div class="col-md-offset-2 col-md-8">
-          <div class="panel panel-task">
-            單詞
-          </div>
+          <card></card>
           <div class="panel panel-answer">
             <input type="text" class="c-textarea" title="your answer" cols="30" rows="5">
             <div class="row">
@@ -42,16 +40,19 @@
 </template>
 
 <script>
+import Card from '../components/Card.vue'
 export default {
   name: 'srsreview',
   data () {
     return {
       msg: 'SRS REview'
     }
+  },
+  components: {
+    'card': Card
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
