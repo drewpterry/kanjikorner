@@ -7,7 +7,7 @@ from django.db.models import F
 
 def update_word_queue(user):
     words = (KnownWords.objects.filter(
-        user_profile = user,
+        user_profile = user.userprofile,
         tier_level__lte = 7)
         .exclude(tier_level = 0)
         .exclude(time_until_review = None)

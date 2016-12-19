@@ -20,18 +20,7 @@
     <div class="container green-cover__body">
       <div class="row ">
         <div class="col-md-offset-2 col-md-8">
-          <card></card>
-          <div class="panel panel-answer">
-            <input type="text" class="c-textarea" title="your answer" cols="30" rows="5">
-            <div class="row">
-              <div class="col-md-3">
-                <p class="gray-btn">I don't know</p>
-              </div>
-              <div class="col-md-3 col-md-offset-6 text-right">
-                <div class="btn btn-red">Next</div>
-              </div>
-            </div>
-          </div>
+          <card v-bind:words="reviewWords"></card>
         </div>
       </div>
     </div>
@@ -45,11 +34,32 @@ export default {
   name: 'srsreview',
   data () {
     return {
-      msg: 'SRS REview'
+      msg: 'SRS REview',
+      reviewWords: [],
+      currentWord: ''
     }
   },
   components: {
     'card': Card
+  },
+  created () {
+    this.getReviewDeck()
+  },
+  methods: {
+    getReviewDeck () {
+      var url = '/api/review/srs/get'
+      this.$http.get(url)
+      .then(response => {
+        this.errors = null
+        this.reviewWords = response.data
+        this.initialFetchComplete = true
+        this.currentWord = this.reviewWords.words
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
+        this.initialFetchComplete = true
+      })
+    }
   }
 }
 </script>

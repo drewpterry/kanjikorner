@@ -57,7 +57,7 @@ def get_profile_data(request):
 @api_view(['GET'])
 def get_review_data(request):
     userprofile = request.user.userprofile
-    update_word_queue(userprofile)
+    update_word_queue(request.user)
     known_words = KnownWords.objects.filter(user_profile = userprofile)
     reviews_due_count = known_words.filter(time_until_review__lte = 0).count()
     reviews_24_hours = (known_words.filter(

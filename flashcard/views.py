@@ -34,7 +34,7 @@ def view_review_deck(request, level, sub_level):
 @api_view(['GET'])
 def get_srs_review(request):
     profile = request.user.userprofile
-    update_word_queue(user)
+    update_word_queue(request.user)
     words = (KnownWords.objects.filter(
         user_profile = profile,
         tier_level__lte = 7,

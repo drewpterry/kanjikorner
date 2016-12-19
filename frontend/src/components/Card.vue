@@ -1,15 +1,41 @@
 <template>
 <div>
-  <div id="card" class="flip-container" v-on:click="flip_card">
-    <div class="flipper">
-      <div class="front panel panel-task">
-        front
-      </div>
-      <div class="back panel panel-task">
-        back
+  
+  <div id="example-3">
+    <button @click="nextCard">
+      Toggle render
+    </button>
+    <button @click="nextCard">
+      Toggle left 
+    </button>
+  </div>
+    <div id="card" class="flip-container">
+      <transition
+        name="custom-classes-transition"
+        enter-active-class="animated fadeIn"
+        v-bind:leave-active-class="leaveClass"
+      >
+        <div v-if="show" class="flipper">
+          <div class="front panel panel-task">
+            front
+          </div>
+          <div class="back panel panel-task">
+            back
+          </div>
+        </div>
+      </transition>
+    </div>
+    <div class="panel panel-answer">
+      <input type="text" class="c-textarea" title="your answer" cols="30" rows="5">
+      <div class="row">
+        <div class="col-md-3">
+          <p class="gray-btn">I don't know</p>
+        </div>
+        <div class="col-md-3 col-md-offset-6 text-right">
+          <div class="btn btn-red">Next</div>
+        </div>
       </div>
     </div>
-  </div>
 </div>
 </template>
 
@@ -18,12 +44,25 @@ export default {
   name: 'Card',
   data () {
     return {
-      msg: 'SRS REview'
+      show: true,
+      leaveClass: 'animated bounceOutRight'
     }
   },
+  props: ['words'],
   methods: {
-    flip_card () {
+    flipCard: function flipCard () {
       document.getElementById('card').classList.toggle('flip')
+    },
+    nextCard: function () {
+      for (var i = 0; i < 10; i++) {
+        console.log(this.words[i].words.real_word)
+      }
+      this.leaveClass = 'animated bounceOutLeft'
+      this.show = false
+      setTimeout(this.newCard, 500)
+    },
+    newCard: function () {
+      this.show = true
     }
   }
 }
