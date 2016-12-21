@@ -29,7 +29,7 @@
       </transition>
     </div>
     <div class="panel panel-answer">
-      <input v-on:keyup.enter="submitAnswer" type="text" class="c-textarea" title="your answer" cols="30" rows="5">
+      <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" value="ひらがな">
       <div class="row">
         <div class="col-md-3">
           <p class="gray-btn">I don't know</p>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import wanakana from 'wanakana/lib/wanakana.min.js'
 export default {
   name: 'Card',
   data () {
@@ -54,7 +55,9 @@ export default {
       currentIndex: 0,
       front: '',
       back: '',
-      answer_type: 'reading'
+      answer_type: 'reading',
+      inputIME: '',
+      enterAllowed: true
     }
   },
   props: ['words'],
@@ -62,6 +65,10 @@ export default {
     this.currentWord = this.words[0]
     this.front = this.currentWord.words.real_word
     this.back = this.currentWord.words.hiragana
+  },
+  mounted () {
+    this.inputIME = document.getElementById('answer-input')
+    wanakana.bind(this.inputIME)
   },
   methods: {
     flipCard: function flipCard () {
@@ -82,21 +89,87 @@ export default {
       this.show = true
     },
     submitAnswer: function () {
+      if (this.enterAllowed === false) {
+        return
+      }
+      this.checkAnswer()
+      var self = this
+      this.enterAllowed = false
       this.flipCard()
-      setTimeout(this.flipCard, 2000)
+      setTimeout(function () {
+        self.flipCard()
+        self.enterAllowed = true
+      }, 2000)
       if (this.answer_type === 'meaning') {
-        var self = this
         setTimeout(function () {
           self.nextCard(true)
         }, 3000)
       }
       this.setAnswerType()
+      this.setIME()
+    },
+    setIME: function () {
+      if (this.answer_type === 'reading') {
+        wanakana.bind(this.inputIME)
+      } else {
+        wanakana.unbind(this.inputIME)
+      }
     },
     setAnswerType: function () {
       this.answer_type = this.answer_type === 'reading' ? 'meaning' : 'reading'
     },
     checkAnswer: function () {
-      this.flipCard()
+      console.log(this.getLevenshtein('hello', 'hell'))
+      if (this.inputIME.value === this.back) {
+        console.log(true)
+        return true
+      } else {
+        console.log(false)
+        return false
+      }
+    },
+    getLevenshtein: function (a, b) {
+      function levenshteinenator (a, b) {
+        var cost
+        var m = a.length
+        var n = b.length
+
+        // make sure a.length >= b.length to use O(min(n,m)) space
+        if (m < n) {
+          var c = a; a = b; b = c
+          var o = m; m = n; n = o
+        }
+
+        var r = []; r[0] = []
+        for (c = 0; c < n + 1; ++c) {
+          r[0][c] = c
+        }
+
+        for (var i = 1; i < m + 1; ++i) {
+          r[i] = []; r[i][0] = i
+          for (var j = 1; j < n + 1; ++j) {
+            cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1
+            r[i][j] = minimator(r[i - 1][j] + 1, r[i][j - 1] + 1, r[i - 1][j - 1] + cost)
+          }
+        }
+
+        return r[r.length - 1][r[r.length - 1].length - 1]
+      }
+
+      /**
+       * Return the smallest of the three numbers passed in
+       * @param Number x
+       * @param Number y
+       * @param Number z
+       * @return Number
+       */
+      function minimator (x, y, z) {
+        if (x < y && x < z) return x
+        if (y < x && y < z) return y
+        return z
+      }
+
+      return levenshteinenator(a, b)
     }
   }
 }
