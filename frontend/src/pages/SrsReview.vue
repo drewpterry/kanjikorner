@@ -20,7 +20,7 @@
     <div class="container green-cover__body">
       <div class="row ">
         <div class="col-md-offset-2 col-md-8">
-          <card v-bind:words="reviewWords"></card>
+          <card v-if="initialFetchComplete" v-bind:words="reviewWords"></card>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@ export default {
   name: 'srsreview',
   data () {
     return {
+      initialFetchComplete: false,
       msg: 'SRS REview',
       reviewWords: [],
       currentWord: ''

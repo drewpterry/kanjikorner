@@ -2,11 +2,14 @@
 <div>
   
   <div id="example-3">
-    <button @click="nextCard">
+    <button @click="nextCard(true)">
       Toggle render
     </button>
-    <button @click="nextCard">
+    <button @click="nextCard(false)">
       Toggle left 
+    </button>
+    <button @click="flipCard">
+      flip 
     </button>
   </div>
     <div id="card" class="flip-container">
@@ -17,16 +20,16 @@
       >
         <div v-if="show" class="flipper">
           <div class="front panel panel-task">
-            front
+            {{ front }} 
           </div>
           <div class="back panel panel-task">
-            back
+            {{ back }} 
           </div>
         </div>
       </transition>
     </div>
     <div class="panel panel-answer">
-      <input type="text" class="c-textarea" title="your answer" cols="30" rows="5">
+      <input v-on:keyup.enter="submitAnswer" type="text" class="c-textarea" title="your answer" cols="30" rows="5">
       <div class="row">
         <div class="col-md-3">
           <p class="gray-btn">I don't know</p>
@@ -44,25 +47,56 @@ export default {
   name: 'Card',
   data () {
     return {
+      initialFetchComplete: false,
       show: true,
-      leaveClass: 'animated bounceOutRight'
+      leaveClass: '',
+      currentWord: '',
+      currentIndex: 0,
+      front: '',
+      back: '',
+      answer_type: 'reading'
     }
   },
   props: ['words'],
+  created () {
+    this.currentWord = this.words[0]
+    this.front = this.currentWord.words.real_word
+    this.back = this.currentWord.words.hiragana
+  },
   methods: {
     flipCard: function flipCard () {
       document.getElementById('card').classList.toggle('flip')
     },
-    nextCard: function () {
-      for (var i = 0; i < 10; i++) {
-        console.log(this.words[i].words.real_word)
-      }
-      this.leaveClass = 'animated bounceOutLeft'
-      this.show = false
-      setTimeout(this.newCard, 500)
+    nextCard: function (correct) {
+      this.leaveClass = correct ? 'animated bounceOutRight' : 'animated bounceOutLeft'
+      this.$nextTick(function () {
+        this.show = false
+      })
+      this.currentIndex = this.currentIndex + 1
+      this.currentWord = this.words[this.currentIndex]
+      this.front = this.currentWord.words.real_word
+      this.back = this.currentWord.words.hiragana
+      setTimeout(this.showNewCard, 400)
     },
-    newCard: function () {
+    showNewCard: function () {
       this.show = true
+    },
+    submitAnswer: function () {
+      this.flipCard()
+      setTimeout(this.flipCard, 2000)
+      if (this.answer_type === 'meaning') {
+        var self = this
+        setTimeout(function () {
+          self.nextCard(true)
+        }, 3000)
+      }
+      this.setAnswerType()
+    },
+    setAnswerType: function () {
+      this.answer_type = this.answer_type === 'reading' ? 'meaning' : 'reading'
+    },
+    checkAnswer: function () {
+      this.flipCard()
     }
   }
 }
