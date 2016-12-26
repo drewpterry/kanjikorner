@@ -16,20 +16,7 @@
     <div class="container green-cover__body">
         <div class="row ">
             <div class="col-md-offset-2 col-md-8">
-                <div class="panel panel-task">
-                    大統領
-                </div>
-                <div class="panel panel-answer">
-                    <input type="text" class="c-textarea" title="your answer" cols="30" rows="5">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p class="gray-btn">I don't know</p>
-                        </div>
-                        <div class="col-md-3 col-md-offset-6 text-right">
-                            <div class="btn btn-red" data-toggle="modal" data-target="#completeModal">Next</div>
-                        </div>
-                    </div>
-                </div>
+              <card v-if="initialFetchComplete" v-bind:words="reviewDeck" v-bind:deck="true"></card>
             </div>
         </div>
     </div>
@@ -153,7 +140,6 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>Level {{ $route.params.lvl }} </h2>
-    <h2>{{ currentWord.real_word }}</h2>
     <tbody>
       <!--<tr v-for="word in reviewDeck.words">-->
         <td></td>
@@ -164,6 +150,7 @@
 </template>
 
 <script>
+import Card from '../components/Card.vue'
 export default {
   name: 'me',
   data () {
@@ -171,11 +158,12 @@ export default {
       initialFetchComplete: false,
       msg: 'The route works',
       reviewDeck: [],
-      currentWord: '',
       errors: null
     }
   },
-  // props: ['companyId'],
+  components: {
+    'card': Card
+  },
   created () {
     this.getReviewDeck()
   },
@@ -187,9 +175,8 @@ export default {
       this.$http.get(url)
       .then(response => {
         this.errors = null
-        this.reviewDeck = response.data[0]
+        this.reviewDeck = response.data
         this.initialFetchComplete = true
-        this.currentWord = this.reviewDeck.words[0]
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'

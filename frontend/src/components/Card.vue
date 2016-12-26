@@ -1,17 +1,5 @@
 <template>
 <div>
-  
-  <div id="example-3">
-    <button @click="nextCard(true)">
-      Toggle render
-    </button>
-    <button @click="nextCard(false)">
-      Toggle left 
-    </button>
-    <button @click="flipCard">
-      flip 
-    </button>
-  </div>
     <div id="card" class="flip-container">
       <transition
         name="custom-classes-transition"
@@ -29,7 +17,7 @@
       </transition>
     </div>
     <div class="panel panel-answer">
-      <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" value="ひらがな">
+      <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" placeholder="ひらがな" focus>
       <div class="row">
         <div class="col-md-3">
           <p class="gray-btn">I don't know</p>
@@ -50,9 +38,11 @@ export default {
     return {
       initialFetchComplete: false,
       show: true,
+      wordList: this.words,
       leaveClass: '',
       currentWord: '',
       currentIndex: 0,
+      currentMeanings: [],
       front: '',
       back: '',
       answer_type: 'reading',
@@ -60,18 +50,42 @@ export default {
       enterAllowed: true
     }
   },
-  props: ['words'],
+  props: {
+    'words': {
+      type: Array,
+      required: true
+    },
+    'deck': {
+      type: Boolean
+    }
+  },
   created () {
-    this.currentWord = this.words[0]
-    this.front = this.currentWord.words.real_word
-    this.back = this.currentWord.words.hiragana
+    this.currentIndex = 0
+    this.setCurrentWord()
+    this.front = this.currentWord.real_word
+    this.back = this.currentWord.hiragana
+    this.setMeanings()
   },
   mounted () {
     this.inputIME = document.getElementById('answer-input')
     wanakana.bind(this.inputIME)
   },
   methods: {
-    flipCard: function flipCard () {
+    setCurrentWord: function () {
+      if (this.deck) {
+        this.currentWord = this.wordList[0].words[this.currentIndex]
+      } else {
+        this.currentWord = this.wordList[this.currentIndex].words
+      }
+    },
+    setMeanings: function () {
+      this.currentMeanings = []
+      var self = this
+      this.currentWord.meanings.forEach(function (el, i) {
+        self.currentMeanings.push(el.meaning)
+      })
+    },
+    flipCard: function () {
       document.getElementById('card').classList.toggle('flip')
     },
     nextCard: function (correct) {
@@ -80,53 +94,98 @@ export default {
         this.show = false
       })
       this.currentIndex = this.currentIndex + 1
-      this.currentWord = this.words[this.currentIndex]
-      this.front = this.currentWord.words.real_word
-      this.back = this.currentWord.words.hiragana
+      this.setCurrentWord()
+      this.front = this.currentWord.real_word
+      this.back = this.currentWord.hiragana
+      this.$nextTick(function () {
+        this.setMeanings()
+      })
       setTimeout(this.showNewCard, 400)
     },
     showNewCard: function () {
       this.show = true
     },
     submitAnswer: function () {
+      var self = this
       if (this.enterAllowed === false) {
         return
       }
-      this.checkAnswer()
-      var self = this
       this.enterAllowed = false
-      this.flipCard()
-      setTimeout(function () {
-        self.flipCard()
-        self.enterAllowed = true
-      }, 2000)
-      if (this.answer_type === 'meaning') {
-        setTimeout(function () {
+      if (this.checkAnswer()) {
+        if (this.answer_type === 'reading') {
+          console.log('correct and reading')
+        } else {
           self.nextCard(true)
-        }, 3000)
+          console.log('correct and meanings')
+        }
+        setTimeout(function () {
+          self.enterAllowed = true
+          self.setAnswerType()
+          self.setIME()
+        }, 1000)
+      } else {
+        self.flipCard()
+        setTimeout(function () {
+          self.flipCard()
+          self.enterAllowed = true
+          self.setAnswerType()
+          self.setIME()
+        }, 2000)
+        if (this.answer_type === 'reading') {
+          console.log('wrong and reading')
+        } else {
+          setTimeout(function () {
+            self.nextCard(true)
+          }, 2500)
+          console.log('wrong and meaning')
+        }
       }
-      this.setAnswerType()
-      this.setIME()
     },
     setIME: function () {
+      this.inputIME.value = ''
       if (this.answer_type === 'reading') {
         wanakana.bind(this.inputIME)
+        this.inputIME.placeholder = 'よみ'
       } else {
         wanakana.unbind(this.inputIME)
+        this.inputIME.placeholder = 'meaning'
       }
     },
     setAnswerType: function () {
       this.answer_type = this.answer_type === 'reading' ? 'meaning' : 'reading'
+      this.setIME()
+      this.back = this.setDefinitionFormat()
     },
     checkAnswer: function () {
-      console.log(this.getLevenshtein('hello', 'hell'))
-      if (this.inputIME.value === this.back) {
-        console.log(true)
-        return true
+      if (this.answer_type === 'reading') {
+        if (this.inputIME.value === this.back) {
+          return true
+        } else {
+          return false
+        }
       } else {
-        console.log(false)
-        return false
+        return this.checkDefinitions()
       }
+    },
+    checkDefinitions: function () {
+      var self = this
+      var answerCorrect = false
+      var submittedAnswer = this.inputIME.value
+      this.currentMeanings.forEach(function (def, i) {
+        var lettersOff = self.getLevenshtein(submittedAnswer, def)
+        var percentIncorrect = lettersOff / def.length
+        if (percentIncorrect < 0.33) {
+          answerCorrect = true
+        }
+      })
+      return answerCorrect
+    },
+    setDefinitionFormat: function () {
+      var defString = ''
+      this.currentMeanings.forEach(function (def, i) {
+        defString += def + ','
+      })
+      return defString
     },
     getLevenshtein: function (a, b) {
       function levenshteinenator (a, b) {
@@ -193,7 +252,7 @@ export default {
 
 /* flip speed goes here */
 .flipper {
-  transition: 0.6s;
+  transition: 0.4s;
   transform-style: preserve-3d;
   position: relative;
 }
