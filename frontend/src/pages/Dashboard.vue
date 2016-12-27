@@ -202,7 +202,6 @@
 </template>
 
 <script>
-var $ = window.jQuery = require('jquery')
 export default {
   name: 'DASBOARD',
   data () {
