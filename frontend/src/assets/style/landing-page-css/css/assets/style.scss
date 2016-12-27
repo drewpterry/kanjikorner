@@ -1,0 +1,17 @@
+@import "helpers/colors";
+
+@import "partials/header";
+@import "partials/welcome";
+@import "partials/why";
+@import "partials/is-it-for-you";
+@import "partials/offer";
+@import "partials/cta";
+@import "partials/about";
+@import "partials/footer";
+
+body {
+	font-family: 'Noto Sans', sans-serif;
+}
+.italic {
+	font-style: italic;
+}

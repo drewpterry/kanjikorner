@@ -1,0 +1,148 @@
+.block-heading {
+	font-size: 55px;
+	text-align: center;
+	font-weight: 700;
+	margin-top: 0;
+	@media screen  and (max-width: 768px) {
+		font-size: 40px;
+	}
+	@media screen  and (max-width: 425px) {
+		font-size: 20px;
+	}
+}
+.why-us {
+	margin-top: 100px;
+	position: relative;
+	z-index: 2;
+	@media screen  and (max-width: 425px) {
+		margin-top: 0;
+	}
+	&:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-top-color: #fff;
+		border-width: 50px;
+		margin-left: -50px;
+		@media screen and (max-width: 1200px) {
+			margin-top: -1px;
+		}
+	}
+	.block-heading {
+		color: $primary-green;
+		margin-bottom: 45px;
+	}
+	.block-subheading {
+		font-size: 18px;
+		line-height: 36px;
+		text-align: center;
+		@media screen  and (max-width: 768px) {
+			font-size: 25px;
+			line-height: 50px;
+		}
+		@media screen  and (max-width: 425px) {
+			font-size: 12px;
+			line-height: 24px;
+		}
+	}
+	.explanation {
+		margin-top: 95px;
+		margin-bottom: 168px;
+	}
+	.one-item {
+		border-radius: 20px;
+		box-shadow: 2px 5px 10px #9da6a2;
+		margin-bottom: 45px;
+		padding: 25px 70px 25px 54px;
+		@media screen  and (max-width: 768px) {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+		.icon-block {
+			width: 40%;
+			float: left;
+			.icon {
+				max-width: 100%;
+			}
+		}
+		.text-block {
+			margin-top: 29px;
+			width: 60%;
+			float: right;
+			&.lower {
+				margin-top: 60px;
+				@media screen  and (max-width: 768px) {
+					margin-top: 30px;
+				}
+				@media screen  and (max-width: 425px) {
+					margin-top: 10px;
+				}
+			}
+			.heading {
+				color: $primary-green;
+				font-size: 26px;
+				font-weight: bold;
+				width: 80%;
+				float: left;
+				@media screen and (max-width: 1200px) {
+					font-size: 23px;
+				}
+				@media screen  and (max-width: 768px) {
+					font-size: 30px;
+				}
+				@media screen  and (max-width: 750px) {
+					font-size: 25px;
+				}
+				@media screen  and (max-width: 425px) {
+					font-size: 15px;
+				}
+			}
+			.text {
+				font-size: 18px;
+				width: 100%;
+				float: left;
+				@media screen  and (max-width: 768px) {
+					font-size: 20px;
+				}
+				@media screen  and (max-width: 425px) {
+					font-size: 10px;
+				}
+			}
+		}
+		&.second {
+			.icon-block {
+				float: right;
+				@media screen  and (max-width: 750px) {
+					float: left;
+				}
+			}
+			.text-block {
+				float: left;
+				text-align: right;
+				@media screen  and (max-width: 750px) {
+					float: right;
+					text-align: left;
+				}
+				.heading {
+					float: right;
+					@media screen  and (max-width: 750px) {
+						float: left;
+					}
+				}
+				.text {
+					float: right;
+					width: 88%;
+					@media screen  and (max-width: 750px) {
+						text-align: left;
+						float: left;
+					}
+				}
+			}
+		}
+	}
+}
