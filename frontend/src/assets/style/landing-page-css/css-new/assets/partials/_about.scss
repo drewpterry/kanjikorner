@@ -1,0 +1,113 @@
+.landing-page {
+	.about-block {
+		padding-bottom: 145px;
+		@media screen  and (max-width: 425px) {
+			padding-bottom: 40px;
+		}
+		.block-heading {
+			color: $primary-green;
+			margin-bottom: 50px;
+		}
+		.about-text {
+			margin-bottom: 65px;
+			.text {
+				font-size: 18px;
+				margin-top: 0;
+				margin-bottom: 22px;
+				@media screen  and (max-width: 768px) {
+					font-size: 22px;
+				}
+				@media screen  and (max-width: 425px) {
+					font-size: 16px;
+				}
+			}
+		}
+		.who-block {
+			.author {
+				margin-bottom: 40px;
+				.photo-block {
+					float: left;
+					img {
+						max-width: 200px;
+						border-radius: 50%;
+						@media screen and (max-width: 1200px) {
+							max-width: 100%;
+						}
+					}
+				}
+				.text-block {
+					float: right;
+					.heading {
+						font-size: 18px;
+						font-weight: bold;
+						@media screen  and (max-width: 768px) {
+							font-size: 22px;
+						}
+						@media screen  and (max-width: 425px) {
+							font-size: 12px;
+						}
+					}
+					.subheading {
+						font-size: 18px;
+						@media screen and (max-width: 1090px) {
+							font-size: 16px;
+						}
+						@media screen  and (max-width: 768px) {
+							font-size: 22px;
+						}
+						@media screen  and (max-width: 425px) {
+							font-size: 12px;
+						}
+					}
+				}
+			}
+			.koala {
+				.photo-block {
+					float: right;
+					img {
+						max-width: 231px;
+						@media screen and (max-width: 1200px) {
+							max-width: 100%;
+						}
+					}
+				}
+				.text-block {
+					float: left;
+					text-align: right;
+					margin-top: 109px;
+					@media screen and (max-width: 1200px) {
+						margin-top: 70px;
+					}
+					@media screen  and (max-width: 768px) {
+						margin-top: 34px;
+					}
+					@media screen  and (max-width: 425px) {
+						margin-top: 0;
+					}
+					.heading {
+						font-size: 18px;
+						font-weight: bold;
+						@media screen  and (max-width: 768px) {
+							font-size: 22px;
+						}
+						@media screen  and (max-width: 425px) {
+							font-size: 12px;
+						}
+					}
+					.subheading {
+						font-size: 18px;
+						@media screen and (max-width: 1090px) {
+							font-size: 16px;
+						}
+						@media screen  and (max-width: 768px) {
+							font-size: 22px;
+						}
+						@media screen  and (max-width: 425px) {
+							font-size: 12px;
+						}
+					}
+				}
+			}
+		}
+	}
+}

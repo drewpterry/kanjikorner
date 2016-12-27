@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="internal-page">
 <div class="green-cover">
     <div class="row green-cover__head">
         <div class="col-md-2 col-sm-1">
@@ -147,6 +148,7 @@
     </tbody>
   </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -188,5 +190,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style lang="scss" scoped>
 </style>

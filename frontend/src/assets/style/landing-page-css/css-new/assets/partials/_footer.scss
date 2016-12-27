@@ -1,0 +1,125 @@
+.landing-page {
+	footer {
+		background-color: $footer-background;
+		color: #fff;
+		padding-top: 75px;
+		padding-bottom: 45px;
+		float: left;
+		width: 100%;
+		.nav-block {
+			float: left;
+			ul {
+				padding-left: 0;
+				list-style: none;
+				font-size: 20px;
+				@media screen  and (max-width: 425px) {
+					font-size: 10px;
+				}
+				li {
+					margin-bottom: 12px;
+				}
+				a {
+					text-decoration: none;
+					color: #fff;
+					&:hover,
+					&:focus {
+						color: #fff;
+						text-decoration: none;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+		.btns-block {
+			float: right;
+			@media screen  and (max-width: 425px) {
+				width: 50%;
+			}
+			.sing-in-btn-block {
+				background-color: $secondary-green;
+				padding: 7px;
+				border-radius: 17px;
+				margin-bottom: 82px;
+				float: left;
+				margin-right: 60px;
+				@media screen  and (max-width: 768px) {
+					float: none;
+					margin-bottom: 40px;
+				}
+				@media screen  and (max-width: 425px) {
+					margin-bottom: 20px;
+					float: right;
+					margin-right: 0;
+				}
+				.sign-in-btn {
+					background-color: $primary-green;
+					color: #fff;
+					font-size: 21px;
+					font-weight: bold;
+					padding: 13px 27px;
+					border-radius: 12px;
+					@media screen  and (max-width: 425px) {
+						font-size: 12px;
+						padding: 9px 32px;
+					}
+				}
+			}
+			.sing-up-btn-block {
+				background-color: $secondary-red;
+				padding: 7px;
+				border-radius: 17px;
+				margin-bottom: 82px;
+				float: right;
+				@media screen  and (max-width: 768px) {
+					float: left;
+					margin-bottom: 40px;
+				}
+				@media screen  and (max-width: 425px) {
+					float: right;
+				}
+				.sign-up-btn {
+					background-color: $primary-red;
+					color: #fff;
+					font-size: 21px;
+					font-weight: bold;
+					padding: 13px 27px;
+					border-radius: 12px;
+					@media screen  and (max-width: 425px) {
+						font-size: 12px;
+						padding: 9px 32px;
+					}
+				}
+			}
+		}
+		.socials {
+			width: 100%;
+			float: left;
+			margin-top: 60px;
+			margin-bottom: 20px;
+			.icons {
+				display: table;
+				margin: auto;
+				.fb {
+					margin-right: 25px;
+				}
+			}
+		}
+		.copyright-block {
+			float: left;
+			width: 100%;
+			text-align: center;
+			.terms {
+				color: #fff;
+				&:hover,
+				&:active {
+					text-decoration: none;
+					color: #fff;
+					cursor: pointer;
+				}
+			}
+			.copy {
+				margin-top: 15px;
+			}
+		}
+	}
+}

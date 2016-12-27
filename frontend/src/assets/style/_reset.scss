@@ -27,63 +27,65 @@ footer, header, menu, nav, section {
   display: block;
 }
 
-body {
+.internal-page {
   line-height: 1;
 }
 
-ol, ul {
-  list-style: none;
-}
+.internal-page {
+  ol, ul {
+    list-style: none;
+  }
 
-blockquote, q {
-  quotes: none;
-}
+  blockquote, q {
+    quotes: none;
+  }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: "";
-  content: none;
-}
+  blockquote:before, blockquote:after,
+  q:before, q:after {
+    content: "";
+    content: none;
+  }
 
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-
-  &:after, &:before {
+  * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    &:after, &:before {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
   }
-}
 
-.clearfix {
-  &:before {
-    content: "";
-    display: table;
+  .clearfix {
+    &:before {
+      content: "";
+      display: table;
+    }
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
   }
 
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
+  a {
+    text-decoration: none;
+    color: inherit;
   }
-}
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-input::-webkit-contacts-auto-fill-button {
-  visibility: hidden;
-  display: none !important;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
+  input::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
 }

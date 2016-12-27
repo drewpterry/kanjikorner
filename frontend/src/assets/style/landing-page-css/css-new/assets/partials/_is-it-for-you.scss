@@ -1,0 +1,71 @@
+.is-it-for-you {
+	background-color: $primary-green;
+	padding-top: 110px;
+	padding-bottom: 150px;
+	color: #fff;
+	position: relative;
+	@media screen  and (max-width: 768px) {
+		padding-bottom: 100px;
+	}
+	@media screen  and (max-width: 425px) {
+		padding-bottom: 40px;
+	}
+	&:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-color: transparent;
+		border-top-color: $primary-green;
+		border-width: 50px;
+		margin-left: -50px;
+	}
+	.block-heading {
+		margin-bottom: 84px;
+	}
+	.pros-cons-heading {
+		font-size: 34px;
+		font-weight: bold;
+		margin-bottom: 30px;
+		@media screen  and (max-width: 768px) {
+			font-size: 30px;
+		}
+		@media screen  and (max-width: 425px) {
+			font-size: 20px;
+		}
+	}
+	.pros {
+		margin-bottom: 115px;
+		@media screen  and (max-width: 425px) {
+			margin-bottom: 40px;
+		}
+	}
+	.list {
+		list-style: none;
+		padding-left: 0;
+		li {
+			font-size: 22px;
+			margin-bottom: 15px;
+			position: relative;
+			display: flex;
+			font-weight: 200;
+			@media screen  and (max-width: 425px) {
+				font-size: 16px;
+			}
+			&:before {
+				content: url(~assets/img/landing_page/list-point.png);
+				margin-right: 30px;
+				margin-top: 4px;
+			}
+			@media screen  and (max-width: 425px) {
+				br {
+					display: none;
+				}
+			}
+		}
+	}
+}

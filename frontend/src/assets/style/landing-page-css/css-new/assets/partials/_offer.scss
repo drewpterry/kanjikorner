@@ -1,0 +1,68 @@
+.landing-page {
+	.offer {
+		padding-top: 115px;
+		padding-bottom: 121px;
+		position: relative;
+		z-index: 2;
+		@media screen  and (max-width: 768px) {
+			padding-bottom: 0;
+		}
+		&:before {
+			top: 100%;
+			left: 50%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+			border-top-color: #fff;
+			border-width: 50px;
+			margin-left: -50px;
+			@media screen and (max-width: 1200px) {
+				margin-top: -1px;
+			}
+		}
+		.block-heading {
+			color: $primary-green;
+			margin-bottom: 120px;
+			@media screen  and (max-width: 425px) {
+				margin-bottom: 40px;
+			}
+		}
+		.container {
+			padding-left: 18.5px;
+			padding-right: 18.5px;
+		}
+		.one-item {
+			width: 30%;
+			margin-left: 1.5%;
+			margin-right: 1.5%;
+			border-radius: 20px;
+			box-shadow: 1px 1px 10px #9da6a2;
+			margin-bottom: 95px;
+			padding-top: 0px;
+			padding-bottom: 50px;
+			height: 494px;
+			@media screen  and (max-width: 768px) {
+				width: 48%;
+				margin-left: 1%;
+				margin-right: 1%;
+			}
+			@media screen  and (max-width: 425px) {
+				width: 100%;
+				margin-left: 0;
+				margin-right: 0;
+				margin-bottom: 20px;
+			}
+			
+			.text-block {
+				text-align: center;
+				font-size: 22px;
+				@media screen  and (max-width: 768px) {
+					font-size: 20px;
+				}
+			}
+		}
+	}
+}

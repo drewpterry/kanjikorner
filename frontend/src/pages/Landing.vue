@@ -1,10 +1,10 @@
 <template>
 <div>
-<body>
+<div class="landing-page">
 	<header>
 		<div class="container-fluid">
 			<div class="logo-block">
-				<img src="../assets/img/logo.svg" alt="Kanjisama logo" class="logo">
+				<img src="~assets/img/logo.svg" alt="Kanjisama logo" class="logo">
 			</div>
 			<div class="login-block">
 				<a href="#" class="btn login-btn">login</a>
@@ -21,7 +21,6 @@
 				<div class="get-trial-block">
 					<a href="#" class="btn get-trial-btn">Get free trial</a>
 				</div>
-				<p class="find-more">Or, find out more first!</p>
 			</div>
 		</div>
 		<div class="why-us col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -29,8 +28,8 @@
 			<p class="block-subheading">It’s awesome, and it works.<br> Need to know more?<br> Just kidding …</p>
 			<div class="explanation col-lg-12 col-md-12">
 				<div class="one-item col-lg-7 col-lg-offset-4 col-md-7 col-md-offset-4 col-sm-12 col-xs-12 col-xs-12-offset">
-					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/clock_icon.svg" alt="" class="icon">
+					<div class="icon-block upper">
+						<img src="~assets/img/landing_page/icons/clock_icon.svg" alt="" class="icon">
 					</div>
 					<div class="text-block lower">
 						<h3 class="heading">Save time.</h3>
@@ -39,7 +38,7 @@
 				</div>
 				<div class="one-item second col-lg-7 col-lg-offset-1 col-md-7 col-md-offset-1 col-xs-12 col-xs-12-offset">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/book.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/book.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<h3 class="heading">Learn to read Japanese, not just <span class="italic">kanji.</span></h3>
@@ -48,7 +47,7 @@
 				</div>
 				<div class="one-item col-lg-7 col-lg-offset-4 col-md-7 col-md-offset-4 col-xs-12 col-xs-12-offset">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/puzzle.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/puzzle.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<h3 class="heading">Get exactly what you, and only you, need.</h3>
@@ -57,7 +56,7 @@
 				</div>
 				<div class="one-item second col-lg-7 col-lg-offset-1 col-md-7 col-md-offset-1 col-xs-12 col-xs-12-offset">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/elephant_icon.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/elephant_icon.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<h3 class="heading">Remember it for life.</h3>
@@ -65,10 +64,10 @@
 					</div>
 				</div>
 				<div class="one-item col-lg-7 col-lg-offset-4 col-md-7 col-md-offset-4 col-xs-12 col-xs-12-offset">
-					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/mama.svg" alt="" class="icon">
+					<div class="icon-block upper">
+						<img src="~assets/img/landing_page/icons/mama.svg" alt="" class="icon">
 					</div>
-					<div class="text-block">
+					<div class="text-block last">
 						<h3 class="heading">Give procrastination no chance!</h3>
 						<p class="text">Kanjisama helps you stay on track. It’s like your mom, just without the reproachful look.</p>
 					</div>
@@ -98,7 +97,7 @@
 			<div class="container">
 				<div class="one-item col-lg-4 col-md-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/path_with_sun_icon.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/path_with_sun_icon.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Best practice<br>learning path</p>
@@ -106,7 +105,7 @@
 				</div>
 				<div class="one-item col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/alarm_clock.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/alarm_clock.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Smart timing and reminder<br>function for deepening <br>what you’ve learned <br>(Spaced Repetition System)</p>
@@ -114,7 +113,7 @@
 				</div>
 				<div class="one-item col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/cards.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/cards.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Comprehensive vocabulary <br>cards, including word <br>meaning, reading and <br>context of use</p>
@@ -122,7 +121,7 @@
 				</div>
 				<div class="one-item col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/phone.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/phone.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Mobile version, so that you <br>can learn whenever and <br>wherever you want</p>
@@ -130,7 +129,7 @@
 				</div>
 				<div class="one-item col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/survacing.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/survacing.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Progress tracking and sur-<br>facing words you have <br>trouble remembering</p>
@@ -138,7 +137,7 @@
 				</div>
 				<div class="one-item col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="icon-block">
-						<img src="../assets/img/icons/landing_page/koala_button.svg" alt="" class="icon">
+						<img src="~assets/img/landing_page/icons/koala_button.svg" alt="" class="icon">
 					</div>
 					<div class="text-block">
 						<p class="one-offer">Koala button (figure that <br>one out by yourself...)</p>
@@ -167,7 +166,7 @@
 			<div class="who-block col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
 				<div class="author col-lg-12 col-md-12 col-sm-12">
 					<div class="photo-block col-lg-4 col-md-5 col-sm-5 col-xs-5">
-						<img src="../assets/img/landing_page/drew.png" alt="Drew Terry">
+						<img src="~assets/img/landing_page/drew.png" alt="Drew Terry">
 					</div>
 					<div class="text-block col-lg-7 col-md-7 col-sm-7 col-xs-7">
 						<p class="heading">Drew Terry</p>
@@ -176,7 +175,7 @@
 				</div>
 				<div class="koala col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="photo-block col-lg-5 col-md-5 col-sm-4 col-xs-4">
-						<img src="../assets/img/icons/landing_page/koala_color.png" alt="Koalasama">
+						<img src="~assets/img/landing_page/icons/koala_color.png" alt="Koalasama">
 					</div>
 					<div class="text-block col-lg-7 col-md-7 col-sm-8 col-xs-8">
 						<p class="heading">Koalasama</p>
@@ -219,10 +218,10 @@
 		<div class="socials">
 			<div class="icons">
 				<a href="#" class="social-icon fb">
-					<img src="/img/fb.png" alt="">
+					<img src="~assets/img/landing_page/fb.png" alt="">
 				</a>
 				<a href="#" class="social-icon twitter">
-					<img src="img/fb.png" alt="">
+					<img src="~assets/img/landing_page/fb.png" alt="">
 				</a>
 			</div>
 		</div>
@@ -232,12 +231,8 @@
 		</div>
 	</footer>
 
-</body>
-      <!--<div class="col-md-2 col-md-offset-6">-->
-        <!--<router-link to="/dashboard">-->
-          <!--<button class="btn btn-red">Reviews: 11224</button>-->
-        <!--</router-link>-->
-      <!--</div>-->
+</div>
+
 </div>
 </template>
 
@@ -254,6 +249,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
-@import "../assets/style/landing-page-css/css/assets/style.scss";
+<style lang="scss" scoped>
+@import "../assets/style/landing-page-css/css-new/assets/style.scss";
 </style>
