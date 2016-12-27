@@ -46,6 +46,7 @@ export default {
       front: '',
       back: '',
       answer_type: 'reading',
+      bothAnswerCorrect: true,
       inputIME: '',
       enterAllowed: true
     }
@@ -115,6 +116,7 @@ export default {
         if (this.answer_type === 'reading') {
           console.log('correct and reading')
         } else {
+          // consider making nextCard time as being an argument
           self.nextCard(true)
           console.log('correct and meanings')
         }
@@ -124,6 +126,7 @@ export default {
           self.setIME()
         }, 1000)
       } else {
+        this.bothAnswerCorrect = false
         self.flipCard()
         setTimeout(function () {
           self.flipCard()
@@ -139,6 +142,17 @@ export default {
           }, 2500)
           console.log('wrong and meaning')
         }
+      }
+      if (this.answer_type === 'meaning') {
+        this.postAnswerResult()
+        this.bothAnswerCorrect = true
+      }
+    },
+    postAnswerResult: function () {
+      if (this.bothAnswerCorrect) {
+        console.log('both correct')
+      } else {
+        console.log('incorrect')
       }
     },
     setIME: function () {
@@ -171,6 +185,7 @@ export default {
       var self = this
       var answerCorrect = false
       var submittedAnswer = this.inputIME.value
+      // consider using normal for iterator so that you can use break statement
       this.currentMeanings.forEach(function (def, i) {
         var lettersOff = self.getLevenshtein(submittedAnswer, def)
         var percentIncorrect = lettersOff / def.length
