@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="internal-page">
   <div class="top-progress">
     <div class="top-progress__inner" style="width: 76%"></div>
   </div>

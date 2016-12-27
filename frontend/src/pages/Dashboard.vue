@@ -1,6 +1,5 @@
 <template>
-<div>
-
+<div class="internal-page">
   <div class="top-line">
     <div class="container">
       <div class="col-md-5 col-md-offset-7">
@@ -191,13 +190,6 @@
      </div>
    </div>
  </div>
-
-
-<!--<script src="../assets/js/lib/jquery-2.2.4.min.js"></script>-->
-<!--<script src="js/lib/bootstrap.min.js"></script>-->
-<!--<script src="js/lib/slick.min.js"></script>-->
-<!--<script src="js/main.js"></script>-->
-
 </div>
 </template>
 
