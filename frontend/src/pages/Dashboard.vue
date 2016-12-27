@@ -193,7 +193,7 @@
  </div>
 
 
-<!--<script src="js/lib/jquery-2.2.4.min.js"></script>-->
+<!--<script src="../assets/js/lib/jquery-2.2.4.min.js"></script>-->
 <!--<script src="js/lib/bootstrap.min.js"></script>-->
 <!--<script src="js/lib/slick.min.js"></script>-->
 <!--<script src="js/main.js"></script>-->
@@ -202,11 +202,13 @@
 </template>
 
 <script>
+var $ = window.jQuery = require('jquery')
 export default {
   name: 'DASBOARD',
   data () {
     return {
       msg: 'The route works',
+      initialFetchComplete: false,
       reviewDeck: [],
       reviewDeckLevels: 0,
       userProfile: [],
@@ -218,8 +220,45 @@ export default {
     this.getReviewDeck()
     this.getUserProfile()
     this.getReviewData()
+    // hack - this inserts jquery and slick carousel into this page for carousel animation - ideally this should be a carousel component
+    var elTow = document.createElement('script')
+    elTow.setAttribute('type', 'text/javascript')
+    elTow.setAttribute('src', 'https://code.jquery.com/jquery-2.2.4.min.js')
+    document.getElementsByTagName('head')[0].appendChild(elTow)
+    setTimeout(function () {
+      var el = document.createElement('script')
+      el.setAttribute('type', 'text/javascript')
+      el.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js')
+      document.getElementsByTagName('head')[0].appendChild(el)
+    }, 500)
   },
   methods: {
+    setSlick () {
+/* eslint-disable */
+      $(document).ready(function () {
+        $('.js-level-slider').slick({
+          infinite: false,
+          slidesToShow: 5,
+          slidesToScroll: 5,
+          responsive: [
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll:3
+              }
+            },
+            {
+              breakpoint: 420,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll:5
+              }
+            }
+          ]
+        })
+      })
+    },
     getReviewDeck () {
       var url = '/api/all-decks/get'
       this.$http.get(url)
@@ -227,6 +266,11 @@ export default {
         this.errors = null
         this.reviewDeck = response.data
         this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].level
+        this.initialFetchComplete = true
+        var self = this
+        setTimeout(function () {
+          self.setSlick()
+        }, 1000)
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'
