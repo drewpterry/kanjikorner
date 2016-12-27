@@ -221,7 +221,7 @@ export default {
       el.setAttribute('type', 'text/javascript')
       el.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js')
       document.getElementsByTagName('head')[0].appendChild(el)
-    }, 500)
+    }, 1000)
   },
   methods: {
     setSlick () {
@@ -243,7 +243,7 @@ export default {
               breakpoint: 420,
               settings: {
                 slidesToShow: 2,
-                slidesToScroll:5
+                slidesToScroll:2
               }
             }
           ]
@@ -261,7 +261,7 @@ export default {
         var self = this
         setTimeout(function () {
           self.setSlick()
-        }, 1000)
+        }, 2000)
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'

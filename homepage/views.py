@@ -15,7 +15,8 @@ def index(request):
     template = 'homepage/index.html'
     if request.user.is_authenticated():
         return view_dashboard(request)
-    return render(request, template, {'full_name':full_name})
+    return view_dashboard(request)
+    # return render(request, template, {'full_name':full_name})
      
 
 def auth_view(request):
