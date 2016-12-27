@@ -25,7 +25,6 @@
 		</div>
 		<div class="why-us col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<h2 class="block-heading">Why Kanjisama?</h2>
-			<p class="block-subheading">It’s awesome, and it works.<br> Need to know more?<br> Just kidding …</p>
 			<div class="explanation col-lg-12 col-md-12">
 				<div class="one-item col-lg-7 col-lg-offset-4 col-md-7 col-md-offset-4 col-sm-12 col-xs-12 col-xs-12-offset">
 					<div class="icon-block upper">
@@ -250,5 +249,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import "../assets/style/landing-page-css/css-new/assets/style.scss";
+@import "../assets/style/landing-page-css/style.scss";
 </style>
