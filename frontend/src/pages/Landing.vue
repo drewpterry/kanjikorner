@@ -12,6 +12,14 @@
 		</div>
 	</header>
 	<main>
+  <modal v-show="showLogin">
+    <span slot="header">Login</span>
+    <form slot="body">
+      <input type="text" placeholder="email"> 
+      <input type="text" placeholder="password"> 
+      <span v-on:click="login">login</span>
+    </form>
+  </modal>
 		<div class="welcome-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="container-fluid">
 				<div class="main">
@@ -236,12 +244,31 @@
 </template>
 
 <script>
+import ModalBase from '../components/ModalBase.vue'
 export default {
-  name: 'Home',
+  name: 'landingPage',
   data () {
     return {
       reviewDeck: [],
-      errors: null
+      errors: null,
+      showLogin: true
+    }
+  },
+  components: {
+    'modal': ModalBase
+  },
+  methods: {
+    login: function () {
+      var url = '/login/auth/'
+      this.$http.post(url)
+      .then(response => {
+        this.errors = null
+        this.reviewDeck = response.data
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
+      })
+      console.log('gere')
     }
   }
 }
