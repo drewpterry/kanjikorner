@@ -56,6 +56,8 @@ INSTALLED_APPS = (
     'flashcard',
     'admin_data_collection',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'import_export',
     'el_pagination',
 )
@@ -84,8 +86,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 

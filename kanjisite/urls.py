@@ -22,6 +22,7 @@ admin.autodiscover()
 urlpatterns = [ 
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
 #namespace specifies exactly where url is coming from - inluded on index page
+    url(r'^api/rest-auth/', include('rest_auth.urls')),
     url(r'^$', homepage_views.index, name = "home"),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
