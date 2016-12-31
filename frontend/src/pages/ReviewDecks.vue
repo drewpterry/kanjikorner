@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import auth from '../auth'
 import Card from '../components/Card.vue'
 export default {
   name: 'me',
@@ -162,11 +163,11 @@ export default {
       var level = this.$route.params.lvl
       var sublevel = this.$route.params.sublevel
       var url = '/api/review/lvl-' + level + '/' + sublevel + '/get'
-      this.$http.get(url)
-        .then(response => {
-          this.errors = null
-          this.reviewDeck = response.data
-          this.initialFetchComplete = true
+      this.$http.get(url, {headers: auth.getAuthHeader()})
+      .then(response => {
+        this.errors = null
+        this.reviewDeck = response.data
+        this.initialFetchComplete = true
  /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'

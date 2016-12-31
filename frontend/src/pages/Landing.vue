@@ -7,7 +7,7 @@
 				<img src="~assets/img/logo.svg" alt="Kanjisama logo" class="logo">
 			</div>
 			<div class="login-block">
-				<a href="#" class="btn login-btn">login</a>
+				<div v-on:click="login" class="btn login-btn">login</div>
 			</div>
 		</div>
 	</header>
@@ -245,6 +245,7 @@
 
 <script>
 import ModalBase from '../components/ModalBase.vue'
+import auth from '../auth'
 export default {
   name: 'landingPage',
   data () {
@@ -259,16 +260,12 @@ export default {
   },
   methods: {
     login: function () {
-      var url = '/login/auth/'
-      this.$http.post(url)
-      .then(response => {
-        this.errors = null
-        this.reviewDeck = response.data
-/* eslint-disable */
-      }, error => {
-        this.errors = 'Could not fetch deck from server!'
-      })
-      console.log('gere')
+      console.log('here')
+      var credentials = {
+        email: 'samir@yahoo.co',
+        password: ''
+      }
+      auth.login(this, credentials, '/dashboard')
     }
   }
 }

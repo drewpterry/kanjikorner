@@ -194,6 +194,7 @@
 </template>
 
 <script>
+import auth from '../auth'
 export default {
   name: 'DASBOARD',
   data () {
@@ -252,7 +253,7 @@ export default {
     },
     getReviewDeck () {
       var url = '/api/all-decks/get'
-      this.$http.get(url)
+      this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.reviewDeck = response.data
@@ -269,7 +270,7 @@ export default {
     },
     getUserProfile () {
       var url = '/api/profile-data/get'
-      this.$http.get(url)
+      this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.userProfile  = response.data
@@ -280,7 +281,7 @@ export default {
     },
     getReviewData () {
       var url = '/api/review-data/get'
-      this.$http.get(url)
+      this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.reviewData = response.data

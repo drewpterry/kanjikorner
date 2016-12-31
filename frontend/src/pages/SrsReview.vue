@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import auth from '../auth'
 import Card from '../components/Card.vue'
 export default {
   name: 'srsreview',
@@ -49,7 +50,7 @@ export default {
   methods: {
     getReviewDeck () {
       var url = '/api/review/srs/get'
-      this.$http.get(url)
+      this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.reviewWords = response.data
