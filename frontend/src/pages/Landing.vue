@@ -7,7 +7,7 @@
 				<img src="~assets/img/logo.svg" alt="Kanjisama logo" class="logo">
 			</div>
 			<div class="login-block">
-				<a href="#" class="btn login-btn">login</a>
+				<div v-on:click="login" class="btn login-btn">login</div>
 			</div>
 		</div>
 	</header>
@@ -236,12 +236,23 @@
 </template>
 
 <script>
+import auth from '../auth'
 export default {
-  name: 'Home',
+  name: 'landingPage',
   data () {
     return {
       reviewDeck: [],
       errors: null
+    }
+  },
+  methods: {
+    login: function () {
+      console.log('here')
+      var credentials = {
+        email: 'samir@yahoo.co',
+        password: ''
+      }
+      auth.login(this, credentials, '/dashboard')
     }
   }
 }
