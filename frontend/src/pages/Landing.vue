@@ -7,16 +7,16 @@
 				<img src="~assets/img/logo.svg" alt="Kanjisama logo" class="logo">
 			</div>
 			<div class="login-block">
-				<div v-on:click="login" class="btn login-btn">login</div>
+				<div v-on:click="showLogin=true" class="btn login-btn">login</div>
 			</div>
 		</div>
 	</header>
 	<main>
-  <modal v-show="showLogin">
+  <modal v-show="showLogin" @close="showLogin = false">
     <span slot="header">Login</span>
     <form slot="body">
-      <input type="text" placeholder="email"> 
-      <input type="text" placeholder="password"> 
+      <input v-model="email" type="text" placeholder="email"> 
+      <input v-model="password" type="password" placeholder="password"> 
       <span v-on:click="login">login</span>
     </form>
   </modal>
@@ -151,7 +151,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+    </div>
 		<div class="cta-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<h3 class="cta-heading">Wanna learn how to <br>read Japanese?</h3>
 			<p class="cta-subheading">Try the beta version today, for free!</p>
@@ -252,7 +252,9 @@ export default {
     return {
       reviewDeck: [],
       errors: null,
-      showLogin: true
+      showLogin: false,
+      email: '',
+      password: ''
     }
   },
   components: {
@@ -260,10 +262,9 @@ export default {
   },
   methods: {
     login: function () {
-      console.log('here')
       var credentials = {
-        email: 'samir@yahoo.co',
-        password: ''
+        email: this.email,
+        password: this.password
       }
       auth.login(this, credentials, '/dashboard')
     }

@@ -43,8 +43,10 @@ export default {
 
   // To log out, we just need to remove the token
   logout () {
+    console.log('here')
     window.localStorage.removeItem('id_token')
     this.user.authenticated = false
+    router.push('/')
   },
 
   checkAuth () {

@@ -7,6 +7,7 @@
           <li><a href="">About</a></li>
           <li><a href="">FAQ</a></li>
           <li><a href="">Guide</a></li>
+          <li><span v-on:click="logout">Logout</span></li>
           <li class="social"><a href=""><i class="icon icon-tw"></i></a></li>
           <li class="social"><a href=""><i class="icon icon-fb"></i></a></li>
         </ul>
@@ -289,6 +290,16 @@ export default {
       }, error => {
         this.errors = 'Could not fetch deck from server!'
       })
+    },
+    logout: function () {
+      auth.logout()
+    }
+  },
+  route: {
+    // Check the users auth status before
+    // allowing navigation to the route
+    canActivate() {
+      return auth.user.authenticated
     }
   }
 }

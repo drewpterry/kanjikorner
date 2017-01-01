@@ -6,20 +6,38 @@ import Dashboard from './pages/Dashboard'
 import ReviewDeck from './pages/ReviewDecks'
 import SrsReview from './pages/SrsReview'
 import VueRouter from 'vue-router'
+import auth from './auth'
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
 /* eslint-disable no-new */
 const routes = [
   { path: '/', component: Landing },
-  { path: '/dashboard', component: Dashboard },
-  { path: '/review/lvl-:lvl/:sublevel', name: 'deck', component: ReviewDeck },
-  { path: '/review/srs', component: SrsReview }
+  { path: '/dashboard', component: Dashboard, meta: {requiresAuth: true} },
+  { path: '/review/lvl-:lvl/:sublevel', name: 'deck', component: ReviewDeck, meta: {requiresAuth: true} },
+  { path: '/review/srs', component: SrsReview, meta: {requiresAuth: true} }
 ]
 
 export const router = new VueRouter({
   mode: 'history',
   routes: routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (auth.user.authenticated) {
+      next()
+    } else {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
 })
 
 new Vue({
