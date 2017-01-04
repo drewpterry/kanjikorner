@@ -24,12 +24,15 @@ export const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (auth.user.authenticated) {
+      console.log('heere')
       next()
     } else {
+      console.log('not logged in ')
       next({
         path: '/',
         query: { redirect: to.fullPath }
