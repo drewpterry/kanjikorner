@@ -27,10 +27,11 @@ export default {
   created () {
     this.denominator = this.initialDenominator
     this.numberator = this.initialNumerator ? this.initialNumerator : 0
+    window.eventHub.$on('increment', this.incrementCount)
   },
   methods: {
     incrementCount: function () {
-      this.numerator += 1
+      this.numerator++
     }
   }
 }

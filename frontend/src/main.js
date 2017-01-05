@@ -29,7 +29,6 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (auth.user.authenticated) {
-      console.log('heere')
       next()
     } else {
       console.log('not logged in ')
@@ -42,7 +41,8 @@ router.beforeEach((to, from, next) => {
     next() // make sure to always call next()!
   }
 })
-
+ /* eslint-disable */
+window.eventHub = new Vue()
 new Vue({
   components: {App},
   template: '<App/>',

@@ -46,9 +46,10 @@ export default {
   },
   created () {
     this.getReviewDeck()
+    window.eventHub.$on('completeCard', this.completeCard)
   },
   methods: {
-    getReviewDeck () {
+    getReviewDeck: function () {
       var url = '/api/review/srs/get'
       this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
@@ -61,6 +62,26 @@ export default {
         this.errors = 'Could not fetch deck from server!'
         this.initialFetchComplete = true
       })
+    },
+    completeCard: function (array_index, bothCorrect) {
+      var url = '/api/review/update-word'
+      var thisWordID = this.reviewWords[array_index].id
+      var increase = bothCorrect ? 1 : 0
+      if (bothCorrect) {
+        window.eventHub.$emit('increment')
+      }
+      this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': increase}, {headers: auth.getAuthHeader()})
+      .then(response => {
+      }, error => {
+        if (error) {
+          this.errors = 'Could not update on server!'
+        }
+      })
+      if (this.reviewWords.length - this.array_index > 7) {
+        this.reviewWords.splice(this.array_index + 7, 0, this.reviewWords[array_index])
+      } else {
+        this.reviewWords.push(this.reviewWords[array_index])
+      }
     }
   }
 }

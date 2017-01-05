@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import auth from '../auth'
 import wanakana from 'wanakana/lib/wanakana.min.js'
 export default {
   name: 'Card',
@@ -75,9 +74,9 @@ export default {
   methods: {
     setCurrentWord: function () {
       if (this.deck) {
-        this.currentWord = this.wordList[0].words[this.currentIndex]
+        this.currentWord = this.words[0].words[this.currentIndex]
       } else {
-        this.currentWord = this.wordList[this.currentIndex].words
+        this.currentWord = this.words[this.currentIndex].words
       }
     },
     setMeanings: function () {
@@ -117,6 +116,7 @@ export default {
         if (this.answer_type === 'reading') {
           console.log('correct and reading')
         } else {
+          window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           // consider making nextCard time as being an argument
           self.nextCard(true)
           console.log('correct and meanings')
@@ -136,6 +136,7 @@ export default {
         if (this.answer_type === 'reading') {
           console.log('wrong and reading')
         } else {
+          window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           setTimeout(function () {
             self.nextCard(true)
           }, 2500)
@@ -144,36 +145,8 @@ export default {
       }
       // determine what to do if both meaning and reading have been answered
       if (this.answer_type === 'meaning') {
-        this.postAnswerResult()
         // reset to default state
         this.bothAnswerCorrect = true
-      }
-    },
-    postAnswerResult: function () {
-      var url = '/api/review/update-word'
-      var thisWordID = this.wordList[this.currentIndex].id
-      if (this.bothAnswerCorrect) {
-        this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '1'}, {headers: auth.getAuthHeader()})
-        .then(response => {
-        }, error => {
-          if (error) {
-            this.errors = 'Could not update on server!'
-          }
-        })
-      } else {
-        console.log('got here')
-        this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '0'}, {headers: auth.getAuthHeader()})
-        .then(response => {
-        }, error => {
-          if (error) {
-            this.errors = 'Could not update on server!'
-          }
-        })
-        if (this.wordList.length - this.currentIndex > 7) {
-          this.wordList.splice(this.currentIndex + 7, 0, this.wordList[this.currentIndex])
-        } else {
-          this.wordList.push(this.wordList[this.currentIndex])
-        };
       }
     },
     setIME: function () {
