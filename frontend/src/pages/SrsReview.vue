@@ -69,6 +69,12 @@ export default {
       var increase = bothCorrect ? 1 : 0
       if (bothCorrect) {
         window.eventHub.$emit('increment')
+      } else {
+        if (this.reviewWords.length - this.array_index > 7) {
+          this.reviewWords.splice(this.array_index + 7, 0, this.reviewWords[array_index])
+        } else {
+          this.reviewWords.push(this.reviewWords[array_index])
+        }
       }
       this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': increase}, {headers: auth.getAuthHeader()})
       .then(response => {
@@ -77,11 +83,6 @@ export default {
           this.errors = 'Could not update on server!'
         }
       })
-      if (this.reviewWords.length - this.array_index > 7) {
-        this.reviewWords.splice(this.array_index + 7, 0, this.reviewWords[array_index])
-      } else {
-        this.reviewWords.push(this.reviewWords[array_index])
-      }
     }
   }
 }

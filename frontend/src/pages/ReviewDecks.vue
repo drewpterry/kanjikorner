@@ -3,15 +3,13 @@
   <div class="green-cover">
     <div class="row green-cover__head">
       <div class="col-md-2 col-sm-1">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <div class="logo">
             <img src="../assets/img/logo-white.svg" alt="">
           </div>
         </router-link>
       </div>
-      <div class="col-md-offset-9 col-md-1">
-        <p class="green-cover__progress">2 / 20</p>
-      </div>
+      <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewDeck[0].words.length"></counterRatio>
     </div>
     <div class="container green-cover__body">
       <div class="row ">
@@ -142,6 +140,7 @@
 <script>
 import auth from '../auth'
 import Card from '../components/Card.vue'
+import counterRatio from '../components/counterRatio.vue'
 export default {
   name: 'me',
   data () {
@@ -153,10 +152,12 @@ export default {
     }
   },
   components: {
-    'card': Card
+    'card': Card,
+    'counterRatio': counterRatio
   },
   created () {
     this.getReviewDeck()
+    window.eventHub.$on('completeCard', this.completeCard)
   },
   methods: {
     getReviewDeck () {
@@ -173,6 +174,13 @@ export default {
         this.errors = 'Could not fetch deck from server!'
         this.initialFetchComplete = true
       })
+    },
+    completeCard: function (array_index, bothCorrect) {
+      if (bothCorrect) {
+        window.eventHub.$emit('increment')
+      } else {
+        this.reviewDeck[0].words.push(this.reviewDeck[0].words[array_index])
+      }
     }
   }
 }
