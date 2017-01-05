@@ -7,14 +7,14 @@
   <div class="green-cover">
     <div class="row green-cover__head">
       <div class="col-md-2 col-sm-1">
-        <router-link to="/">
+        <router-link to="/dashboard">
           <div class="logo">
             <img src="../assets/img/logo-white.svg" alt="">
           </div>
         </router-link>
       </div>
       <div class="col-md-offset-9 col-md-1">
-        <p class="green-cover__progress">2 / 20</p>
+        <p class="green-cover__progress">2 / {{ reviewWords.length }}</p>
       </div>
     </div>
     <div class="container green-cover__body">

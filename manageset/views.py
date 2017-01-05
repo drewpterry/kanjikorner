@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords
 from django.db.models import Count, Min, Sum, Avg
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.core import serializers
 from datetime import datetime, timedelta, date
 from django.utils.timezone import utc

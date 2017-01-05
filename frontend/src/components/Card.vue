@@ -17,7 +17,7 @@
       </transition>
     </div>
     <div class="panel panel-answer">
-      <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" placeholder="ひらがな" focus>
+      <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" placeholder="よみ" focus>
       <div class="row">
         <div class="col-md-3">
           <p class="gray-btn">I don't know</p>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import auth from '../auth'
 import wanakana from 'wanakana/lib/wanakana.min.js'
 export default {
   name: 'Card',
@@ -123,7 +124,6 @@ export default {
         setTimeout(function () {
           self.enterAllowed = true
           self.setAnswerType()
-          self.setIME()
         }, 1000)
       } else {
         this.bothAnswerCorrect = false
@@ -132,7 +132,6 @@ export default {
           self.flipCard()
           self.enterAllowed = true
           self.setAnswerType()
-          self.setIME()
         }, 2000)
         if (this.answer_type === 'reading') {
           console.log('wrong and reading')
@@ -143,16 +142,37 @@ export default {
           console.log('wrong and meaning')
         }
       }
+      // determine what to do if both meaning and reading have been answered
       if (this.answer_type === 'meaning') {
         this.postAnswerResult()
+        // reset to default state
         this.bothAnswerCorrect = true
       }
     },
     postAnswerResult: function () {
+      var url = '/api/review/update-word'
+      var thisWordID = this.wordList[this.currentIndex - 1].id
       if (this.bothAnswerCorrect) {
-        console.log('both correct')
+        this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '1'}, {headers: auth.getAuthHeader()})
+        .then(response => {
+        }, error => {
+          if (error) {
+            this.errors = 'Could not update on server!'
+          }
+        })
       } else {
-        console.log('incorrect')
+        this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '0'}, {headers: auth.getAuthHeader()})
+        .then(response => {
+        }, error => {
+          if (error) {
+            this.errors = 'Could not update on server!'
+          }
+        })
+        if (this.wordList.length - this.currentIndex > 7) {
+          this.wordList.splice(this.currentIndex + 7, 0, this.wordList[this.currentIndex])
+        } else {
+          this.wordList.push(this.wordList[this.currentIndex])
+        };
       }
     },
     setIME: function () {
@@ -168,7 +188,9 @@ export default {
     setAnswerType: function () {
       this.answer_type = this.answer_type === 'reading' ? 'meaning' : 'reading'
       this.setIME()
-      this.back = this.setDefinitionFormat()
+      if (this.answer_type === 'meaning') {
+        this.back = this.setDefinitionFormat()
+      }
     },
     checkAnswer: function () {
       if (this.answer_type === 'reading') {
