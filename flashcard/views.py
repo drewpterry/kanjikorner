@@ -57,7 +57,7 @@ def update_review_word(request):
     data = json.loads(request.body)
     profile = request.user.userprofile
     # timezone_adjustment = int(request.GET['timezone_offset'])
-    known_id = data.get('known_word_id') 
+    known_word_id = data.get('known_word_id') 
     increase_level = int(data.get('increase_level'))
     #TODO this probably shouldn't accept knownID, it will probably find word based off of Word assocation
     selected_word = KnownWords.objects.get(id = known_word_id, user_profile = profile)

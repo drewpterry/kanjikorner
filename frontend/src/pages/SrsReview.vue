@@ -13,14 +13,12 @@
           </div>
         </router-link>
       </div>
-      <div class="col-md-offset-9 col-md-1">
-        <p class="green-cover__progress">2 / {{ reviewWords.length }}</p>
-      </div>
+      <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewWords.length"></counterRatio>
     </div>
     <div class="container green-cover__body">
       <div class="row ">
         <div class="col-md-offset-2 col-md-8">
-          <card v-if="initialFetchComplete" v-bind:words="reviewWords"></card>
+          <card v-if="initialFetchComplete" :words="reviewWords"></card>
         </div>
       </div>
     </div>
@@ -31,18 +29,20 @@
 <script>
 import auth from '../auth'
 import Card from '../components/Card.vue'
+import counterRatio from '../components/counterRatio.vue'
 export default {
   name: 'srsreview',
   data () {
     return {
       initialFetchComplete: false,
-      msg: 'SRS REview',
       reviewWords: [],
-      currentWord: ''
+      currentWord: '',
+      wordsComplete: ''
     }
   },
   components: {
-    'card': Card
+    'card': Card,
+    'counterRatio': counterRatio
   },
   created () {
     this.getReviewDeck()

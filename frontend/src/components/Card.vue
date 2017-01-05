@@ -151,7 +151,7 @@ export default {
     },
     postAnswerResult: function () {
       var url = '/api/review/update-word'
-      var thisWordID = this.wordList[this.currentIndex - 1].id
+      var thisWordID = this.wordList[this.currentIndex].id
       if (this.bothAnswerCorrect) {
         this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '1'}, {headers: auth.getAuthHeader()})
         .then(response => {
@@ -161,6 +161,7 @@ export default {
           }
         })
       } else {
+        console.log('got here')
         this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': '0'}, {headers: auth.getAuthHeader()})
         .then(response => {
         }, error => {
