@@ -1,4 +1,4 @@
-import {router} from '../main'
+import router from '../router'
 
 // URL and endpoint constants
 const API_URL = 'api'

@@ -1,27 +1,9 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from './App'
-import Landing from './pages/Landing'
-import Dashboard from './pages/Dashboard'
-import ReviewDeck from './pages/ReviewDecks'
-import SrsReview from './pages/SrsReview'
-import VueRouter from 'vue-router'
+import router from './router'
 import auth from './auth'
-Vue.use(VueRouter)
 Vue.use(VueResource)
-
-/* eslint-disable no-new */
-const routes = [
-  { path: '/', component: Landing },
-  { path: '/dashboard', component: Dashboard, meta: {requiresAuth: true} },
-  { path: '/review/lvl-:lvl/:sublevel', name: 'deck', component: ReviewDeck, meta: {requiresAuth: true} },
-  { path: '/review/srs', component: SrsReview, meta: {requiresAuth: true} }
-]
-
-export const router = new VueRouter({
-  mode: 'history',
-  routes: routes
-})
 
 router.beforeEach((to, from, next) => {
   auth.checkAuth()
@@ -41,6 +23,7 @@ router.beforeEach((to, from, next) => {
     next() // make sure to always call next()!
   }
 })
+
  /* eslint-disable */
 window.eventHub = new Vue()
 new Vue({
