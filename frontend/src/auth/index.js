@@ -12,7 +12,7 @@ export default {
     authenticated: false
   },
 
-  // Send a request to the login URL and save the returned token 
+  // Send a request to the login URL and save the returned token
   login (context, creds, redirect) {
     context.$http.post(LOGIN_URL, creds).then((response) => {
       window.localStorage.setItem('id_token', response.data['key'])

@@ -148,6 +148,9 @@ export default {
       initialFetchComplete: false,
       msg: 'The route works',
       reviewDeck: [],
+      reviewDeckOriginal: [],
+      secondReview: false,
+      showModal: false,
       errors: null
     }
   },
@@ -158,6 +161,7 @@ export default {
   created () {
     this.getReviewDeck()
     window.eventHub.$on('completeCard', this.completeCard)
+    window.eventHub.$on('deckComplete', this.deckComplete)
   },
   methods: {
     getReviewDeck () {
@@ -168,6 +172,7 @@ export default {
       .then(response => {
         this.errors = null
         this.reviewDeck = response.data
+        this.reviewDeckOriginal = response.data
         this.initialFetchComplete = true
  /* eslint-disable */
       }, error => {
@@ -180,6 +185,18 @@ export default {
         window.eventHub.$emit('increment')
       } else {
         this.reviewDeck[0].words.push(this.reviewDeck[0].words[array_index])
+      }
+    },
+    deckComplete: function () {
+      console.log('got to review')
+      if (this.secondReview) {
+        console.log('finished to review')
+        this.showModal = true
+      } else {
+        console.log('work')
+        window.eventHub.$emit('reset')
+        this.reviewDeck = this.reviewDeckOriginal
+        this.secondReview = true
       }
     }
   }

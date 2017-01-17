@@ -66,12 +66,24 @@ export default {
     this.front = this.currentWord.real_word
     this.back = this.currentWord.hiragana
     this.setMeanings()
+    window.eventHub.$on('reset', this.resetInitialState)
   },
   mounted () {
     this.inputIME = document.getElementById('answer-input')
     wanakana.bind(this.inputIME)
   },
   methods: {
+    resetInitialState: function () {
+      this.currentIndex = 0
+      this.setCurrentWord()
+      this.front = this.currentWord.real_word
+      this.back = this.currentWord.hiragana
+      this.$nextTick(function () {
+        this.setMeanings()
+      })
+      setTimeout(this.showNewCard, 400)
+      console.log('initiall')
+    },
     setCurrentWord: function () {
       if (this.deck) {
         this.currentWord = this.words[0].words[this.currentIndex]
@@ -95,13 +107,21 @@ export default {
         this.show = false
       })
       this.currentIndex = this.currentIndex + 1
-      this.setCurrentWord()
-      this.front = this.currentWord.real_word
-      this.back = this.currentWord.hiragana
-      this.$nextTick(function () {
-        this.setMeanings()
-      })
-      setTimeout(this.showNewCard, 400)
+      console.log(this.currentIndex)
+      console.log(this.words[0].words.length)
+      if (this.words[0].words.length !== this.currentIndex) {
+        console.log('here')
+        this.setCurrentWord()
+        this.front = this.currentWord.real_word
+        this.back = this.currentWord.hiragana
+        this.$nextTick(function () {
+          this.setMeanings()
+        })
+        setTimeout(this.showNewCard, 400)
+      } else {
+        console.log('complete')
+        window.eventHub.$emit('deckComplete')
+      }
     },
     showNewCard: function () {
       this.show = true
