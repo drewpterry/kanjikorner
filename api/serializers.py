@@ -44,6 +44,12 @@ class SetsSerializerWithoutWords(serializers.HyperlinkedModelSerializer):
         model = Sets 
         fields = ('id', 'name', 'level', 'sub_level', 'master_order')
 
+class UserSetsSerializer(serializers.ModelSerializer):
+    sets_fk = SetsSerializerWithoutWords(read_only=True)
+    class Meta:
+        model = UserSets 
+        fields = ('sets_fk', 'completion_status')
+
 class KnownWordsSerializer(serializers.HyperlinkedModelSerializer):
     words = WordsSerializer(read_only=True)
     class Meta:

@@ -15,8 +15,8 @@
   <modal v-show="showLogin" @close="showLogin = false">
     <span slot="header">Login</span>
     <form slot="body">
-      <input v-model="email" type="text" placeholder="email"> 
-      <input v-model="password" type="password" placeholder="password"> 
+      <input v-model="email" type="text" placeholder="email" class="c-textarea" id="answer-input"> 
+      <input v-model="password" type="password" placeholder="password" class="c-textarea"> 
       <span v-on:click="login">login</span>
     </form>
   </modal>
@@ -27,7 +27,7 @@
 					<p class="site-subheading">Get the reading skills you need to crush it in Japan</p>
 				</div>
 				<div class="get-trial-block">
-					<a href="#" class="btn get-trial-btn">Get free trial</a>
+					<a href="register/" class="btn get-trial-btn">Get free trial</a>
 				</div>
 			</div>
 		</div>

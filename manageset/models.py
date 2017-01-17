@@ -136,11 +136,12 @@ def createUserProfile(sender, user, request, **kwargs):
     decks = Sets.objects.exclude(master_order__isnull=True)
     new_decks = []
     for deck in decks:
-        new_user_deck = UserSets.objects.create(sets_fk=deck, user_profile_fk=user_profile[0])
+        new_user_deck = UserSets(sets_fk=deck, user_profile_fk=user_profile[0])
         new_decks.append(new_user_deck)
     UserSets.objects.bulk_create(new_decks)
         
 user_registered.connect(createUserProfile)
+    
 
 class KnownKanji(models.Model):
     kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)

@@ -172,6 +172,33 @@
           </div>
         </div>
       </div>
+      <div class="level" v-for="level in reviewDeckLevels">
+        <div class="row">
+          <div class="col-md-2">
+            <p class="level__title"><span>{{ level }}</span> Level</p>
+          </div>
+          <div class="col-md-10">
+            <p class="level__lessons-number">20 lessons</p>
+            <div class="level__progress">
+              <div class="level__progress-inner" style="width: 90%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="level__wrap">
+          <div class="level-slider js-level-slider">
+            <div v-for="number in 20">
+              <div class="level-slider__slide">
+                <router-link :to="{ name: 'deck', params: { lvl:level, sublevel:number } }">
+                  <div class="panel lesson-panel checked">
+                    <p class="lesson-panel__number">{{ number }} lesson</p>
+                    <p class="lesson-panel__words">20 words</p>
+                  </div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -253,12 +280,14 @@ export default {
       })
     },
     getReviewDeck () {
-      var url = '/api/all-decks/get'
+      // var url = '/api/all-decks/get'
+      var url = '/api/user-decks/get'
       this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.reviewDeck = response.data
-        this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].level
+        this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].sets_fk.level
+        console.log(this.reviewDeck.length)
         this.initialFetchComplete = true
         var self = this
         setTimeout(function () {

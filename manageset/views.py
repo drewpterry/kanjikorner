@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
-from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords
+from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords, UserSets
 from django.db.models import Count, Min, Sum, Avg
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -43,6 +43,14 @@ def view_dashboard(request):
 def get_master_review_decks(request):
     decks = Sets.objects.exclude(master_order__isnull=True)
     serializer = SetsSerializerWithoutWords(decks, many=True)
+    data = serializer.data
+    return Response(data)
+
+@api_view(['GET'])
+def get_user_sets(request):
+    userprofile = request.user.userprofile
+    decks = UserSets.objects.filter(user_profile_fk = 49).order_by('id')
+    serializer = UserSetsSerializer(decks, many=True)
     data = serializer.data
     return Response(data)
 
