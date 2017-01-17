@@ -55,15 +55,6 @@
 }
 
 //************************ OVERALL *************************
-  .c-textarea {
-    outline: 0;
-    width: 100%;
-    resize: vertical;
-    border-radius: 5px;
-    background-color: #f8f8f8;
-    border: 1px solid $pink-first;
-    padding: 10px;
-  }
 body .internal-page {
   background-color: $pink-first;
   font-family: $roboto;
@@ -159,6 +150,15 @@ body .internal-page {
     padding: 6px 0;
   }
 
+  .c-textarea {
+    outline: 0;
+    width: 100%;
+    resize: vertical;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    border: 1px solid $pink-first;
+    padding: 10px;
+  }
 
   .panel {
     padding: 10px;

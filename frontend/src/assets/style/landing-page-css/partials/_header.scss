@@ -1,4 +1,17 @@
 .landing-page {
+  .btn-green {
+      background-color: $primary-green;
+      color: #fff;
+      padding: 8px 46px 8px 45px;
+      border-radius: 9px;
+      @media screen  and (max-width: 768px) {
+        font-size: 24px;
+      }
+      @media screen  and (max-width: 425px) {
+        font-size: 12px;
+        font-weight: bold;
+      }
+  }
 	header {
 		padding-top: 10px;
 		margin-bottom: 6px;

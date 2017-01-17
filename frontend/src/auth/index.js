@@ -12,9 +12,8 @@ export default {
     authenticated: false
   },
 
-  // Send a request to the login URL and save the returned JWT
+  // Send a request to the login URL and save the returned token 
   login (context, creds, redirect) {
-    console.log(router)
     context.$http.post(LOGIN_URL, creds).then((response) => {
       window.localStorage.setItem('id_token', response.data['key'])
       this.user.authenticated = true
@@ -23,7 +22,7 @@ export default {
         router.push('/dashboard')
       }
     }, (response) => {
-      console.log('failure')
+      context.error = 'Oops something went wrong! Check that you\'re email or password is correct!'
     })
   },
 
@@ -43,7 +42,6 @@ export default {
 
   // To log out, we just need to remove the token
   logout () {
-    console.log('here')
     window.localStorage.removeItem('id_token')
     this.user.authenticated = false
     router.push('/')

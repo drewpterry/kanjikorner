@@ -13,12 +13,6 @@
 	</header>
 	<main>
   <modal v-show="showLogin" @close="showLogin = false">
-    <span slot="header">Login</span>
-    <form slot="body">
-      <input v-model="email" type="text" placeholder="email" class="c-textarea" id="answer-input"> 
-      <input v-model="password" type="password" placeholder="password" class="c-textarea"> 
-      <span v-on:click="login">login</span>
-    </form>
   </modal>
 		<div class="welcome-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="container-fluid">
@@ -244,30 +238,20 @@
 </template>
 
 <script>
-import ModalBase from '../components/ModalBase.vue'
-import auth from '../auth'
+import loginModal from '../components/loginModal.vue'
 export default {
   name: 'landingPage',
   data () {
     return {
       reviewDeck: [],
       errors: null,
-      showLogin: false,
-      email: '',
-      password: ''
+      showLogin: false
     }
   },
   components: {
-    'modal': ModalBase
+    'modal': loginModal
   },
   methods: {
-    login: function () {
-      var credentials = {
-        email: this.email,
-        password: this.password
-      }
-      auth.login(this, credentials, '/dashboard')
-    }
   }
 }
 </script>
