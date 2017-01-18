@@ -14,10 +14,11 @@ def update_word_queue(user):
         .order_by('time_until_review')
         .select_related('words')
         )
-    now = datetime.utcnow().replace(tzinfo=utc)
-    last_practiced = words[0].last_practiced
-    difference = now - last_practiced
-    difference = difference.total_seconds()
-            
-    words.update(last_practiced = now, time_until_review = F('time_until_review') - difference)
+    if words.exists():
+        now = datetime.utcnow().replace(tzinfo=utc)
+        last_practiced = words[0].last_practiced
+        difference = now - last_practiced
+        difference = difference.total_seconds()
+                
+        words.update(last_practiced = now, time_until_review = F('time_until_review') - difference)
     return
