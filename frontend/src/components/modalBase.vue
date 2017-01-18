@@ -1,8 +1,7 @@
 <template>
-  <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container" v-bind:style="{ width: width }">
 
           <div class="modal-header">
               <div class="modal-default-button" @click="$emit('close')">
@@ -27,7 +26,6 @@
         </div>
       </div>
     </div>
-  </transition>
 </template>
 
 <script>
@@ -36,11 +34,20 @@ export default {
   data () {
     return {
     }
+  },
+  props: {
+    'width': {
+      type: String,
+      default: '400px'
+    }
+  },
+  created () {
   }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -59,7 +66,6 @@ export default {
 }
 
 .modal-container {
-  width: 400px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

@@ -12,8 +12,10 @@
 		</div>
 	</header>
 	<main>
-    <modal v-show="showLogin" @close="showLogin = false">
-    </modal>
+    <transition name="modal">
+      <modal v-show="showLogin" @close="showLogin = false">
+      </modal>
+    </transition>
 		<div class="welcome-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="container-fluid">
 				<div class="main">

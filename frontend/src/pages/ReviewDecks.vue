@@ -11,6 +11,10 @@
       </div>
       <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewDeck[0].words.length"></counterRatio>
     </div>
+    <transition name="modal">
+      <modal v-show="showModal" @close="showModal= false">
+      </modal>
+    </transition>
     <div class="container green-cover__body">
       <div class="row ">
         <div class="col-md-offset-2 col-md-8">
@@ -71,76 +75,13 @@
   </div>
  
   <!-- Modal -->
-  <div class="modal fade" id="completeModal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <div class="row text-center">
-            <p class="red-title">Complete!</p>
-          </div>
-          <table class="table table-striped">
-            <tr>
-              <td>大</td>
-              <td style="width: 30%">遊戲進入每一課。</td>
-              <td>
-                Mauris non tempor quam, et lacinia sapien
-                auris accumsan eros
-              </td>
-            </tr>
-            <tr>
-              <td>大</td>
-              <td>遊戲進入每一課。</td>
-              <td>
-                Mauris non tempor quam, et lacinia sapien
-                auris accumsan eros
-              </td>
-            </tr>
-            <tr>
-              <td>大</td>
-              <td>遊戲進入每一課。</td>
-              <td>
-                Mauris non tempor quam, et lacinia sapien
-                auris accumsan eros
-              </td>
-            </tr>
-            <tr>
-              <td>大</td>
-              <td>遊戲進入每一課。</td>
-              <td>
-                Mauris non tempor quam, et lacinia sapien
-                auris accumsan eros
-              </td>
-            </tr>
-            <tr>
-              <td>大</td>
-              <td>遊戲進入每一課。</td>
-              <td>
-                Mauris non tempor quam, et lacinia sapien
-                auris accumsan eros
-              </td>
-            </tr>
-          </table>
-          <div class="row">
-            <div class="col-md-3">
-              <a href="home.html"><p class="gray-btn">Home page</p></a>
-            </div>
-            <div class="col-md-3 col-md-offset-6 text-right">
-              <div class="btn btn-green">Next Review</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </template>
 
 <script>
 import auth from '../auth'
 import Card from '../components/Card.vue'
 import counterRatio from '../components/counterRatio.vue'
+import completeModal from '../components/deckReviewCompleteModal.vue'
 export default {
   name: 'me',
   data () {
@@ -156,7 +97,8 @@ export default {
   },
   components: {
     'card': Card,
-    'counterRatio': counterRatio
+    'counterRatio': counterRatio,
+    'modal': completeModal
   },
   created () {
     this.getReviewDeck()
