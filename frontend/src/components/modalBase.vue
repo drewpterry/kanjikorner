@@ -4,9 +4,9 @@
         <div class="modal-container" v-bind:style="{ width: width }">
 
           <div class="modal-header">
-              <div class="modal-default-button" @click="$emit('close')">
-               X 
-              </div>
+            <div class="modal-default-button" @click="$emit('close')">
+             X 
+            </div>
             <slot name="header">
               default header
             </slot>

@@ -74,8 +74,9 @@ def get_review_data(request):
         .values('time_until_review')
         .order_by('time_until_review')
         )
-    next_review_time = reviews_24_hours.first()
+    next_review_time = reviews_24_hours.first()['time_until_review']
     reviews_24_hours_count = reviews_24_hours.count() + reviews_due_count 
+    print next_review_time 
     if reviews_due_count == 0 and next_review_time:
         next_review = str(timedelta(seconds = next_review_time)).split('.')[0]
     else:

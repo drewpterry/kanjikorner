@@ -132,7 +132,6 @@ class UserSets(models.Model):
 from registration.signals import user_registered
 def createUserProfile(sender, user, request, **kwargs):
     user_profile = UserProfile.objects.get_or_create(user=user)
-    print user_profile[0]
     decks = Sets.objects.exclude(master_order__isnull=True)
     new_decks = []
     for deck in decks:
@@ -155,7 +154,6 @@ class KnownKanji(models.Model):
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
     user_profile = models.ForeignKey(UserProfile)
-    #this really represents last_checked -- need to add real date_added field and rename this one
     date_added = models.DateTimeField(auto_now_add = True)
     tier_level = models.IntegerField()
     last_practiced = models.DateTimeField(blank = True)
@@ -163,6 +161,13 @@ class KnownWords(models.Model):
     times_answered_correct = models.IntegerField(default = 0)
     times_answered_wrong = models.IntegerField(default = 0)
     correct_percentage = models.FloatField(null = True)
+
+    def set_initial_level(self):
+        self.tier_level = 1
+        random_multiplier = random.uniform(.95, 1.05)
+        self.last_practiced = datetime.now()
+        self.time_until_review = timedelta(hours = 3.5).total_seconds() * random_multiplier
+        return
 
     def update_tier_and_review_time(self, correct):
         options = {     0 : None,

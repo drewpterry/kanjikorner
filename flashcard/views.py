@@ -1,19 +1,14 @@
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
-from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords
+from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets
 from manageset.utils import * 
 from django.contrib.auth.models import User
 from django.core import serializers
-import json
-import random
 from datetime import datetime, timedelta, time
-from django.template.context_processors import csrf
 from django.utils.timezone import utc
-from django.db.models import F
 from django.views.decorators.cache import cache_control
-from forms import WordMeaningUpdate
 from django.http import JsonResponse
 from api.serializers import SetsSerializer, KnownWordsSerializer
+import json
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
@@ -22,6 +17,7 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import parser_classes
+from rest_framework import status
         
 @api_view(['GET'])
 def get_review_deck(request, level, sub_level):
@@ -30,8 +26,25 @@ def get_review_deck(request, level, sub_level):
     data = serializer.data
     return Response(data)
 
-def view_review_deck(request, level, sub_level):
-    return render(request, 'flashcard/practicecards.html')
+# @api_view(['POST'])
+@api_view(['GET'])
+def review_deck_complete(request):
+    data = json.loads(request.body)
+    profile = request.user.userprofile
+    stack_id = data.get('stack_id') 
+    user_set = UserSets.objects.get(sets_fk = stack_id, user_profile_fk = profile)
+    if not user_set.completion_status:
+        user_set.completion_status = True
+        user_set.save()
+        deck = Sets.objects.get(id = stack_id)
+        words = deck.words.all()
+        words_to_add = []
+        for word in words:
+            new_word = KnownWords(words = word, user_profile = profile)
+            new_word.set_initial_level()
+            words_to_add.append(new_word)
+        KnownWords.objects.bulk_create(words_to_add)
+    return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_srs_review(request):
@@ -48,9 +61,6 @@ def get_srs_review(request):
     serializer = KnownWordsSerializer(words, many=True)
     data = serializer.data
     return Response(data)
-
-def view_srs_review(request):
-    return render(request, 'flashcard/practicecards.html')
 
 @api_view(['POST'])
 def update_review_word(request):

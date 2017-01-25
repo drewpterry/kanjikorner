@@ -87,6 +87,7 @@ export default {
   data () {
     return {
       initialFetchComplete: false,
+      deckId: '',
       msg: 'The route works',
       reviewDeck: [],
       reviewDeckOriginal: [],
@@ -115,6 +116,7 @@ export default {
         this.errors = null
         this.reviewDeck = response.data
         this.reviewDeckOriginal = response.data
+        this.deckId = response.data[0].id
         this.initialFetchComplete = true
  /* eslint-disable */
       }, error => {
@@ -129,13 +131,21 @@ export default {
         this.reviewDeck[0].words.push(this.reviewDeck[0].words[array_index])
       }
     },
-    deckComplete: function () {
-      console.log('got to review')
-      if (this.secondReview) {
-        console.log('finished to review')
+    postStackComplete () {
+      var url = '/api/review/review-deck-complete'
+      this.$http.post(url, {'stack_id': this.deckId}, {headers: auth.getAuthHeader()})
+      .then(response => {
         this.showModal = true
+      }, error => {
+        if (error) {
+          this.errors = 'Oh no! Something went wrong and we couldn\t save your wordsi!'
+        }
+      })
+    },
+    deckComplete: function () {
+      if (this.secondReview) {
+        this.postStackComplete()
       } else {
-        console.log('work')
         window.eventHub.$emit('reset')
         this.reviewDeck = this.reviewDeckOriginal
         this.secondReview = true
