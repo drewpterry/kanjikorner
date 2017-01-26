@@ -110,6 +110,22 @@ class UserProfile(models.Model):
         self.words_practied_today_time_marker = current_datetime
         return
 
+    def update_total_reviews_result(self, correct):
+        if correct:
+            self.total_correct_reviews += 1
+        else:
+            self.total_incorrect_reviews += 1
+        return
+
+    def total_reviews_ever(self):
+        total_reviews = self.total_correct_reviews + self.total_incorrect_reviews
+        return total_reviews
+
+    def percent_correct(self):
+        percent_correct = 100 * (self.total_correct_reviews / self.total_reviews_ever())
+        percent_correct = round(percent_correct, 1)
+        return percent_correct 
+
     def check_if_new_day(self,timezone_adjustment):
         current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day

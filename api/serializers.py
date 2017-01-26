@@ -57,6 +57,8 @@ class KnownWordsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'words', 'tier_level')
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    total_reviews_ever = serializers.ReadOnlyField()
+    percent_correct = serializers.ReadOnlyField()
     class Meta:
         model = UserProfile 
-        fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day', 'total_words_reviewed_ever', 'total_correct_reviews', 'total_incorrect_reviews')
+        fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day', 'total_reviews_ever', 'percent_correct')

@@ -81,11 +81,11 @@
         <div class="panel">
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed</p>
-            <p class="graph-stat__number">{{ userProfile.total_words_reviewed_ever }}</p>
+            <p class="graph-stat__number">{{ userProfile.total_reviews_ever }}</p>
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed correct</p>
-            <p class="graph-stat__number">86<sup>%</sup></p>
+            <p class="graph-stat__number">{{ userProfile.percent_correct }}<sup>%</sup></p>
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed</p>
@@ -103,47 +103,10 @@
   <div class="stuff">
     <div class="container">
       <div v-if="initialFetchComplete" class="panel stuff-head">
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">ゼロ</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
- 
         <div v-for="n in 10" class="stuff-head-item">
           <p class="stuff-head-item__title">{{ wordLevelNames[n-1] }}</p>
           <p class="stuff-head-item__number">{{ reviewData.tier_counts[n-1] }}</p>
         </div>
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">二</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">三</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">四</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">五</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">六</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">七</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">八</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
-        <!--<div class="stuff-head-item">-->
-          <!--<p class="stuff-head-item__title">パス</p>-->
-          <!--<p class="stuff-head-item__number">2134</p>-->
-        <!--</div>-->
       </div>
       <div class="level" v-for="level in reviewDeckLevels">
         <div class="row">

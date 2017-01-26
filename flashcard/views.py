@@ -67,12 +67,11 @@ def update_review_word(request):
     profile = request.user.userprofile
     # timezone_adjustment = int(request.GET['timezone_offset'])
     known_word_id = data.get('known_word_id') 
-    increase_level = int(data.get('increase_level'))
-    #TODO this probably shouldn't accept knownID, it will probably find word based off of Word assocation
+    answer_result = int(data.get('increase_level'))
     selected_word = KnownWords.objects.get(id = known_word_id, user_profile = profile)
-    selected_word.update_tier_and_review_time(increase_level)
+    selected_word.update_tier_and_review_time(answer_result)
+    profile.update_total_reviews_result(answer_result)
     selected_word.save()
-    # profile.update_words_practiced_today(timezone_adjustment)
-    # profile.save()
-    data = 1
-    return Response(data)
+    #TODO profile.update_words_practiced_today(timezone_adjustment)
+    profile.save()
+    return Response(status=status.HTTP_200_OK)
