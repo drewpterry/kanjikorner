@@ -102,48 +102,48 @@
  
   <div class="stuff">
     <div class="container">
-      <div class="panel stuff-head">
+      <div v-if="initialFetchComplete" class="panel stuff-head">
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">ゼロ</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
  
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">ゼロ</p>
-          <p class="stuff-head-item__number">2134</p>
+        <div v-for="n in 10" class="stuff-head-item">
+          <p class="stuff-head-item__title">{{ wordLevelNames[n-1] }}</p>
+          <p class="stuff-head-item__number">{{ reviewData.tier_counts[n-1] }}</p>
         </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">一</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">二</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">三</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">四</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">五</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">六</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">七</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">八</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
-        <div class="stuff-head-item">
-          <p class="stuff-head-item__title">パス</p>
-          <p class="stuff-head-item__number">2134</p>
-        </div>
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">二</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">三</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">四</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">五</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">六</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">七</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">八</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
+        <!--<div class="stuff-head-item">-->
+          <!--<p class="stuff-head-item__title">パス</p>-->
+          <!--<p class="stuff-head-item__number">2134</p>-->
+        <!--</div>-->
       </div>
       <div class="level" v-for="level in reviewDeckLevels">
         <div class="row">
@@ -233,6 +233,7 @@ export default {
       reviewDeckLevels: 0,
       userProfile: [],
       reviewData: [],
+      wordLevelNames: ['ゼロ', '一', '二', '三', '四', '五', '六', '七', '八', 'パス'],
       errors: null
     }
   },
@@ -288,7 +289,6 @@ export default {
         this.reviewDeck = response.data
         this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].sets_fk.level
         console.log(this.reviewDeck.length)
-        this.initialFetchComplete = true
         var self = this
         setTimeout(function () {
           self.setSlick()
@@ -315,6 +315,7 @@ export default {
       .then(response => {
         this.errors = null
         this.reviewData = response.data
+        this.initialFetchComplete = true
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'

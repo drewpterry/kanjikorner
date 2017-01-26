@@ -26,8 +26,7 @@ def get_review_deck(request, level, sub_level):
     data = serializer.data
     return Response(data)
 
-# @api_view(['POST'])
-@api_view(['GET'])
+@api_view(['POST'])
 def review_deck_complete(request):
     data = json.loads(request.body)
     profile = request.user.userprofile

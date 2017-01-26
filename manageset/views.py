@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownKanji, KnownWords, UserSets
 from django.db.models import Count, Min, Sum, Avg
 from django.contrib.auth.models import User
-from django.core import serializers
 from datetime import datetime, timedelta, date
 from django.utils.timezone import utc
 import time
@@ -17,8 +16,11 @@ from django.views.generic import View
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 import re
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse
 from api.serializers import * 
+from django.core import serializers as serialss
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
@@ -66,6 +68,18 @@ def get_review_data(request):
     userprofile = request.user.userprofile
     update_word_queue(request.user)
     known_words = KnownWords.objects.filter(user_profile = userprofile)
+    tier_counts = known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+
+    count_dict = {}
+    for each in tier_counts:
+        count_dict[each['tier_level']] = each['count']
+    #if not in above count_dict then set to 0
+    for each in range(10):
+        try:
+            count_dict[each]
+        except KeyError:
+            count_dict[each] = 0
+
     reviews_due_count = known_words.filter(time_until_review__lte = 0).count()
     reviews_24_hours = (known_words.filter(
         user_profile = userprofile,
@@ -74,15 +88,14 @@ def get_review_data(request):
         .values('time_until_review')
         .order_by('time_until_review')
         )
-    next_review_time = reviews_24_hours.first()['time_until_review']
+    next_review_time = reviews_24_hours.first()
     reviews_24_hours_count = reviews_24_hours.count() + reviews_due_count 
-    print next_review_time 
     if reviews_due_count == 0 and next_review_time:
-        next_review = str(timedelta(seconds = next_review_time)).split('.')[0]
+        next_review = str(timedelta(seconds = next_review_time['time_until_review'])).split('.')[0]
     else:
         next_review = reviews_due_count 
     
-    return JsonResponse({'next_review':next_review, 'next_day':reviews_24_hours_count})
+    return JsonResponse({'next_review':next_review, 'next_day':reviews_24_hours_count, 'tier_counts':count_dict })
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required 
