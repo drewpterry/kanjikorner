@@ -30,6 +30,10 @@ export default {
     window.eventHub.$on('increment', this.incrementCount)
     window.eventHub.$on('reset', this.reset)
   },
+  beforeDestroy () {
+    window.eventHub.$off('increment', this.incrementCount)
+    window.eventHub.$off('delete-todo', this.reset)
+  },
   methods: {
     incrementCount: function () {
       this.numerator++

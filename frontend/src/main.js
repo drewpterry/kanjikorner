@@ -13,7 +13,6 @@ router.beforeEach((to, from, next) => {
     if (auth.user.authenticated) {
       next()
     } else {
-      console.log('not logged in ')
       next({
         path: '/',
         query: { redirect: to.fullPath }

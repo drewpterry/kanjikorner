@@ -106,6 +106,10 @@ export default {
     window.eventHub.$on('completeCard', this.completeCard)
     window.eventHub.$on('deckComplete', this.deckComplete)
   },
+  beforeDestroy () {
+    window.eventHub.$off('completeCard', this.completeCard)
+    window.eventHub.$off('deckComplete', this.deckComplete)
+  },
   methods: {
     getReviewDeck () {
       var level = this.$route.params.lvl
