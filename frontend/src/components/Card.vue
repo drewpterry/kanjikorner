@@ -102,22 +102,23 @@ export default {
       document.getElementById('card').classList.toggle('flip')
     },
     nextCard: function (correct) {
+      console.log(correct)
       this.leaveClass = correct ? 'animated bounceOutRight' : 'animated bounceOutLeft'
       this.$nextTick(function () {
         this.show = false
       })
       this.currentIndex = this.currentIndex + 1
-      console.log(this.currentIndex)
-      console.log(this.words[0].words.length)
       if (this.words[0].words.length !== this.currentIndex) {
-        console.log('here')
+        var self = this
         this.setCurrentWord()
-        this.front = this.currentWord.real_word
-        this.back = this.currentWord.hiragana
-        this.$nextTick(function () {
-          this.setMeanings()
-        })
-        setTimeout(this.showNewCard, 400)
+        setTimeout(function () {
+          self.front = self.currentWord.real_word
+          self.back = self.currentWord.hiragana
+          self.$nextTick(function () {
+            self.setMeanings()
+          })
+          self.showNewCard()
+        }, 400)
       } else {
         console.log('complete')
         window.eventHub.$emit('deckComplete')
@@ -138,7 +139,7 @@ export default {
         } else {
           window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           // consider making nextCard time as being an argument
-          self.nextCard(true)
+          self.nextCard(this.bothAnswerCorrect)
           console.log('correct and meanings')
         }
         setTimeout(function () {
@@ -158,7 +159,7 @@ export default {
         } else {
           window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           setTimeout(function () {
-            self.nextCard(true)
+            self.nextCard(this.bothAnswerCorrect)
           }, 2500)
           console.log('wrong and meaning')
         }
@@ -182,8 +183,11 @@ export default {
     setAnswerType: function () {
       this.answer_type = this.answer_type === 'reading' ? 'meaning' : 'reading'
       this.setIME()
+      var self = this
       if (this.answer_type === 'meaning') {
-        this.back = this.setDefinitionFormat()
+        setTimeout(function () {
+          self.back = self.setDefinitionFormat()
+        }, 400)
       }
     },
     checkAnswer: function () {
