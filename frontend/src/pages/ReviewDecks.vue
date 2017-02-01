@@ -32,24 +32,24 @@
             <p class="gray-title">Reading:</p>
           </div>
           <div class="col-md-9">
-            <p class="simple-text">Mauris non tempor quam</p>
+            <p class="simple-text">{{ currentWord.hiragana }}</p>
           </div>
         </div>
         <div class="row lesson__row">
           <div class="col-md-3">
             <p class="gray-title">POS:</p>
           </div>
-          <div class="col-md-9">
-            <p class="simple-text">Noun, no-adjective</p>
+          <div v-for="pos in currentWord.pos" class="col-md-2">
+            <p class="simple-text">{{ pos.pos }}, </p>
           </div>
         </div>
         <div class="row lesson__row">
           <div class="col-md-3">
             <p class="gray-title">Kanji:</p>
           </div>
-          <div class="col-md-9">
+          <div v-for="kanji in currentWord.kanji" class="col-md-3">
             <div class="panel text-center">
-              大
+              {{ kanji }} 
               <p class="gray-title">big</p>
             </div>
           </div>
@@ -91,6 +91,8 @@ export default {
       msg: 'The route works',
       reviewDeck: [],
       reviewDeckOriginal: [],
+      currentCardIndex: 0,
+      currentWord: '',
       secondReview: false,
       showModal: false,
       errors: null
@@ -121,6 +123,7 @@ export default {
         this.reviewDeck = response.data
         this.reviewDeckOriginal = response.data
         this.deckId = response.data[0].id
+        this.setCurrentWord()
         this.initialFetchComplete = true
  /* eslint-disable */
       }, error => {
@@ -129,6 +132,8 @@ export default {
       })
     },
     completeCard: function (array_index, bothCorrect) {
+      this.currentCardIndex++
+      this.setCurrentWord()
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
@@ -151,9 +156,16 @@ export default {
         this.postStackComplete()
       } else {
         window.eventHub.$emit('reset')
+        this.currentCardIndex = 0
+        this.setCurrentWord()
         this.reviewDeck = this.reviewDeckOriginal
         this.secondReview = true
       }
+    },
+    setCurrentWord: function () {
+      this.currentWord = this.reviewDeck[0].words[this.currentCardIndex]
+      console.log(this.currentWord)
+      console.log(this.currentCardIndex)
     }
   }
 }
