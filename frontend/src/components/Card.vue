@@ -16,16 +16,8 @@
         </div>
       </transition>
     </div>
-    <div class="panel panel-answer">
+    <div class="panel">
       <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" placeholder="よみ" focus>
-      <div class="row">
-        <div class="col-md-3">
-          <p class="gray-btn">I don't know</p>
-        </div>
-        <div class="col-md-3 col-md-offset-6 text-right">
-          <div class="btn btn-red">Next</div>
-        </div>
-      </div>
     </div>
 </div>
 </template>
@@ -271,6 +263,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  #answer-input {
+   text-align: center; 
+   font-size: 1.5em;
+  }
+
   .flip-container {
     margin-bottom: 5px;
     perspective: 1000px;
