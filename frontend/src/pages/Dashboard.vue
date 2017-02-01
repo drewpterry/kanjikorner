@@ -24,7 +24,8 @@
       </div>
       <div class="col-md-2 col-md-offset-6">
         <router-link to="/review/srs">
-          <button class="btn btn-red">Reviews: 11224</button>
+          <button v-if="isNaN(reviewData.next_review)" disabled class="btn btn-red">Reviews: 0 </button>
+          <button v-else class="btn btn-red">Reviews: {{ reviewData.next_review }} </button>
         </router-link>
       </div>
       <div class="col-md-2">
