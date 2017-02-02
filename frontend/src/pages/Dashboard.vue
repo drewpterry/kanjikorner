@@ -76,7 +76,7 @@
         </div>
       </div>
       <div class="col-md-8 graph__wrap">
-        <img src="../assets/img/content/graph.png" class="img-responsive" alt="">
+        <lineChart v-bind:height=250></lineChart>
       </div>
       <div class="col-md-2 graph__side">
         <div class="panel">
@@ -187,6 +187,7 @@
 
 <script>
 import auth from '../auth'
+import lineChart from '../components/charts/lineGraph'
 export default {
   name: 'DASBOARD',
   data () {
@@ -200,6 +201,9 @@ export default {
       wordLevelNames: ['ゼロ', '一', '二', '三', '四', '五', '六', '七', '八', 'パス'],
       errors: null
     }
+  },
+  components: {
+    'lineChart': lineChart
   },
   created () {
     this.getReviewDeck()
