@@ -117,6 +117,8 @@
           <p class="stuff-head-item__number">{{ reviewData.tier_counts[n-1] }}</p>
         </div>
       </div>
+
+
       <div class="level" v-for="level in reviewDeckLevels">
         <div class="row">
           <div class="col-md-2">
@@ -267,7 +269,6 @@ export default {
         this.errors = null
         this.reviewDeck = response.data
         this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].sets_fk.level
-        console.log(this.reviewDeck.length)
         var self = this
         setTimeout(function () {
           self.setSlick()
@@ -315,14 +316,15 @@ export default {
           datasets: [
             {
               label: 'Goal',
-              backgroundColor: 'red',
-              borderColor: 'red',
+              backgroundColor: '#e4502d',
+              borderColor: '#e4502d',
               fill: false,
               data: data.ideal_data_points
             },
             {
               label: 'Words studied',
-              backgroundColor: '#81e2fd',
+              backgroundColor: '#1ed39b',
+              borderColor: '#19be8b',
               data: data.data_points
             }
           ]
