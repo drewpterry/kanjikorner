@@ -3,7 +3,7 @@ from manageset import views
 
 urlpatterns = [
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
-    url(r'^$', views.view_dashboard),    
+    url(r'^$', views.index),    
     url(r'^all-decks/get$', views.get_master_review_decks),    
     url(r'^user-decks/get$', views.get_user_sets),    
     url(r'^profile-data/get$', views.get_profile_data),    

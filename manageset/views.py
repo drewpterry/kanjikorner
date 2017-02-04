@@ -37,8 +37,7 @@ def verify_profiles(request,full_name):
             
 not_auth = HttpResponse("you are not authenticated")
 
-@login_required
-def view_dashboard(request):
+def index(request):
     return render(request,'dist/index.html')
     
 @api_view(['GET'])
