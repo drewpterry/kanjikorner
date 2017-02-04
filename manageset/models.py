@@ -149,8 +149,10 @@ class AnalyticsLog(models.Model):
     words_studied_count = models.IntegerField(default = 0)
     words_completed_count = models.IntegerField(default = 0)
     words_reviewed_count = models.IntegerField(default = 0)
+    words_reviewed_today_count = models.IntegerField(default = 0)
     kanji_studied_count = models.IntegerField(default = 0)
     kanji_completed_count = models.IntegerField(default = 0)
+    kanji_reviewed_today_count = models.IntegerField(default = 0)
     last_modified = models.DateField()
 
 # create corresponding user profile when user is created
