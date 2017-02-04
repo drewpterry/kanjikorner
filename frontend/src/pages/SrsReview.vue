@@ -48,6 +48,9 @@ export default {
     this.getReviewDeck()
     window.eventHub.$on('completeCard', this.completeCard)
   },
+  beforeDestroy () {
+    window.eventHub.$off('completeCard', this.completeCard)
+  },
   methods: {
     getReviewDeck: function () {
       var url = '/api/review/srs/get'
