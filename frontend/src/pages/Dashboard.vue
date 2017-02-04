@@ -7,7 +7,6 @@
           <li><a href="">About</a></li>
           <li><a href="">FAQ</a></li>
           <li><a href="">Guide</a></li>
-          <li><span v-on:click="logout">Logout</span></li>
           <li class="social"><a href=""><i class="icon icon-tw"></i></a></li>
           <li class="social"><a href=""><i class="icon icon-fb"></i></a></li>
         </ul>
@@ -33,9 +32,14 @@
           <div class="user-dropdown__img">
             <img src="../assets/img/content/user@2x.png" class="img-responsive" alt="">
           </div>
-          <span class="user-dropdown__name">
-            Andrew
-          </span>
+          <div class="dropdown">
+            <span class="user-dropdown__name dropbtn">
+              Andrew
+            </span>
+            <div class="dropdown-content">
+              <span v-on:click="logout">Logout</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -345,4 +349,44 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.dropbtn {
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content span {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content span:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+}
 </style>
