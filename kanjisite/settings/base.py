@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'homepage',
     'manageset',
     'flashcard',
     'admin_data_collection',
