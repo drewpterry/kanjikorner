@@ -68,7 +68,7 @@ def get_chart_data(request):
     update_analytics_log(request.user)
     analytics_logs = AnalyticsLog.objects.filter(user_profile = userprofile)
     log_count = analytics_logs.count()
-    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True))
+    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True).order_by('last_modified'))
     words_reviewed_counts.insert(0, 0)
     master_words_count = Words.objects.filter(master_order__gt=0).count()
 
