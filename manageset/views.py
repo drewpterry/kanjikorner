@@ -68,14 +68,13 @@ def get_chart_data(request):
     update_analytics_log(request.user)
     analytics_logs = AnalyticsLog.objects.filter(user_profile = userprofile)
     log_count = analytics_logs.count()
-    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True))
+    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True).order_by('last_modified'))
     words_reviewed_counts.insert(0, 0)
     master_words_count = Words.objects.filter(master_order__gt=0).count()
 
     base = date.today()
-    date_list = [base - timedelta(days=x) for x in range(log_count + 1, 0, -1)]
+    date_list = [base - timedelta(days=x) for x in range(log_count, -1, -1)]
     ideal_data_points = [ 15 * x for x in range(0, log_count + 1)]
-
     return Response({'x_axis_data':date_list,
                     'data_points':words_reviewed_counts,
                     'ideal_data_points':ideal_data_points})
@@ -86,15 +85,18 @@ def get_review_data(request):
     userprofile = request.user.userprofile
     known_words = KnownWords.objects.filter(user_profile = userprofile)
     tier_counts = known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
+    master_word_count = Words.objects.filter(master_order__gt=0).count()
     count_dict = {}
+    studied_word_sum = 0
     for each in tier_counts:
         count_dict[each['tier_level']] = each['count']
     #if not in above count_dict then set to 0
     for each in range(10):
         try:
-            count_dict[each]
+            studied_word_sum += count_dict[each]
         except KeyError:
             count_dict[each] = 0
+    count_dict[0] = master_word_count - studied_word_sum
 
     reviews_due_count = known_words.filter(time_until_review__lte = 0).count()
     reviews_24_hours = (known_words.filter(
