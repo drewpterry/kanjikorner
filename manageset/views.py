@@ -83,6 +83,7 @@ def get_chart_data(request):
 @api_view(['GET'])
 def get_review_data(request):
     userprofile = request.user.userprofile
+    update_word_queue(request.user)
     known_words = KnownWords.objects.filter(user_profile = userprofile)
     tier_counts = known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
     master_word_count = Words.objects.filter(master_order__gt=0).count()
