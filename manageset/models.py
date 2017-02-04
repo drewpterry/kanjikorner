@@ -144,6 +144,15 @@ class UserSets(models.Model):
     completion_status  = models.BooleanField(default = False)
     creation_time = models.DateTimeField("creation_time", auto_now_add=True)
         
+class AnalyticsLog(models.Model):
+    user_profile = models.ForeignKey(UserProfile)
+    words_studied_count = models.IntegerField(default = 0)
+    words_completed_count = models.IntegerField(default = 0)
+    words_reviewed_count = models.IntegerField(default = 0)
+    kanji_studied_count = models.IntegerField(default = 0)
+    kanji_completed_count = models.IntegerField(default = 0)
+    last_modified = models.DateField()
+
 # create corresponding user profile when user is created
 from registration.signals import user_registered
 def createUserProfile(sender, user, request, **kwargs):

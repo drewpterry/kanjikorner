@@ -62,3 +62,9 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserProfile 
         fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day', 'total_reviews_ever', 'percent_correct')
+
+class AnalyticsLog(serializers.ModelSerializer):
+    class Meta:
+        model = AnalyticsLog 
+        fields = ('words_studied_count', 'words_completed_count', 'words_reviewed_count', 'kanji_studied_count', 'kanji_completed_count', 'last_modified')
+        

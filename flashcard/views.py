@@ -63,6 +63,7 @@ def get_srs_review(request):
 
 @api_view(['POST'])
 def update_review_word(request):
+    update_word_queue(request.user)
     data = json.loads(request.body)
     profile = request.user.userprofile
     # timezone_adjustment = int(request.GET['timezone_offset'])

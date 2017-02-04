@@ -27,7 +27,7 @@ from rest_framework.decorators import renderer_classes
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
-from utils import update_word_queue 
+from utils import * 
 
 
 def verify_profiles(request,full_name):
@@ -64,12 +64,29 @@ def get_profile_data(request):
     return Response(data)
 
 @api_view(['GET'])
+def get_chart_data(request):
+    userprofile = request.user.userprofile
+    update_analytics_log(request.user)
+    analytics_logs = AnalyticsLog.objects.filter(user_profile = userprofile)
+    log_count = analytics_logs.count()
+    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True))
+    words_reviewed_counts.insert(0, 0)
+    master_words_count = Words.objects.filter(master_order__gt=0).count()
+
+    base = date.today()
+    date_list = [base - timedelta(days=x) for x in range(log_count + 1, 0, -1)]
+    ideal_data_points = [ 15 * x for x in range(0, log_count + 1)]
+
+    return Response({'x_axis_data':date_list,
+                    'data_points':words_reviewed_counts,
+                    'ideal_data_points':ideal_data_points})
+
+# TODO look into refactoring and putting all this into a model
+@api_view(['GET'])
 def get_review_data(request):
     userprofile = request.user.userprofile
-    update_word_queue(request.user)
     known_words = KnownWords.objects.filter(user_profile = userprofile)
     tier_counts = known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
-
     count_dict = {}
     for each in tier_counts:
         count_dict[each['tier_level']] = each['count']

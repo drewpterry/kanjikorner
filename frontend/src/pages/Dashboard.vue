@@ -76,7 +76,11 @@
         </div>
       </div>
       <div class="col-md-8 graph__wrap">
-        <lineChart v-bind:height=250></lineChart>
+        <lineChart 
+        v-if=chartFetchComplete
+        v-bind:data=chartData
+        v-bind:height=250
+        ></lineChart>
       </div>
       <div class="col-md-2 graph__side">
         <div class="panel">
@@ -199,6 +203,8 @@ export default {
       userProfile: [],
       reviewData: [],
       wordLevelNames: ['ゼロ', '一', '二', '三', '四', '五', '六', '七', '八', 'パス'],
+      chartData: '',
+      chartFetchComplete: false,
       errors: null
     }
   },
@@ -209,6 +215,7 @@ export default {
     this.getReviewDeck()
     this.getUserProfile()
     this.getReviewData()
+    this.getChartData()
     // hack - this inserts jquery and slick carousel into this page for carousel animation - ideally this should be a carousel component
     var elTow = document.createElement('script')
     elTow.setAttribute('type', 'text/javascript')
@@ -284,6 +291,39 @@ export default {
         this.errors = null
         this.reviewData = response.data
         this.initialFetchComplete = true
+/* eslint-disable */
+      }, error => {
+        this.errors = 'Could not fetch deck from server!'
+      })
+    },
+    logout: function () {
+      auth.logout()
+    },
+    getChartData() {
+      var url = '/api/chart-data/get'
+      this.$http.get(url, {headers: auth.getAuthHeader()})
+      .then(response => {
+        this.errors = null
+        var data = response.data
+        this.chartData =
+        {
+          labels: data.x_axis_data,
+          datasets: [
+            {
+              label: 'Goal',
+              backgroundColor: 'red',
+              borderColor: 'red',
+              fill: false,
+              data: data.ideal_data_points
+            },
+            {
+              label: 'Words studied',
+              backgroundColor: '#81e2fd',
+              data: data.data_points
+            }
+          ]
+        }
+        this.chartFetchComplete = true
 /* eslint-disable */
       }, error => {
         this.errors = 'Could not fetch deck from server!'
