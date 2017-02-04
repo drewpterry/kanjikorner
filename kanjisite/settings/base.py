@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-print os.path.abspath(__file__)
-print os.path.dirname(__file__)
-print BASE_DIR
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -54,17 +51,19 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'homepage',
     'manageset',
     'flashcard',
     'admin_data_collection',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'import_export',
     'el_pagination',
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'PAGE_SIZE': 10,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -88,7 +87,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
@@ -104,6 +103,9 @@ DATABASES = {
         'USER': os.environ['USER_NAME'],
         'PASSWORD': os.environ['DATABASE_PW'],
         'PORT':'5432',
+        'TEST': {
+                    'NAME': 'KanjiTestDB',
+                },
     }
 }
 
@@ -124,8 +126,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/webapps/kanjisite/kanjikorner/static/'
+STATIC_URL = '/statics/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'statics'),
+)
+STATIC_ROOT = '/webapps/kanjisite/kanjikorner/statics/'
 
 
 

@@ -6,10 +6,6 @@ from django.contrib.auth.models import User
 import random
 from datetime import datetime, timedelta, time
 from django.utils import timezone
-# timezone.make_aware(words_practied_today_time_marker, timezone.get_current_timezone())
-
-
-# Create your models here.
 
 class Kanji(models.Model):
     kanji_name = models.CharField(max_length = 50)
@@ -31,7 +27,6 @@ class Kanji(models.Model):
     def __unicode__(self):
         return self.kanji_name
 
-
 class Words(models.Model):
     real_word = models.CharField(max_length = 300)
     meaning = models.CharField(max_length = 500)
@@ -40,7 +35,6 @@ class Words(models.Model):
     frequency_two = models.IntegerField(db_index = True, null = True, blank = True)
     combined_frequency = models.IntegerField(db_index = True, null = True, blank = True)
     frequency_thousand = models.IntegerField(db_index = True, null = True, blank = True)
-    # jlpt_level = models.IntegerField(db_index = True, null = True, blank = True)
     part_of_speech = models.CharField(max_length = 200, null = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)
@@ -64,7 +58,6 @@ class Words(models.Model):
             frequency_bonus = frequency_bonus * 5 + 230
         self.combined_frequency = frequency_bonus + frequency_again
         return self.combined_frequency
-            
     
     def __unicode__(self):
         return self.real_word
@@ -75,7 +68,6 @@ class WordMeanings(models.Model):
 
     def __unicode__(self):
         return self.meaning
-    
 
 class Sets(models.Model):
     name = models.CharField(max_length = 50)
@@ -90,18 +82,19 @@ class Sets(models.Model):
 
     def __unicode__(self):
         return self.name
-        
+
 class WordPos(models.Model):
     word = models.ForeignKey(Words, related_name="thepos")
     pos = models.CharField(max_length = 500)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    user_sets = models.ManyToManyField(Sets, blank = True)
     number_words_practiced_today = models.IntegerField(default = 0)
-    #SPELLING ERROR!!!! YAAAY
-    words_practied_today_time_marker = models.DateTimeField(auto_now_add = True)
+    words_practiced_today_time_marker = models.DateTimeField(auto_now_add = True)
     most_words_practiced_in_day = models.IntegerField(default = 0)
+    total_words_reviewed_ever = models.IntegerField(default=0)
+    total_correct_reviews = models.IntegerField(default=0)
+    total_incorrect_reviews  = models.IntegerField(default=0)
 
 # to do from client side esnd timezone adjustment, logic for when to make add and not add to practiced
     def update_words_practiced_today(self, timezone_adjustment):
@@ -117,58 +110,89 @@ class UserProfile(models.Model):
         self.words_practied_today_time_marker = current_datetime
         return
 
-    def check_if_new_day(self,timezone_adjustment):
+    def update_total_reviews_result(self, correct):
+        if correct:
+            self.total_correct_reviews += 1
+        else:
+            self.total_incorrect_reviews += 1
+        return
 
+    def total_reviews_ever(self):
+        total_reviews = self.total_correct_reviews + self.total_incorrect_reviews
+        return total_reviews
+
+    def percent_correct(self):
+        percent_correct = 100 * (self.total_correct_reviews / self.total_reviews_ever())
+        percent_correct = round(percent_correct, 1)
+        return percent_correct 
+
+    def check_if_new_day(self,timezone_adjustment):
         current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day
 
         if self.words_practied_today_time_marker.day != current_day:
             self.number_words_practiced_today = 0
-        
         self.words_practied_today_time_marker = current_datetime    
         return    
-        
     
     def __unicode__(self):
         return unicode(self.user)
 
+class UserSets(models.Model):
+    sets_fk = models.ForeignKey(Sets)
+    user_profile_fk = models.ForeignKey(UserProfile)
+    completion_status  = models.BooleanField(default = False)
+    creation_time = models.DateTimeField("creation_time", auto_now_add=True)
+        
+class AnalyticsLog(models.Model):
+    user_profile = models.ForeignKey(UserProfile)
+    words_studied_count = models.IntegerField(default = 0)
+    words_completed_count = models.IntegerField(default = 0)
+    words_reviewed_count = models.IntegerField(default = 0)
+    kanji_studied_count = models.IntegerField(default = 0)
+    kanji_completed_count = models.IntegerField(default = 0)
+    last_modified = models.DateField()
 
+# create corresponding user profile when user is created
 from registration.signals import user_registered
 def createUserProfile(sender, user, request, **kwargs):
-    UserProfile.objects.get_or_create(user=user)
-
+    user_profile = UserProfile.objects.get_or_create(user=user)
+    decks = Sets.objects.exclude(master_order__isnull=True)
+    new_decks = []
+    for deck in decks:
+        new_user_deck = UserSets(sets_fk=deck, user_profile_fk=user_profile[0])
+        new_decks.append(new_user_deck)
+    UserSets.objects.bulk_create(new_decks)
+        
 user_registered.connect(createUserProfile)
+    
 
 class KnownKanji(models.Model):
-    #should be a foreign key
-    kanji = models.ManyToManyField(Kanji)
     kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
     user_profile = models.ManyToManyField(UserProfile)
-
-    #im not sure what this is for....
-    number_of_chosen_words = models.IntegerField(null = True)
     
     def __unicode__(self):
         return unicode(self.kanji)
-        
-    def display_kanji(self):
-        return unicode(self.kanji)   
-
 
 class KnownWords(models.Model):
     words = models.ForeignKey(Words)
     user_profile = models.ForeignKey(UserProfile)
-    #last_checked -- need to add real date_added field and rename this one
     date_added = models.DateTimeField(auto_now_add = True)
     tier_level = models.IntegerField()
     last_practiced = models.DateTimeField(blank = True)
-    # remaining_time_review = models.FloatField(null = True)
     time_until_review = models.FloatField(null = True)
     times_answered_correct = models.IntegerField(default = 0)
     times_answered_wrong = models.IntegerField(default = 0)
     correct_percentage = models.FloatField(null = True)
+
+    def set_initial_level(self):
+        self.tier_level = 1
+        random_multiplier = random.uniform(.95, 1.05)
+        self.last_practiced = datetime.now()
+        self.time_until_review = timedelta(hours = 3.5).total_seconds() * random_multiplier
+        return
 
     def update_tier_and_review_time(self, correct):
         options = {     0 : None,
@@ -212,10 +236,9 @@ class KnownWords(models.Model):
     def __unicode__(self):
         return self.words.real_word
 
-
 class SentenceOwner(models.Model):
     name = models.CharField(max_length = 50, default=' ', null=True)
-    
+
     def __unicode__(self):
         return self.name
 
@@ -231,4 +254,3 @@ class Sentence(models.Model):
     comment_exists = models.BooleanField(default = False)
     audio = models.URLField(max_length=200, null=True)
     in_production = models.BooleanField(default = False)
-
