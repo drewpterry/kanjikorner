@@ -118,54 +118,26 @@
         </div>
       </div>
 
-
-      <div class="level" v-for="level in reviewDeckLevels">
+      <div class="level" v-for="(chunk, index) in reviewDeck">
         <div class="row">
           <div class="col-md-2">
-            <p class="level__title"><span>{{ level }}</span> Level</p>
+            <p class="level__title"><span>{{ index + 1 }}</span> Level</p>
           </div>
           <div class="col-md-10">
-            <p class="level__lessons-number">20 lessons</p>
+            <p class="level__lessons-number">{{ chunk.completed_count }}/20 lessons</p>
             <div class="level__progress">
-              <div class="level__progress-inner" style="width: 90%"></div>
+              <div class="level__progress-inner" v-bind:style="{ width: percent(chunk.completed_count, 20) + '%' }"></div>
             </div>
           </div>
         </div>
         <div class="level__wrap">
           <div class="level-slider js-level-slider">
-            <div v-for="number in 20">
+            <div v-for="deck in chunk.chunk_list">
               <div class="level-slider__slide">
-                <router-link :to="{ name: 'deck', params: { lvl:level, sublevel:number } }">
-                  <div class="panel lesson-panel checked">
-                    <p class="lesson-panel__number">{{ number }} lesson</p>
-                    <p class="lesson-panel__words">20 words</p>
-                  </div>
-                </router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="level" v-for="level in reviewDeckLevels">
-        <div class="row">
-          <div class="col-md-2">
-            <p class="level__title"><span>{{ level }}</span> Level</p>
-          </div>
-          <div class="col-md-10">
-            <p class="level__lessons-number">20 lessons</p>
-            <div class="level__progress">
-              <div class="level__progress-inner" style="width: 90%"></div>
-            </div>
-          </div>
-        </div>
-        <div class="level__wrap">
-          <div class="level-slider js-level-slider">
-            <div v-for="number in 20">
-              <div class="level-slider__slide">
-                <router-link :to="{ name: 'deck', params: { lvl:level, sublevel:number } }">
-                  <div class="panel lesson-panel checked">
-                    <p class="lesson-panel__number">{{ number }} lesson</p>
-                    <p class="lesson-panel__words">20 words</p>
+                <router-link :to="{ name: 'deck', params: { lvl:deck.sets_fk, sublevel:deck.sets_fk.sub_level} }">
+                  <div class="panel lesson-panel" v-bind:class="{checked: deck.completion_status}">
+                    <p class="lesson-panel__number">{{ deck.sets_fk.sub_level }} lesson</p>
+                    <p class="lesson-panel__words">5 words</p>
                   </div>
                 </router-link>
               </div>
@@ -176,22 +148,22 @@
     </div>
   </div>
 
- <div class="footer">
-   <div class="container">
-     <div class="col-md-7">
-       <p class="copyright">Copyright 2016. Kanjisama.com. All roghts reserved.</p>
-     </div>
-     <div class="col-md-5">
-       <ul class="main-nav">
-         <li><a href="">About</a></li>
-         <li><a href="">FAQ</a></li>
-         <li><a href="">Guide</a></li>
-         <li class="social"><a href=""><i class="icon icon-tw"></i></a></li>
-         <li class="social"><a href=""><i class="icon icon-fb"></i></a></li>
-       </ul>
-     </div>
-   </div>
- </div>
+  <div class="footer">
+    <div class="container">
+      <div class="col-md-7">
+        <p class="copyright">Copyright 2016. Kanjisama.com. All rights reserved.</p>
+      </div>
+      <div class="col-md-5">
+        <ul class="main-nav">
+          <li><a href="">About</a></li>
+          <li><a href="">FAQ</a></li>
+          <li><a href="">Guide</a></li>
+          <li class="social"><a href=""><i class="icon icon-tw"></i></a></li>
+          <li class="social"><a href=""><i class="icon icon-fb"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -205,7 +177,6 @@ export default {
       msg: 'The route works',
       initialFetchComplete: false,
       reviewDeck: [],
-      reviewDeckLevels: 0,
       userProfile: [],
       reviewData: [],
       wordLevelNames: ['ゼロ', '一', '二', '三', '四', '五', '六', '七', '八', 'パス'],
@@ -222,7 +193,7 @@ export default {
     this.getUserProfile()
     this.getReviewData()
     this.getChartData()
-    // hack - this inserts jquery and slick carousel into this page for carousel animation - ideally this should be a carousel component
+    // TODO hack - this inserts jquery and slick carousel into this page for carousel animation - will switch to pure javascript alternative
     var elTow = document.createElement('script')
     elTow.setAttribute('type', 'text/javascript')
     elTow.setAttribute('src', 'https://code.jquery.com/jquery-2.2.4.min.js')
@@ -262,20 +233,19 @@ export default {
       })
     },
     getReviewDeck () {
-      // var url = '/api/all-decks/get'
       var url = '/api/user-decks/get'
       this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
         this.reviewDeck = response.data
-        this.reviewDeckLevels = this.reviewDeck[this.reviewDeck.length - 1].sets_fk.level
         var self = this
         setTimeout(function () {
           self.setSlick()
         }, 2000)
-/* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+        }
       })
     },
     getUserProfile () {
@@ -284,9 +254,10 @@ export default {
       .then(response => {
         this.errors = null
         this.userProfile  = response.data
-/* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+        }
       })
     },
     getReviewData () {
@@ -296,9 +267,10 @@ export default {
         this.errors = null
         this.reviewData = response.data
         this.initialFetchComplete = true
-/* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+        }
       })
     },
     logout: function () {
@@ -330,10 +302,14 @@ export default {
           ]
         }
         this.chartFetchComplete = true
-/* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+        }
       })
+    },
+    percent: function (numerator, denominator) {
+      return numerator * 100 / denominator
     },
     logout: function () {
       auth.logout()

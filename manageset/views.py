@@ -50,10 +50,26 @@ def get_master_review_decks(request):
 @api_view(['GET'])
 def get_user_sets(request):
     userprofile = request.user.userprofile
-    decks = UserSets.objects.filter(user_profile_fk = 49).order_by('id')
+    decks = UserSets.objects.filter(user_profile_fk = userprofile).order_by('id')
     serializer = UserSetsSerializer(decks, many=True)
     data = serializer.data
-    return Response(data)
+
+    chunked_data = [] 
+    size = 20;
+    deckArrayLength = len(data)
+    chunk = { 'chunk_list': [] }
+
+    completed_count = 0
+    for index, each in enumerate(data):
+        if each['completion_status']: completed_count += 1
+        chunk['chunk_list'].append(data[index])
+        if (index + 1) % size == 0 or index == deckArrayLength - 1:
+            chunk['completed_count'] = completed_count 
+            chunked_data.append(chunk)
+            completed_count = 0
+            chunk = { 'chunk_list': [], 'complete_count': 0 }
+
+    return Response(chunked_data)
 
 @api_view(['GET'])
 def get_profile_data(request):
