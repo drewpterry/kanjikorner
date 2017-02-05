@@ -26,12 +26,11 @@ def update_word_queue(user):
 
 def update_analytics_log(user):
     words_reviewed = user.userprofile.total_reviews_ever()
+    print date.today()
     log, created = AnalyticsLog.objects.update_or_create(user_profile = user.userprofile, last_modified = date.today(), defaults={'words_reviewed_count': words_reviewed})
     if created:
         try:
             most_recent_log = AnalyticsLog.objects.filter(user_profile = user.userprofile, last_modified__lt = date.today()).latest('last_modified')
-            # yesterday = date.today() - timedelta(days=1)
-            # if most_recent_log.last_modified != yesterday:
             x = 1
             new_day = date.today() - timedelta(days=x) 
             while most_recent_log.last_modified != new_day:

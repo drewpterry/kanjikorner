@@ -155,6 +155,11 @@ class AnalyticsLog(models.Model):
     kanji_reviewed_today_count = models.IntegerField(default = 0)
     last_modified = models.DateField()
 
+    def progress_percent(self):
+        percent = 100 * (self.words_reviewed_count / 4000)
+        percent_correct = round(percent, 1)
+        return percent 
+
 # create corresponding user profile when user is created
 from registration.signals import user_registered
 def createUserProfile(sender, user, request, **kwargs):
