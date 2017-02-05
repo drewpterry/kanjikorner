@@ -58,7 +58,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'rest_auth',
     'import_export',
-    'el_pagination',
 )
 
 REST_FRAMEWORK = {
