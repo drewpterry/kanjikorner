@@ -8,25 +8,17 @@ from datetime import datetime, timedelta, date
 from django.utils.timezone import utc
 import time
 from django.utils import timezone
-from django.template.context_processors import csrf
-from collections import deque
 from django.core.urlresolvers import reverse
-from django.views.decorators.cache import cache_control
 from django.views.generic import View
 from django.http import JsonResponse
-from django.forms.models import model_to_dict
-import re
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from django.http import JsonResponse
 from api.serializers import * 
-from django.core import serializers as serialss
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.decorators import renderer_classes 
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
-from django.contrib.auth.decorators import login_required
 from utils import * 
 
 def index(request):
