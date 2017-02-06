@@ -122,6 +122,8 @@ class UserProfile(models.Model):
         return total_reviews
 
     def percent_correct(self):
+        if self.total_reviews_ever() == 0:
+            return 0
         percent_correct = 100 * (self.total_correct_reviews / self.total_reviews_ever())
         percent_correct = round(percent_correct, 1)
         return percent_correct 
@@ -160,9 +162,12 @@ class AnalyticsLog(models.Model):
         percent_correct = round(percent, 1)
         return percent 
 
-# create corresponding user profile when user is created
-from registration.signals import user_registered
-def createUserProfile(sender, user, request, **kwargs):
+# create corresponding user profile when user is created, and create user decks
+from allauth.account.signals import email_confirmed
+from django.dispatch import receiver
+@receiver(email_confirmed)
+def createUserProfile(email_address, request, **kwargs):
+    user = User.objects.get(email=email_address.email)
     user_profile = UserProfile.objects.get_or_create(user=user)
     decks = Sets.objects.exclude(master_order__isnull=True)
     new_decks = []
@@ -171,9 +176,6 @@ def createUserProfile(sender, user, request, **kwargs):
         new_decks.append(new_user_deck)
     UserSets.objects.bulk_create(new_decks)
         
-user_registered.connect(createUserProfile)
-    
-
 class KnownKanji(models.Model):
     kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)
     date_added = models.DateTimeField(auto_now_add = True)

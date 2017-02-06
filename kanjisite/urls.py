@@ -4,8 +4,7 @@ from manageset import views as manageset_views
 from api import views as api_views
 from admin_data_collection import views as admin_data_collection_views
 from django.contrib import admin
-from registration.forms import RegistrationFormUniqueEmail
-from registration.backends.default.views import RegistrationView
+from allauth.account.views import confirm_email as allauthemailconfirmation
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -22,6 +21,9 @@ urlpatterns = [
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
 #namespace specifies exactly where url is coming from - inluded on index page
     url(r'^api/rest-auth/', include('rest_auth.urls')),
+    url(r'^api/rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^api/accounts/', include('allauth.urls')),
+    url(r'^rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$', allauthemailconfirmation, name="account_confirm_email"),
     url(r'^$', manageset_views.index, name = "home"),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -32,7 +34,5 @@ urlpatterns = [
     url(r'^profile/', include('flashcard.urls', namespace = "flashcard")),
     url(r'^api/review/', include('flashcard.urls', namespace = "review")),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^register/$',RegistrationView.as_view(form_class=RegistrationFormUniqueEmail),name='registration_register'),
     url(r'^internal/', include('admin_data_collection.urls', namespace="admin_data_collection")),
 ]
