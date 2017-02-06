@@ -8,16 +8,18 @@
       >
         <div v-if="show" class="flipper">
           <div class="front panel panel-task">
-            {{ front }} 
+            {{ back }} 
           </div>
           <div class="back panel panel-task">
-            {{ back }} 
+            {{ front }} 
           </div>
         </div>
       </transition>
     </div>
-    <div class="panel">
+    <div class="panel input-panel">
       <input v-on:keyup.enter="submitAnswer" id="answer-input" type="text" class="c-textarea" title="your answer" placeholder="よみ" focus>
+      <span v-if="answerStatus == 'correct'"  id="maru" class="answer-notifier">o</span>
+      <span v-if="answerStatus == 'incorrect'" id="batsu" class="answer-notifier">x</span>
     </div>
 </div>
 </template>
@@ -39,6 +41,7 @@ export default {
       back: '',
       answer_type: 'reading',
       bothAnswerCorrect: true,
+      answerStatus: '',
       inputIME: '',
       enterAllowed: true
     }
@@ -126,6 +129,7 @@ export default {
       }
       this.enterAllowed = false
       if (this.checkAnswer()) {
+        this.answerStatus = 'correct'
         if (this.answer_type === 'reading') {
           console.log('correct and reading')
         } else {
@@ -135,13 +139,16 @@ export default {
           console.log('correct and meanings')
         }
         setTimeout(function () {
+          self.answerStatus = ''
           self.enterAllowed = true
           self.setAnswerType()
         }, 1000)
       } else {
+        this.answerStatus = 'incorrect'
         this.bothAnswerCorrect = false
         self.flipCard()
         setTimeout(function () {
+          self.answerStatus = ''
           self.flipCard()
           self.enterAllowed = true
           self.setAnswerType()
@@ -184,11 +191,7 @@ export default {
     },
     checkAnswer: function () {
       if (this.answer_type === 'reading') {
-        if (this.inputIME.value === this.back) {
-          return true
-        } else {
-          return false
-        }
+        return this.inputIME.value === this.back
       } else {
         return this.checkDefinitions()
       }
@@ -210,7 +213,7 @@ export default {
     setDefinitionFormat: function () {
       var defString = ''
       this.currentMeanings.forEach(function (def, i) {
-        defString += def + ','
+        defString += def + ' ,'
       })
       return defString
     },
@@ -263,6 +266,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "~assets/style/_vars.scss";
   #answer-input {
    text-align: center; 
    font-size: 1.5em;
@@ -278,7 +282,7 @@ export default {
   }
 
 .flip-container, .front, .back {
-  width: 610px;
+  width: 100%;
   height: 300px;
 }
 
@@ -307,5 +311,24 @@ export default {
 /* back, initially hidden pane */
 .back {
   transform: rotateY(180deg);
+}
+
+.input-panel {
+  position:relative;
+}
+
+.answer-notifier {
+  position: absolute;
+  top: 10%;
+  right: 4%;
+  font-size: 3em;
+}
+
+#maru {
+  color: $main-green;
+}
+
+#batsu {
+  color: $tomato;
 }
 </style>

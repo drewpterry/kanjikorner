@@ -127,8 +127,10 @@ export default {
         this.initialFetchComplete = true
  /* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
-        this.initialFetchComplete = true
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+          this.initialFetchComplete = true
+        }
       })
     },
     completeCard: function (array_index, bothCorrect) {
@@ -164,8 +166,6 @@ export default {
     },
     setCurrentWord: function () {
       this.currentWord = this.reviewDeck[0].words[this.currentCardIndex]
-      console.log(this.currentWord)
-      console.log(this.currentCardIndex)
     }
   }
 }

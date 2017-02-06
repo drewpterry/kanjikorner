@@ -5,7 +5,7 @@
      ログイン 
     </span>
     <form slot="body">
-      <input v-model="email" type="text" placeholder="email" class="c-textarea" id="answer-input"> 
+      <input v-model="email" type="text" placeholder="email" class="c-textarea"> 
       <input v-model="password" type="password" placeholder="password" class="c-textarea"> 
       {{ error }}
     </form>

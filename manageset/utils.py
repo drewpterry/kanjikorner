@@ -30,8 +30,6 @@ def update_analytics_log(user):
     if created:
         try:
             most_recent_log = AnalyticsLog.objects.filter(user_profile = user.userprofile, last_modified__lt = date.today()).latest('last_modified')
-            # yesterday = date.today() - timedelta(days=1)
-            # if most_recent_log.last_modified != yesterday:
             x = 1
             new_day = date.today() - timedelta(days=x) 
             while most_recent_log.last_modified != new_day:

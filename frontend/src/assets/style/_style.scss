@@ -280,6 +280,16 @@
     background-position: bottom;
     background-size: contain;
     background-repeat: no-repeat;
+    
+    &__srs-review {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+    
+    }
 
     &__progress {
       font-size: 21px;
