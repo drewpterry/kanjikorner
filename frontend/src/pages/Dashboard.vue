@@ -134,7 +134,7 @@
           <div class="level-slider js-level-slider">
             <div v-for="deck in chunk.chunk_list">
               <div class="level-slider__slide">
-                <router-link :to="{ name: 'deck', params: { lvl:deck.sets_fk, sublevel:deck.sets_fk.sub_level} }">
+                <router-link :to="{ name: 'deck', params: { lvl:deck.sets_fk.level, sublevel:deck.sets_fk.sub_level} }">
                   <div class="panel lesson-panel" v-bind:class="{checked: deck.completion_status}">
                     <p class="lesson-panel__number">{{ deck.sets_fk.sub_level }} lesson</p>
                     <p class="lesson-panel__words">5 words</p>

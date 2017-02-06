@@ -8,10 +8,10 @@
       >
         <div v-if="show" class="flipper">
           <div class="front panel panel-task">
-            {{ front }} 
+            {{ back }} 
           </div>
           <div class="back panel panel-task">
-            {{ back }} 
+            {{ front }} 
           </div>
         </div>
       </transition>
@@ -213,7 +213,7 @@ export default {
     setDefinitionFormat: function () {
       var defString = ''
       this.currentMeanings.forEach(function (def, i) {
-        defString += def + ','
+        defString += def + ' ,'
       })
       return defString
     },
