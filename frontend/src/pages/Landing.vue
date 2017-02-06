@@ -12,10 +12,14 @@
 		</div>
 	</header>
 	<main>
-  <transition name="modal">
-    <modal v-show="showLogin" @close="showLogin = false">
-    </modal>
-  </transition>
+    <transition name="modal">
+      <loginModal v-show="showLogin" @close="showLogin = false">
+      </loginModal>
+    </transition>
+    <transition name="modal">
+      <registerModal v-show="showRegister" @close="showRegister = false">
+      </registerModal>
+    </transition>
 		<div class="welcome-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="container-fluid">
 				<div class="main">
@@ -23,7 +27,7 @@
 					<p class="site-subheading">Get the reading skills you need to crush it in Japan</p>
 				</div>
 				<div class="get-trial-block">
-					<a href="register/" class="btn get-trial-btn">Get free trial</a>
+					<a v-on:click="showRegister=true" class="btn get-trial-btn">Get free trial</a>
 				</div>
 			</div>
 		</div>
@@ -241,17 +245,20 @@
 
 <script>
 import loginModal from '../components/loginModal.vue'
+import registrationModal from '../components/registerModal.vue'
 export default {
   name: 'landingPage',
   data () {
     return {
       reviewDeck: [],
       errors: null,
-      showLogin: false
+      showLogin: false,
+      showRegister: false
     }
   },
   components: {
-    'modal': loginModal
+    'loginModal': loginModal,
+    'registerModal': registrationModal
   },
   methods: {
   }
