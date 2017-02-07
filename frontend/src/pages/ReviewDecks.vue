@@ -9,11 +9,18 @@
           </div>
         </router-link>
       </div>
-      <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewDeck[0].words.length"></counterRatio>
+      <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewDeck.words.length"></counterRatio>
     </div>
     <transition name="modal">
-      <modal v-show="showModal" @close="showModal= false">
-      </modal>
+      <completeModal v-if="showCompleteModal" v-bind:words ="reviewDeckOriginal.words" @close="showCompleteModal = false">
+      </completeModal>
+    </transition>
+    <transition name="modal">
+      <messageModal v-show="showMessage" @close="showMessage = false">
+        <span slot="body">
+          Awesome, now review the words one more time without any hints!
+        </span>
+      </messageModal>
     </transition>
     <div class="container green-cover__body">
       <div class="row ">
@@ -73,8 +80,6 @@
  
     </div>
   </div>
- 
-  <!-- Modal -->
 </template>
 
 <script>
@@ -82,6 +87,7 @@ import auth from '../auth'
 import Card from '../components/Card.vue'
 import counterRatio from '../components/counterRatio.vue'
 import completeModal from '../components/deckReviewCompleteModal.vue'
+import baseModalll from '../components/modalBase.vue'
 export default {
   name: 'me',
   data () {
@@ -94,14 +100,16 @@ export default {
       currentCardIndex: 0,
       currentWord: '',
       secondReview: false,
-      showModal: false,
+      showCompleteModal: false,
+      showMessage: false,
       errors: null
     }
   },
   components: {
     'card': Card,
     'counterRatio': counterRatio,
-    'modal': completeModal
+    'completeModal': completeModal,
+    'messageModal': baseModalll
   },
   created () {
     this.getReviewDeck()
@@ -120,12 +128,11 @@ export default {
       this.$http.get(url, {headers: auth.getAuthHeader()})
       .then(response => {
         this.errors = null
-        this.reviewDeck = response.data
-        this.reviewDeckOriginal = response.data
-        this.deckId = response.data[0].id
-        this.setCurrentWord()
+        this.reviewDeck = response.data[0]
+        this.reviewDeckOriginal = response.data[0]
+        this.deckId = this.reviewDeck.id
+        this.setCurrentWord(this.currentCardIndex)
         this.initialFetchComplete = true
- /* eslint-disable */
       }, error => {
         if (error) {
           this.errors = 'Could not fetch deck from server!'
@@ -133,23 +140,25 @@ export default {
         }
       })
     },
-    completeCard: function (array_index, bothCorrect) {
-      this.currentCardIndex++
-      this.setCurrentWord()
+    completeCard: function (arrayIndex, bothCorrect) {
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
-        this.reviewDeck[0].words.push(this.reviewDeck[0].words[array_index])
+        this.reviewDeck.words.push(this.reviewDeck.words[arrayIndex])
+      }
+      if (this.reviewDeck.words.length !== arrayIndex + 1) {
+        this.currentCardIndex = arrayIndex + 1
+        this.setCurrentWord(this.currentCardIndex)
       }
     },
     postStackComplete () {
       var url = '/api/review/review-deck-complete'
       this.$http.post(url, {'stack_id': this.deckId}, {headers: auth.getAuthHeader()})
       .then(response => {
-        this.showModal = true
+        this.showCompmleteModal = true
       }, error => {
         if (error) {
-          this.errors = 'Oh no! Something went wrong and we couldn\t save your wordsi!'
+          this.errors = 'Oh no! Something went wrong and we couldn\t save your words!'
         }
       })
     },
@@ -159,13 +168,14 @@ export default {
       } else {
         window.eventHub.$emit('reset')
         this.currentCardIndex = 0
-        this.setCurrentWord()
+        this.setCurrentWord(this.currentCardIndex)
         this.reviewDeck = this.reviewDeckOriginal
         this.secondReview = true
+        this.showMessage = true
       }
     },
-    setCurrentWord: function () {
-      this.currentWord = this.reviewDeck[0].words[this.currentCardIndex]
+    setCurrentWord: function (currentIndex) {
+      this.currentWord = this.reviewDeck.words[currentIndex]
     }
   }
 }
