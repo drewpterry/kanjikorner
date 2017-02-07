@@ -8,10 +8,10 @@
       >
         <div v-if="show" class="flipper">
           <div class="front panel panel-task">
-            {{ back }} 
+            {{ front }} 
           </div>
           <div class="back panel panel-task">
-            {{ front }} 
+            {{ back }} 
           </div>
         </div>
       </transition>
@@ -48,7 +48,6 @@ export default {
   },
   props: {
     'words': {
-      type: Array,
       required: true
     },
     'deck': {
@@ -56,11 +55,7 @@ export default {
     }
   },
   created () {
-    this.currentIndex = 0
-    this.setCurrentWord()
-    this.front = this.currentWord.real_word
-    this.back = this.currentWord.hiragana
-    this.setMeanings()
+    this.setInitialState()
     window.eventHub.$on('reset', this.resetInitialState)
   },
   mounted () {
@@ -68,22 +63,29 @@ export default {
     wanakana.bind(this.inputIME)
   },
   methods: {
-    resetInitialState: function () {
+    setInitialState: function () {
       this.currentIndex = 0
-      this.setCurrentWord()
+      if (this.deck) {
+        this.wordList = this.words.words
+      } else {
+        this.wordList = this.words
+      }
+      this.setCurrentWord(this.currentIndex)
       this.front = this.currentWord.real_word
       this.back = this.currentWord.hiragana
       this.$nextTick(function () {
         this.setMeanings()
       })
-      setTimeout(this.showNewCard, 400)
-      console.log('initiall')
     },
-    setCurrentWord: function () {
+    resetInitialState: function () {
+      this.setInitialState()
+      setTimeout(this.showNewCard, 400)
+    },
+    setCurrentWord: function (currentIndex) {
       if (this.deck) {
-        this.currentWord = this.words[0].words[this.currentIndex]
+        this.currentWord = this.wordList[currentIndex]
       } else {
-        this.currentWord = this.words[this.currentIndex].words
+        this.currentWord = this.wordList[currentIndex].words
       }
     },
     setMeanings: function () {
@@ -97,15 +99,14 @@ export default {
       document.getElementById('card').classList.toggle('flip')
     },
     nextCard: function (correct) {
-      console.log(correct)
       this.leaveClass = correct ? 'animated bounceOutRight' : 'animated bounceOutLeft'
       this.$nextTick(function () {
         this.show = false
       })
       this.currentIndex = this.currentIndex + 1
-      if (this.words[0].words.length !== this.currentIndex) {
+      if (this.wordList.length !== this.currentIndex) {
         var self = this
-        this.setCurrentWord()
+        this.setCurrentWord(this.currentIndex)
         setTimeout(function () {
           self.front = self.currentWord.real_word
           self.back = self.currentWord.hiragana
@@ -185,7 +186,7 @@ export default {
       var self = this
       if (this.answer_type === 'meaning') {
         setTimeout(function () {
-          self.back = self.setDefinitionFormat()
+          self.back = self.arrayToCommaSeperatedString(self.currentMeanings)
         }, 400)
       }
     },
@@ -210,12 +211,12 @@ export default {
       })
       return answerCorrect
     },
-    setDefinitionFormat: function () {
-      var defString = ''
-      this.currentMeanings.forEach(function (def, i) {
-        defString += def + ' ,'
+    arrayToCommaSeperatedString: function (array) {
+      var formattedString = ''
+      array.forEach(function (string, i) {
+        formattedString += string + ' ,'
       })
-      return defString
+      return formattedString
     },
     getLevenshtein: function (a, b) {
       function levenshteinenator (a, b) {

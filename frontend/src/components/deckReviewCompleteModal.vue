@@ -17,35 +17,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-          <tr>
-            <th scope="row">5</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+          <tr v-for="(word, index) in words">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ word.real_word }}</td>
+            <td>{{ word.hiragana }}</td>
+            <td>{{ word.meanings }}</td>
           </tr>
         </tbody>
       </table>
@@ -53,7 +29,9 @@
     <form slot="footer">
       <div class="row">
         <div class="col-md-2">
-          <a href=""><p class="gray-btn text-left">Home page</p></a>
+          <router-link to="/dashboard">
+            <p class="gray-btn text-left">Dashboard</p>
+          </router>
         </div>
         <div class="col-md-3 col-md-offset-7 text-right">
           <div class="btn btn-green">Next Review</div>
@@ -77,6 +55,15 @@ export default {
   },
   components: {
     'modal': ModalBase
+  },
+  props: {
+    'words': {
+      required: true
+    }
+  },
+  created () {
+    console.log('yoyoy')
+    console.log(this.words.length)
   },
   methods: {
     login: function () {
