@@ -104,9 +104,6 @@ export default {
         this.show = false
       })
       this.currentIndex = this.currentIndex + 1
-      console.log('men')
-      console.log('here')
-      console.log(this.currentIndex)
       if (this.wordList.length !== this.currentIndex) {
         var self = this
         this.setCurrentWord(this.currentIndex)

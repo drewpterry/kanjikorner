@@ -12,6 +12,21 @@
             <img src="../assets/img/logo-white.svg" alt="">
           </div>
         </router-link>
+        <transition name="modal">
+          <completeModal v-show="showCompleteModal" @close="showCompleteModal = false">
+            <span slot="header">
+              Good Job! 
+            </span>
+            <span slot="body">
+              Great job getting your reviews down to 0! Just remember to check back often so they don't pile up!
+            </span>
+            <div slot="footer">
+              <router-link to="/dashboard">
+                <div class="btn btn-green">Dashboard</div>
+              </router>
+            </div>
+          </completeModal>
+        </transition>
       </div>
       <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewWords.length"></counterRatio>
     </div>
@@ -30,6 +45,7 @@
 import auth from '../auth'
 import Card from '../components/Card.vue'
 import counterRatio from '../components/counterRatio.vue'
+import baseModal from '../components/modalBase.vue'
 export default {
   name: 'srsreview',
   data () {
@@ -37,19 +53,23 @@ export default {
       initialFetchComplete: false,
       reviewWords: [],
       currentWord: '',
-      wordsComplete: ''
+      wordsComplete: '',
+      showCompleteModal: false
     }
   },
   components: {
     'card': Card,
-    'counterRatio': counterRatio
+    'counterRatio': counterRatio,
+    'completeModal': baseModal
   },
   created () {
     this.getReviewDeck()
     window.eventHub.$on('completeCard', this.completeCard)
+    window.eventHub.$on('deckComplete', this.deckComplete)
   },
   beforeDestroy () {
     window.eventHub.$off('completeCard', this.completeCard)
+    window.eventHub.$on('deckComplete', this.deckComplete)
   },
   methods: {
     getReviewDeck: function () {
@@ -60,23 +80,24 @@ export default {
         this.reviewWords = response.data
         this.initialFetchComplete = true
         this.currentWord = this.reviewWords.words
-/* eslint-disable */
       }, error => {
-        this.errors = 'Could not fetch deck from server!'
-        this.initialFetchComplete = true
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+          this.initialFetchComplete = true
+        }
       })
     },
-    completeCard: function (array_index, bothCorrect) {
+    completeCard: function (arrayIndex, bothCorrect) {
       var url = '/api/review/update-word'
-      var thisWordID = this.reviewWords[array_index].id
+      var thisWordID = this.reviewWords[arrayIndex].id
       var increase = bothCorrect ? 1 : 0
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
         if (this.reviewWords.length - this.array_index > 7) {
-          this.reviewWords.splice(this.array_index + 7, 0, this.reviewWords[array_index])
+          this.reviewWords.splice(this.arrayIndex + 7, 0, this.reviewWords[arrayIndex])
         } else {
-          this.reviewWords.push(this.reviewWords[array_index])
+          this.reviewWords.push(this.reviewWords[arrayIndex])
         }
       }
       this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': increase}, {headers: auth.getAuthHeader()})
@@ -86,6 +107,9 @@ export default {
           this.errors = 'Could not update on server!'
         }
       })
+    },
+    deckComplete: function () {
+      this.showCompleteModal = true
     }
   }
 }

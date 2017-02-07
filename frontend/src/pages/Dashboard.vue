@@ -59,11 +59,11 @@
         <p class="dark-title">NEW WORDS ADDED</p>
         <div class="panel panel-double">
           <div class="panel-double__left">
-            <p class="panel__title">15</p>
+            <p class="panel__title">0</p>
             <p class="panel__text">Today</p>
           </div>
           <div class="panel-double__right">
-            <p class="panel__title">21</p>
+            <p class="panel__title">15</p>
             <p class="panel__text">Daily Goal</p>
           </div>
         </div>

@@ -87,7 +87,7 @@ import auth from '../auth'
 import Card from '../components/Card.vue'
 import counterRatio from '../components/counterRatio.vue'
 import completeModal from '../components/deckReviewCompleteModal.vue'
-import baseModalll from '../components/modalBase.vue'
+import baseModal from '../components/modalBase.vue'
 export default {
   name: 'me',
   data () {
@@ -109,7 +109,7 @@ export default {
     'card': Card,
     'counterRatio': counterRatio,
     'completeModal': completeModal,
-    'messageModal': baseModalll
+    'messageModal': baseModal
   },
   created () {
     this.getReviewDeck()
