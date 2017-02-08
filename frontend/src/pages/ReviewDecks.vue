@@ -155,7 +155,7 @@ export default {
       var url = '/api/review/review-deck-complete'
       this.$http.post(url, {'stack_id': this.deckId}, {headers: auth.getAuthHeader()})
       .then(response => {
-        this.showCompmleteModal = true
+        this.showCompleteModal = true
       }, error => {
         if (error) {
           this.errors = 'Oh no! Something went wrong and we couldn\t save your words!'

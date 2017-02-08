@@ -65,7 +65,7 @@ def get_profile_data(request):
 @api_view(['GET'])
 def get_chart_data(request):
     userprofile = request.user.userprofile
-    update_analytics_log(request.user)
+    todays_log = AnalyticsLog.objects.get_or_create(request.user)
     analytics_logs = AnalyticsLog.objects.filter(user_profile = userprofile)
     log_count = analytics_logs.count()
     words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True).order_by('last_modified'))

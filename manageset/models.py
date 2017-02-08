@@ -4,8 +4,9 @@ import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
 import random
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta, time, date
 from django.utils import timezone
+import copy
 
 class Kanji(models.Model):
     kanji_name = models.CharField(max_length = 50)
@@ -146,21 +147,71 @@ class UserSets(models.Model):
     completion_status  = models.BooleanField(default = False)
     creation_time = models.DateTimeField("creation_time", auto_now_add=True)
         
+class AnalyticsLogManager(models.Manager):
+    # overriding native analyticsLog get_or_create method
+    def get_or_create(self, user):
+        todays_log = AnalyticsLog.objects.filter(user_profile = user.userprofile, last_modified = date.today())
+        if todays_log.exists():
+            todays_log = todays_log[0]
+        else:
+            user_analytics_log  = AnalyticsLog.objects.filter(user_profile = user.userprofile, last_modified__lt = date.today())
+            if user_analytics_log.exists():
+                most_recent_log = user_analytics_log.latest('last_modified')
+                self.__fill_in_missing_analytics_logs(most_recent_log)
+                todays_log= self.__new_log_copy(most_recent_log)
+                todays_log.save()
+            else:
+                todays_log = AnalyticsLog.objects.create(user_profile = user.userprofile, last_modified  = date.today())
+        return todays_log
+
+    def __fill_in_missing_analytics_logs(self, most_recent_log):
+        x = 1
+        new_day = most_recent_log.last_modified + timedelta(days=x)
+        while new_day != date.today():
+            new_log = self.__new_log_copy(most_recent_log)
+            new_log.last_modified = new_day 
+            new_log.save()
+            x += 1
+            new_day = most_recent_log.last_modified + timedelta(days=x)
+
+    def __new_log_copy(self, log):
+        log_copy = copy.copy(log)
+        log_copy.pk = None
+        log_copy.reset_daily_values() 
+        return log_copy 
+
 class AnalyticsLog(models.Model):
     user_profile = models.ForeignKey(UserProfile)
     words_studied_count = models.IntegerField(default = 0)
+    words_studied_count_today = models.IntegerField(default = 0)
     words_completed_count = models.IntegerField(default = 0)
     words_reviewed_count = models.IntegerField(default = 0)
-    words_reviewed_today_count = models.IntegerField(default = 0)
+    words_reviewed_count_today = models.IntegerField(default = 0)
     kanji_studied_count = models.IntegerField(default = 0)
+    kanji_studied_count_today = models.IntegerField(default = 0)
     kanji_completed_count = models.IntegerField(default = 0)
-    kanji_reviewed_today_count = models.IntegerField(default = 0)
     last_modified = models.DateField()
+    objects = AnalyticsLogManager()
 
     def progress_percent(self):
         percent = 100 * (self.words_reviewed_count / 4000)
         percent_correct = round(percent, 1)
         return percent 
+
+    def update_on_stack_complete(self):
+        self.words_studied_count += 5
+        self.words_studied_count_today += 5
+
+    def update_words_reviewed(self):
+        self.words_reviewed_count += 1 
+        self.words_reviewed_count_today += 1 
+
+    def reset_daily_values(self):
+        self.last_modified = date.today() 
+        self.words_studied_count_today = 0
+        self.words_reviewed_count_today = 0
+        self.kanji_studied_count_today = 0
+        return
 
 # create corresponding user profile when user is created, and create user decks
 from allauth.account.signals import email_confirmed
