@@ -4,7 +4,7 @@
     <div class="top-progress__inner" style="width: 76%"></div>
   </div>
 
-  <div class="green-cover green-cover__srs-review">
+  <div class="green-cover green-cover__full-page">
     <div class="row green-cover__head">
       <div class="col-md-2 col-sm-1">
         <router-link to="/dashboard">

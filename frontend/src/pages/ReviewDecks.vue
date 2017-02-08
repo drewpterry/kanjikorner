@@ -1,6 +1,6 @@
 <template>
 <div class="internal-page">
-  <div class="green-cover">
+  <div class="green-cover" v-bind:class="{ 'green-cover__full-page': secondReview }">
     <div class="row green-cover__head">
       <div class="col-md-2 col-sm-1">
         <router-link to="/dashboard">
@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="lesson">
+  <div v-if="!secondReview" class="lesson">
     <div class="row">
       <div class="col-md-4">
         <p class="red-title">Basics</p>
