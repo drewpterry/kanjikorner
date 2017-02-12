@@ -90,7 +90,7 @@ export default {
     completeCard: function (arrayIndex, bothCorrect) {
       var url = '/api/review/update-word'
       var thisWordID = this.reviewWords[arrayIndex].id
-      var increase = bothCorrect ? 1 : 0
+      // var increase = bothCorrect ? true : 0
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
@@ -100,7 +100,7 @@ export default {
           this.reviewWords.push(this.reviewWords[arrayIndex])
         }
       }
-      this.$http.post(url, {'known_word_id': thisWordID, 'increase_level': increase}, {headers: auth.getAuthHeader()})
+      this.$http.post(url, {'known_word_id': thisWordID, 'answer_result': bothCorrect, 'testing_true': true}, {headers: auth.getAuthHeader()})
       .then(response => {
       }, error => {
         if (error) {

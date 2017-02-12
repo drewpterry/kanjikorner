@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^$', views.index),    
     url(r'^all-decks/get$', views.get_master_review_decks),    
     url(r'^user-decks/get$', views.get_user_sets),    
-    url(r'^profile-data/get$', views.get_profile_data),    
+    url(r'^analytics-data/get$', views.get_analytics_data),    
     url(r'^review-data/get$', views.get_review_data),    
     url(r'^chart-data/get$', views.get_chart_data),    
 ]   

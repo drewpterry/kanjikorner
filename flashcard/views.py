@@ -1,11 +1,9 @@
-from django.http import HttpResponseRedirect, HttpResponse
 from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets, AnalyticsLog
 from manageset.utils import * 
 from django.contrib.auth.models import User
 from django.core import serializers
 from datetime import datetime, timedelta, time
 from django.utils.timezone import utc
-from django.views.decorators.cache import cache_control
 from django.http import JsonResponse
 from api.serializers import SetsSerializer, KnownWordsSerializer
 import json
@@ -33,6 +31,8 @@ def review_deck_complete(request):
     todays_log = AnalyticsLog.objects.get_or_create(request.user)
     todays_log.update_on_stack_complete()
     todays_log.save()
+
+    # record words reviewed in deck and add them to queue
     stack_id = data.get('stack_id') 
     user_set = UserSets.objects.get(sets_fk = stack_id, user_profile_fk = profile)
     if not user_set.completion_status:
@@ -46,6 +46,7 @@ def review_deck_complete(request):
             new_word.set_initial_level()
             words_to_add.append(new_word)
         KnownWords.objects.bulk_create(words_to_add)
+
     return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -66,20 +67,19 @@ def get_srs_review(request):
 
 @api_view(['POST'])
 def update_review_word(request):
-    update_word_queue(request.user)
     data = json.loads(request.body)
     profile = request.user.userprofile
-    # timezone_adjustment = int(request.GET['timezone_offset'])
     known_word_id = data.get('known_word_id') 
-    answer_result = int(data.get('increase_level'))
+    answer_correct = data.get('answer_result')
     selected_word = KnownWords.objects.get(id = known_word_id, user_profile = profile)
-    selected_word.update_tier_and_review_time(answer_result)
-    # TODO think about deleting this and handling correct and incorrect results in analytics log
-    profile.update_total_reviews_result(answer_result)
+    selected_word.update_tier_and_review_time(answer_correct)
     selected_word.save()
-    # TODO profile.update_words_practiced_today(timezone_adjustment)
-    profile.save()
+
     todays_log = AnalyticsLog.objects.get_or_create(request.user)
     todays_log.update_words_reviewed()
+    todays_log.update_correct_or_incorrect(answer_correct)
     todays_log.save()
+
+    # TODO timezone_adjustment = int(request.GET['timezone_offset'])
+    # profile.update_words_practiced_today(timezone_adjustment)
     return Response(status=status.HTTP_200_OK)
