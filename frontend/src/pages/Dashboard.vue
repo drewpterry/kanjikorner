@@ -33,8 +33,8 @@
             <img src="../assets/img/content/user@2x.png" class="img-responsive" alt="">
           </div>
           <div class="dropdown">
-            <span class="user-dropdown__name dropbtn">
-              Andrew
+            <span class="user-dropdown__name">
+              {{reviewData.username }} 
             </span>
             <div class="dropdown-content">
               <span v-on:click="logout">Logout</span>
@@ -59,7 +59,7 @@
         <p class="dark-title">NEW WORDS ADDED</p>
         <div class="panel panel-double">
           <div class="panel-double__left">
-            <p class="panel__title">0</p>
+            <p class="panel__title">{{ analyticsData.words_studied_count_today }}</p>
             <p class="panel__text">Today</p>
           </div>
           <div class="panel-double__right">
@@ -70,12 +70,12 @@
         <p class="dark-title">WORDS REVIEWED</p>
         <div class="panel panel-double">
           <div class="panel-double__left">
-            <p class="panel__title">{{ userProfile.number_words_practiced_today }}</p>
+            <p class="panel__title">{{ analyticsData.words_reviewed_count_today }}</p>
             <p class="panel__text">Today</p>
           </div>
           <div class="panel-double__right">
-            <p class="panel__title">1124</p>
-            <p class="panel__text">This Week</p>
+            <p class="panel__title">N/A</p>
+            <p class="panel__text">Best</p>
           </div>
         </div>
       </div>
@@ -89,20 +89,20 @@
       <div class="col-md-2 graph__side">
         <div class="panel">
           <div class="graph-stat">
-            <p class="graph-stat__text">Words reviewed</p>
-            <p class="graph-stat__number">{{ userProfile.total_reviews_ever }}</p>
+            <p class="graph-stat__text">Total Reviews</p>
+            <p class="graph-stat__number">{{ analyticsData.words_reviewed_count }}</p>
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Words reviewed correct</p>
-            <p class="graph-stat__number">{{ userProfile.percent_correct }}<sup>%</sup></p>
+            <p class="graph-stat__number">{{ analyticsData.percent_correct }}<sup>%</sup></p>
           </div>
           <div class="graph-stat">
-            <p class="graph-stat__text">Words reviewed</p>
-            <p class="graph-stat__number">11124</p>
+            <p class="graph-stat__text">Word Progress</p>
+            <p class="graph-stat__number">{{ analyticsData.progress_percent }}<sup>%</sup></p>
           </div>
           <div class="graph-stat">
-            <p class="graph-stat__text">Words reviewed correct</p>
-            <p class="graph-stat__number">86<sup>%</sup></p>
+            <p class="graph-stat__text">Kanji Progress</p>
+            <p class="graph-stat__number">coming soon</p>
           </div>
         </div>
       </div>
@@ -178,6 +178,7 @@ export default {
       initialFetchComplete: false,
       reviewDeck: [],
       userProfile: [],
+      analyticsData: [],
       reviewData: [],
       wordLevelNames: ['ゼロ', '一', '二', '三', '四', '五', '六', '七', '八', 'パス'],
       chartData: '',
@@ -190,8 +191,9 @@ export default {
   },
   created () {
     this.getReviewDeck()
-    this.getUserProfile()
+    // this.getUserProfile()
     this.getReviewData()
+    this.getAnalyticsData()
     this.getChartData()
     // TODO hack - this inserts jquery and slick carousel into this page for carousel animation - will switch to pure javascript alternative
     var elTow = document.createElement('script')
@@ -254,6 +256,18 @@ export default {
       .then(response => {
         this.errors = null
         this.userProfile  = response.data
+      }, error => {
+        if (error) {
+          this.errors = 'Could not fetch deck from server!'
+        }
+      })
+    },
+    getAnalyticsData () {
+      var url = '/api/analytics-data/get'
+      this.$http.get(url, {headers: auth.getAuthHeader()})
+      .then(response => {
+        this.errors = null
+        this.analyticsData = response.data
       }, error => {
         if (error) {
           this.errors = 'Could not fetch deck from server!'
@@ -359,8 +373,11 @@ export default {
 /* Change color of dropdown links on hover */
 .dropdown-content span:hover {background-color: #f1f1f1}
 
+.user-dropdown {
+    cursor:pointer
+}
 /* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
+.user-dropdown:hover .dropdown-content {
     display: block;
 }
 

@@ -111,24 +111,6 @@ class UserProfile(models.Model):
         self.words_practied_today_time_marker = current_datetime
         return
 
-    def update_total_reviews_result(self, correct):
-        if correct:
-            self.total_correct_reviews += 1
-        else:
-            self.total_incorrect_reviews += 1
-        return
-
-    def total_reviews_ever(self):
-        total_reviews = self.total_correct_reviews + self.total_incorrect_reviews
-        return total_reviews
-
-    def percent_correct(self):
-        if self.total_reviews_ever() == 0:
-            return 0
-        percent_correct = 100 * (self.total_correct_reviews / self.total_reviews_ever())
-        percent_correct = round(percent_correct, 1)
-        return percent_correct 
-
     def check_if_new_day(self,timezone_adjustment):
         current_datetime = datetime.now() - timedelta(hours = timezone_adjustment)
         current_day = current_datetime.day
@@ -190,13 +172,30 @@ class AnalyticsLog(models.Model):
     kanji_studied_count = models.IntegerField(default = 0)
     kanji_studied_count_today = models.IntegerField(default = 0)
     kanji_completed_count = models.IntegerField(default = 0)
+    total_correct_reviews = models.IntegerField(default=0)
+    total_incorrect_reviews  = models.IntegerField(default=0)
     last_modified = models.DateField()
     objects = AnalyticsLogManager()
 
+    def update_correct_or_incorrect(self, correct):
+        if correct:
+            self.total_correct_reviews += 1
+        else:
+            self.total_incorrect_reviews += 1
+        return
+
+    def percent_correct(self):
+        if self.words_reviewed_count == 0:
+            return 0
+        percent_correct = 100 * (self.total_correct_reviews / self.words_reviewed_count)
+        percent_correct = round(percent_correct, 1)
+        return percent_correct 
+
     def progress_percent(self):
-        percent = 100 * (self.words_reviewed_count / 4000)
-        percent_correct = round(percent, 1)
-        return percent 
+        master_word_count = Words.objects.filter(master_order__gt=0).count()
+        progress_percent = 100 * (self.words_studied_count / master_word_count)
+        progress_percent = round(progress_percent, 1)
+        return progress_percent 
 
     def update_on_stack_complete(self):
         self.words_studied_count += 5
@@ -270,15 +269,15 @@ class KnownWords(models.Model):
                         8 : 5820,
                         9 : None,
         }
-        if correct == 1:
-            self.times_answered_correct = self.times_answered_correct + 1
+        if correct:
+            self.times_answered_correct += 1
             if self.tier_level < 9: 
-                self.tier_level = self.tier_level + 1
+                self.tier_level += 1
         elif self.tier_level != 1:
-            self.times_answered_wrong = self.times_answered_wrong + 1 
-            self.tier_level = self.tier_level - 1
+            self.times_answered_wrong += 1 
+            self.tier_level -= 1
         elif self.tier_level == 1:
-            self.times_answered_wrong = self.times_answered_wrong + 1   
+            self.times_answered_wrong += 1   
         
         total_times_answered = self.times_answered_correct + self.times_answered_wrong
         self.correct_percentage = self.times_answered_correct / total_times_answered

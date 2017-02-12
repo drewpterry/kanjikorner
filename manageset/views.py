@@ -56,35 +56,38 @@ def get_user_sets(request):
     return Response(chunked_data)
 
 @api_view(['GET'])
-def get_profile_data(request):
-    userprofile = request.user.userprofile
-    serializer = UserProfileSerializer(userprofile)
+def get_analytics_data(request):
+    username = request.user.username
+    todays_log = AnalyticsLog.objects.get_or_create(request.user)
+    serializer = AnalyticsLogSerializer(todays_log)
     data = serializer.data
+    print data
     return Response(data)
 
 @api_view(['GET'])
 def get_chart_data(request):
     userprofile = request.user.userprofile
-    todays_log = AnalyticsLog.objects.get_or_create(request.user)
     analytics_logs = AnalyticsLog.objects.filter(user_profile = userprofile)
     log_count = analytics_logs.count()
-    words_reviewed_counts = list(analytics_logs.values_list('words_reviewed_count', flat=True).order_by('last_modified'))
-    words_reviewed_counts.insert(0, 0)
+    #TODO for future -  split different chart queries into different functions or a switch statement
+    words_studied_count = list(analytics_logs.values_list('words_studied_count', flat=True).order_by('last_modified'))
+    words_studied_count.insert(0, 0)
     master_words_count = Words.objects.filter(master_order__gt=0).count()
 
     base = date.today()
     date_list = [base - timedelta(days=x) for x in range(log_count, -1, -1)]
     ideal_data_points = [ 15 * x for x in range(0, log_count + 1)]
     return Response({'x_axis_data':date_list,
-                    'data_points':words_reviewed_counts,
+                    'data_points':words_studied_count,
                     'ideal_data_points':ideal_data_points})
 
-# TODO look into refactoring and putting all this into a model
+# TODO look into moving each individual calculation into model
 @api_view(['GET'])
 def get_review_data(request):
     userprofile = request.user.userprofile
     update_word_queue(request.user)
     known_words = KnownWords.objects.filter(user_profile = userprofile)
+
     tier_counts = known_words.values('tier_level').annotate(count = Count('tier_level')).order_by('tier_level')
     master_word_count = Words.objects.filter(master_order__gt=0).count()
     count_dict = {}
@@ -114,4 +117,4 @@ def get_review_data(request):
     else:
         next_review = reviews_due_count 
     
-    return JsonResponse({'next_review':next_review, 'next_day':reviews_24_hours_count, 'tier_counts':count_dict })
+    return JsonResponse({'next_review':next_review, 'next_day':reviews_24_hours_count, 'tier_counts':count_dict, 'username':request.user.username })
