@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets
+from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets, AnalyticsLog
 from manageset.utils import * 
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -30,6 +30,9 @@ def get_review_deck(request, level, sub_level):
 def review_deck_complete(request):
     data = json.loads(request.body)
     profile = request.user.userprofile
+    todays_log = AnalyticsLog.objects.get_or_create(request.user)
+    todays_log.update_on_stack_complete()
+    todays_log.save()
     stack_id = data.get('stack_id') 
     user_set = UserSets.objects.get(sets_fk = stack_id, user_profile_fk = profile)
     if not user_set.completion_status:
@@ -71,8 +74,12 @@ def update_review_word(request):
     answer_result = int(data.get('increase_level'))
     selected_word = KnownWords.objects.get(id = known_word_id, user_profile = profile)
     selected_word.update_tier_and_review_time(answer_result)
+    # TODO think about deleting this and handling correct and incorrect results in analytics log
     profile.update_total_reviews_result(answer_result)
     selected_word.save()
-    #TODO profile.update_words_practiced_today(timezone_adjustment)
+    # TODO profile.update_words_practiced_today(timezone_adjustment)
     profile.save()
+    todays_log = AnalyticsLog.objects.get_or_create(request.user)
+    todays_log.update_words_reviewed()
+    todays_log.save()
     return Response(status=status.HTTP_200_OK)
