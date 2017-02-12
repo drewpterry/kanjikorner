@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from utils import * 
 
 def index(request):
-    return render(request,'dist/index.html')
+    return render(request,'production-dist/index.html')
     
 @api_view(['GET'])
 def get_master_review_decks(request):
