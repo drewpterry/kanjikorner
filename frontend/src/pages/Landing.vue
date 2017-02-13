@@ -156,7 +156,7 @@
 			<h3 class="cta-heading">Wanna learn how to <br>read Japanese?</h3>
 			<p class="cta-subheading">Try the beta version today, for free!</p>
 			<div class="cta-btn-block">
-				<a href="#" class="btn cta-btn">Get your free trial!</a>
+				<a v-on:click="showRegister=true" class="btn cta-btn">Get your free trial</a>
 			</div>
 			<p class="btn-support-text">I am a huge button. Click me!</p>
 		</div>
@@ -215,10 +215,10 @@
 			</div>
 			<div class="btns-block">
 				<div class="sing-in-btn-block">
-					<a href="#" class="btn sign-in-btn">Sign in</a>
+				  <div v-on:click="showLogin=true" class="btn sign-in-btn">login</div>
 				</div>
 				<div class="sing-up-btn-block">
-					<a href="#" class="btn sign-up-btn">Sign up</a>
+					<a v-on:click="showRegister=true" class="btn sign-up-btn">sign up</a>
 				</div>
 			</div>
 		</div>
