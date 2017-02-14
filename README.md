@@ -1,6 +1,6 @@
 kanjikorner
 ===========
-A spaced-repitition bases web application for learning Japanese vocabulary. View at [kanjisama.com](kanjisama.com) .
+A spaced-repitition based web application for learning Japanese vocabulary using django and vue.js . View at [kanjisama.com](kanjisama.com) .
 
 ```pip install virtualenv```
 
