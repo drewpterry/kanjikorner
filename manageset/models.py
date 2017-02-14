@@ -76,7 +76,6 @@ class Sets(models.Model):
     pub_date = models.DateTimeField("pub_date", auto_now_add = True)
     words = models.ManyToManyField(Words, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
-    times_practiced = models.IntegerField()
     master_order = models.IntegerField(null = True)
     level = models.IntegerField(null = True)
     sub_level = models.IntegerField(null = True)
