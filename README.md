@@ -1,6 +1,6 @@
 kanjikorner
 ===========
-This is a new project.
+A spaced-repitition bases web application for learning Japanese vocabulary. View at kanjisama.com .
 
 ```pip install virtualenv```
 
@@ -18,20 +18,10 @@ inside kanjisite run:
 
 make sure to change your database settings in settings.py 
 
-``` python manage.py syncdb ```
+``` python manage.py makemigrations```
 
 ``` python manage.py migrate```
 
 
 Run the server and check localhost:8000 to make sure the app is running
 ``` python manage.py runserver ```
-
-close the server
-
-```python manage.py shell```
-
-inside shell run to populate database
-``` execfile('xmltodict/jsonupload.py') ```
-
-
-
