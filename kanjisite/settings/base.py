@@ -21,7 +21,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # insert your TEMPLATE_DIRS here
-            (os.path.join(BASE_DIR, 'templates'))
+            (os.path.join(BASE_DIR, 'templates')),
+            (os.path.join(BASE_DIR, 'templates', 'allauth'))
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -138,11 +139,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/statics/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'statics'),
+    os.path.join(BASE_DIR, 'frontend/static'),
 )
-STATIC_ROOT = '/webapps/kanjisite/kanjikorner/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 

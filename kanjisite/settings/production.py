@@ -5,7 +5,8 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['.kanjisama.com',
-                '.kanjisama.com.']
+                '.kanjisama.com.',
+                '52.37.162.24']
 
 ADMINS = (('Drew', 'drewpterry@yahoo.com'),)
 SERVER_EMAIL = os.environ['SERVER_EMAIL']

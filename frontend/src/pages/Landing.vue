@@ -156,7 +156,7 @@
 			<h3 class="cta-heading">Wanna learn how to <br>read Japanese?</h3>
 			<p class="cta-subheading">Try the beta version today, for free!</p>
 			<div class="cta-btn-block">
-				<a href="#" class="btn cta-btn">Get your free trial!</a>
+				<a v-on:click="showRegister=true" class="btn cta-btn">Get your free trial</a>
 			</div>
 			<p class="btn-support-text">I am a huge button. Click me!</p>
 		</div>
@@ -172,13 +172,13 @@
 			</div>
 			<div class="who-block col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
 				<div class="author col-lg-12 col-md-12 col-sm-12">
-					<div class="photo-block col-lg-4 col-md-5 col-sm-5 col-xs-5">
-						<img src="~assets/img/landing_page/drew.png" alt="Drew Terry">
-					</div>
-					<div class="text-block col-lg-7 col-md-7 col-sm-7 col-xs-7">
-						<p class="heading">Drew Terry</p>
-						<p class="subheading">Founder of Kanjisama<br>(also known as ザーファウンダー)</p>
-					</div>
+					<!--<div class="photo-block col-lg-4 col-md-5 col-sm-5 col-xs-5">-->
+						<!--<img src="~assets/img/landing_page/drew.png" alt="Drew Terry">-->
+					<!--</div>-->
+					<!--<div class="text-block col-lg-7 col-md-7 col-sm-7 col-xs-7">-->
+						<!--<p class="heading">Drew Terry</p>-->
+						<!--<p class="subheading">Founder of Kanjisama<br>(also known as ザーファウンダー)</p>-->
+					<!--</div>-->
 				</div>
 				<div class="koala col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="photo-block col-lg-5 col-md-5 col-sm-4 col-xs-4">
@@ -215,10 +215,10 @@
 			</div>
 			<div class="btns-block">
 				<div class="sing-in-btn-block">
-					<a href="#" class="btn sign-in-btn">Sign in</a>
+				  <div v-on:click="showLogin=true" class="btn sign-in-btn">login</div>
 				</div>
 				<div class="sing-up-btn-block">
-					<a href="#" class="btn sign-up-btn">Sign up</a>
+					<a v-on:click="showRegister=true" class="btn sign-up-btn">sign up</a>
 				</div>
 			</div>
 		</div>

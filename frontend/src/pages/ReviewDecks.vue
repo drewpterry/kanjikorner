@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div v-if="!secondReview" class="lesson">
+  <div v-if="!secondReview && initialFetchComplete" class="lesson">
     <div class="row">
       <div class="col-md-4">
         <p class="red-title">Basics</p>
@@ -46,9 +46,7 @@
           <div class="col-md-3">
             <p class="gray-title">POS:</p>
           </div>
-          <div v-for="pos in currentWord.pos" class="col-md-2">
-            <p class="simple-text">{{ pos.pos }}, </p>
-          </div>
+            <p class="simple-text">{{ partOfSpeech }}</p>
         </div>
         <div class="row lesson__row">
           <div class="col-md-3">
@@ -65,7 +63,7 @@
       <div class="col-md-4 lesson__center">
         <p class="red-title">Details</p>
         <p class="gray-title">Meanings:</p>
-        <p class="simple-text">Presidend, persin in charge, leader</p><br>
+        <p class="simple-text">{{ meaningsText }}</p><br>
         <p class="gray-title">Sentences:</p><br>
         <p class="simple-text">1. Nam dapibus nisl vitae elit fringilla rutrum.</p><br><br>
         <p class="simple-text">2. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl.</p>
@@ -84,6 +82,7 @@
 
 <script>
 import auth from '../auth'
+import helper from '../helpers'
 import Card from '../components/Card.vue'
 import counterRatio from '../components/counterRatio.vue'
 import completeModal from '../components/deckReviewCompleteModal.vue'
@@ -176,6 +175,24 @@ export default {
     },
     setCurrentWord: function (currentIndex) {
       this.currentWord = this.reviewDeck.words[currentIndex]
+    }
+  },
+  computed: {
+    // look into returning pos as array of strings from api vs object with pos property
+    partOfSpeech: function () {
+      var arrayPos = []
+      this.currentWord.pos.forEach(function (object) {
+        arrayPos.push(object.pos)
+      })
+      return helper.arrayToCommaSeperatedString(arrayPos)
+    },
+    meaningsText: function () {
+      var arrayPos = []
+      this.currentWord.meanings.forEach(function (object) {
+        arrayPos.push(object.meaning)
+      })
+      // return 'weee'
+      return helper.arrayToCommaSeperatedString(arrayPos)
     }
   }
 }
