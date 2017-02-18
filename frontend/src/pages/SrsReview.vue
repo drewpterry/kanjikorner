@@ -62,6 +62,14 @@ export default {
     'counterRatio': counterRatio,
     'completeModal': baseModal
   },
+  head: {
+    title: function () {
+      return {
+        inner: 'kanjisama',
+        complement: 'SRS review'
+      }
+    }
+  },
   created () {
     this.getReviewDeck()
     window.eventHub.$on('completeCard', this.completeCard)

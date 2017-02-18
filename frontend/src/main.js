@@ -3,7 +3,9 @@ import VueResource from 'vue-resource'
 import App from './App'
 import router from './router'
 import auth from './auth'
+import VueHead from 'vue-head'
 Vue.use(VueResource)
+Vue.use(VueHead)
 
 router.beforeEach((to, from, next) => {
   auth.checkAuth()

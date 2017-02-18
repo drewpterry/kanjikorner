@@ -256,6 +256,13 @@ export default {
       showRegister: false
     }
   },
+  head: {
+    title: function () {
+      return {
+        inner: 'kanjisama'
+      }
+    }
+  },
   components: {
     'loginModal': loginModal,
     'registerModal': registrationModal
