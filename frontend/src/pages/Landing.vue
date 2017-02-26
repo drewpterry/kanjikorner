@@ -13,7 +13,7 @@
 	</header>
 	<main>
     <transition name="modal">
-      <loginModal v-show="showLogin" @close="showLogin = false">
+      <loginModal v-bind:message="message" v-show="showLogin" @close="showLogin = false">
       </loginModal>
     </transition>
     <transition name="modal">
@@ -253,7 +253,14 @@ export default {
       reviewDeck: [],
       errors: null,
       showLogin: false,
-      showRegister: false
+      showRegister: false,
+      message: ''
+    }
+  },
+  created () {
+    if (window.location.hash === '#confirmed') {
+      this.showLogin = true
+      this.message = 'Email confirmed! You can now login!'
     }
   },
   head: {
