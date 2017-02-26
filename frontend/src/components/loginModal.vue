@@ -5,6 +5,7 @@
      ログイン 
     </span>
     <form slot="body">
+      {{ message }}
       <input v-model="email" type="text" placeholder="email" class="c-textarea"> 
       <input v-model="password" type="password" placeholder="password" class="c-textarea"> 
       {{ error }}
@@ -26,6 +27,11 @@ export default {
       error: null,
       email: '',
       password: ''
+    }
+  },
+  props: {
+    'message': {
+      required: false
     }
   },
   components: {
