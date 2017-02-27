@@ -110,6 +110,14 @@ export default {
     'completeModal': completeModal,
     'messageModal': baseModal
   },
+  head: {
+    title: function () {
+      return {
+        inner: 'kanjisama',
+        complement: 'review'
+      }
+    }
+  },
   created () {
     this.getReviewDeck()
     window.eventHub.$on('completeCard', this.completeCard)

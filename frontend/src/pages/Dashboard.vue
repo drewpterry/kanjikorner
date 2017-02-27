@@ -189,23 +189,29 @@ export default {
   components: {
     'lineChart': lineChart
   },
+  head: {
+    title: function () {
+      return {
+        inner: 'kanjisama',
+        complement: 'dashboard'
+      }
+    },
+    script: [
+      { type: 'text/javascript', src: 'https://code.jquery.com/jquery-2.2.4.min.js' }
+    ]
+  },
   created () {
     this.getReviewDeck()
-    // this.getUserProfile()
     this.getReviewData()
     this.getAnalyticsData()
     this.getChartData()
     // TODO hack - this inserts jquery and slick carousel into this page for carousel animation - will switch to pure javascript alternative
-    var elTow = document.createElement('script')
-    elTow.setAttribute('type', 'text/javascript')
-    elTow.setAttribute('src', 'https://code.jquery.com/jquery-2.2.4.min.js')
-    document.getElementsByTagName('head')[0].appendChild(elTow)
     setTimeout(function () {
       var el = document.createElement('script')
       el.setAttribute('type', 'text/javascript')
       el.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js')
       document.getElementsByTagName('head')[0].appendChild(el)
-    }, 1000)
+    }, 500)
   },
   methods: {
     setSlick () {
@@ -243,7 +249,7 @@ export default {
         var self = this
         setTimeout(function () {
           self.setSlick()
-        }, 2000)
+        }, 1000)
       }, error => {
         if (error) {
           this.errors = 'Could not fetch deck from server!'

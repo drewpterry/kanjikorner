@@ -16,7 +16,6 @@ router.register(r'word-meanings', api_views.WordMeaningsViewSet)
 router.register(r'known-words', api_views.KnownWordsViewSet)
 
 admin.autodiscover()
-
 urlpatterns = [ 
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
 #namespace specifies exactly where url is coming from - inluded on index page
