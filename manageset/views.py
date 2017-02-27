@@ -61,7 +61,6 @@ def get_analytics_data(request):
     todays_log = AnalyticsLog.objects.get_or_create(request.user)
     serializer = AnalyticsLogSerializer(todays_log)
     data = serializer.data
-    print data
     return Response(data)
 
 @api_view(['GET'])
