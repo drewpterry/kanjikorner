@@ -6,9 +6,6 @@ from admin_data_collection import views as admin_data_collection_views
 from django.contrib import admin
 from allauth.account.views import confirm_email as allauthemailconfirmation
 from rest_framework import routers
-from django.conf.urls import (
-    handler400, handler403, handler404, handler500
-)
 
 router = routers.DefaultRouter()
 router.register(r'users', api_views.UserViewSet)
@@ -19,7 +16,6 @@ router.register(r'word-meanings', api_views.WordMeaningsViewSet)
 router.register(r'known-words', api_views.KnownWordsViewSet)
 
 admin.autodiscover()
-handler404 = 'manageset_views.index'
 urlpatterns = [ 
 #url takes four arguments - regex (searches for matching term), view, kwargs, name (naming urls)
 #namespace specifies exactly where url is coming from - inluded on index page

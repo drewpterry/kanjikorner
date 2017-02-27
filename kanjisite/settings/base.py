@@ -86,7 +86,6 @@ SITE_ID = 1
 ENDLESS_PAGINATION_LOADING = """<img src= '/static/manageset/ajax-loader.gif' alt="loading" />"""
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_FILE_PATH = '/tmp/app-messages'
 SITE_ID = 1
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
