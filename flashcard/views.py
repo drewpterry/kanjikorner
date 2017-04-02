@@ -28,14 +28,14 @@ def get_review_deck(request, level, sub_level):
 def review_deck_complete(request):
     data = json.loads(request.body)
     profile = request.user.userprofile
-    todays_log = AnalyticsLog.objects.get_or_create(request.user)
-    todays_log.update_on_stack_complete()
-    todays_log.save()
 
     # record words reviewed in deck and add them to queue
     stack_id = data.get('stack_id') 
     user_set = UserSets.objects.get(sets_fk = stack_id, user_profile_fk = profile)
     if not user_set.completion_status:
+        todays_log = AnalyticsLog.objects.get_or_create(request.user)
+        todays_log.update_on_stack_complete()
+        todays_log.save()
         user_set.completion_status = True
         user_set.save()
         deck = Sets.objects.get(id = stack_id)
