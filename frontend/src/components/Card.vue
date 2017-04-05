@@ -117,7 +117,6 @@ export default {
           self.showNewCard()
         }, 400)
       } else {
-        console.log('complete')
         window.eventHub.$emit('deckComplete')
       }
     },
@@ -133,12 +132,10 @@ export default {
       if (this.checkAnswer()) {
         this.answerStatus = 'correct'
         if (this.answer_type === 'reading') {
-          console.log('correct and reading')
         } else {
           window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           // consider making nextCard time as being an argument
           self.nextCard(this.bothAnswerCorrect)
-          console.log('correct and meanings')
         }
         setTimeout(function () {
           self.answerStatus = ''
@@ -156,13 +153,11 @@ export default {
           self.setAnswerType()
         }, 2000)
         if (this.answer_type === 'reading') {
-          console.log('wrong and reading')
         } else {
           window.eventHub.$emit('completeCard', this.currentIndex, this.bothAnswerCorrect)
           setTimeout(function () {
             self.nextCard(this.bothAnswerCorrect)
           }, 2500)
-          console.log('wrong and meaning')
         }
       }
       // determine what to do if both meaning and reading have been answered

@@ -12,7 +12,7 @@
       <counterRatio v-if="initialFetchComplete" :initialDenominator="reviewDeck.words.length"></counterRatio>
     </div>
     <transition name="modal">
-      <completeModal v-if="showCompleteModal" v-bind:words ="reviewDeckOriginal.words" @close="showCompleteModal = false">
+      <completeModal v-if="showCompleteModal" v-bind:words ="reviewDeck.words" @close="showCompleteModal = false">
       </completeModal>
     </transition>
     <transition name="modal">
@@ -78,6 +78,7 @@
  
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -95,6 +96,7 @@ export default {
       deckId: '',
       msg: 'The route works',
       reviewDeck: [],
+      reviewDeckLength: 5,
       reviewDeckOriginal: [],
       currentCardIndex: 0,
       currentWord: '',
@@ -148,6 +150,7 @@ export default {
       })
     },
     completeCard: function (arrayIndex, bothCorrect) {
+      console.log(this.reviewDeckOriginal.words)
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
@@ -176,7 +179,10 @@ export default {
         window.eventHub.$emit('reset')
         this.currentCardIndex = 0
         this.setCurrentWord(this.currentCardIndex)
-        this.reviewDeck = this.reviewDeckOriginal
+        let incorrectCount = this.reviewDeckLength - this.reviewDeck.words.length
+        if (incorrectCount > 0) {
+          this.reviewDeck.words.splice(incorrectCount)
+        }
         this.secondReview = true
         this.showMessage = true
       }

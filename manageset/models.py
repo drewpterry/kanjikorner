@@ -127,7 +127,7 @@ class UserSets(models.Model):
     user_profile_fk = models.ForeignKey(UserProfile)
     completion_status  = models.BooleanField(default = False)
     creation_time = models.DateTimeField("creation_time", auto_now_add=True)
-        
+
 class AnalyticsLogManager(models.Manager):
     # overriding native analyticsLog get_or_create method
     def get_or_create(self, user):

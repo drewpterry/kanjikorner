@@ -4,8 +4,6 @@ export default {
     var formattedString = ''
     var arrayLen = array.length
     array.forEach(function (string, i) {
-      console.log(array.length)
-      console.log(i)
       formattedString += i < arrayLen - 1 ? string + ', ' : string
     })
     return formattedString

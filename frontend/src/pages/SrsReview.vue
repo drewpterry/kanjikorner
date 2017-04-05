@@ -23,7 +23,7 @@
             <div slot="footer">
               <router-link to="/dashboard">
                 <div class="btn btn-green">Dashboard</div>
-              </router>
+              </router-link>
             </div>
           </completeModal>
         </transition>
