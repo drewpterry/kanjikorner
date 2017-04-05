@@ -31,7 +31,7 @@
         <div class="col-md-2">
           <router-link to="/dashboard">
             <p class="gray-btn text-left">Dashboard</p>
-          </router>
+          </router-link>
         </div>
         <div class="col-md-3 col-md-offset-7 text-right">
           <div class="btn btn-green">Next Review</div>
