@@ -303,7 +303,7 @@ class SentenceOwner(models.Model):
 class Sentence(models.Model):
     japanese_sentence = models.TextField(null=True)
     english_sentence = models.TextField(null=True)
-    words = models.ManyToManyField(Words)
+    words = models.ManyToManyField(Words, related_name='word_sentence')
     sentence_owner = models.ForeignKey(SentenceOwner, null=True)
     date_added = models.DateTimeField(auto_now_add = True)
     last_modified = models.DateTimeField(auto_now = True)

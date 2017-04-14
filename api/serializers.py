@@ -28,16 +28,20 @@ class WordMeaningsSerializer(serializers.ModelSerializer):
         model = WordMeanings 
         fields = ('meaning',)
 
+class SentenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sentence 
+        fields = ('japanese_sentence', 'english_sentence')
+
 class WordsSerializer(serializers.ModelSerializer):
-    # kanji = serializers.StringRelatedField(many=True)
-    # kanji_two = KanjiSerializer(read_only=True, many=True)
     kanji = KanjiSerializer(read_only=True, many=True)
+    sentence = SentenceSerializer(source='word_sentence', read_only=True, many=True)
     meanings = WordMeaningsSerializer(source='the_meanings', read_only=True, many=True)
     pos = WordPosSerializer(source='thepos', read_only=True, many=True)
     
     class Meta:
         model = Words 
-        fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order')
+        fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order', 'sentence')
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):
     words = WordsSerializer(many=True, read_only=True)
