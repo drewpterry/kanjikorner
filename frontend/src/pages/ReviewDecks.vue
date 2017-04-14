@@ -67,8 +67,11 @@
         <p class="gray-title">Meanings:</p>
         <p class="simple-text">{{ meaningsText }}</p><br>
         <p class="gray-title">Sentences:</p><br>
-        <p class="simple-text">1. Nam dapibus nisl vitae elit fringilla rutrum.</p><br><br>
-        <p class="simple-text">2. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl.</p>
+          <div v-for="(sentence, index) in currentWord.sentence">
+            <p class="simple-text">{{ index + 1 }}. {{ sentence.japanese_sentence }}</p>
+            <p class="simple-text">{{ sentence.english_sentence }}</p>
+            <br>
+          </div>
       </div>
       <div class="col-md-4">
         <p class="red-title">The good stuff</p>
