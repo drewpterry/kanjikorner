@@ -8,7 +8,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'username', 'email', 'groups')
 
-
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
@@ -19,13 +18,20 @@ class WordPosSerializer(serializers.ModelSerializer):
         model = WordPos
         fields = ('pos',)
 
+class KanjiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Kanji 
+        fields = ('kanji_name', 'kanji_meaning',)
+
 class WordMeaningsSerializer(serializers.ModelSerializer):
     class Meta:
         model = WordMeanings 
         fields = ('meaning',)
 
 class WordsSerializer(serializers.ModelSerializer):
-    kanji = serializers.StringRelatedField(many=True)
+    # kanji = serializers.StringRelatedField(many=True)
+    # kanji_two = KanjiSerializer(read_only=True, many=True)
+    kanji = KanjiSerializer(read_only=True, many=True)
     meanings = WordMeaningsSerializer(source='the_meanings', read_only=True, many=True)
     pos = WordPosSerializer(source='thepos', read_only=True, many=True)
     

@@ -54,8 +54,10 @@
           </div>
           <div v-for="kanji in currentWord.kanji" class="col-md-3">
             <div class="panel text-center">
-              {{ kanji }} 
-              <p class="gray-title">big</p>
+              {{ kanji.kanji_name }} 
+              <p class="gray-title">
+                {{ kanji.kanji_meaning }}
+              </p>
             </div>
           </div>
         </div>
