@@ -41,13 +41,28 @@ class WordsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Words 
-        fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order', 'sentence')
+        fields = (
+                'real_word',
+                'meanings',
+                'kanji',
+                'hiragana',
+                'pos',
+                'master_order',
+                'sentence'
+                )
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):
     words = WordsSerializer(many=True, read_only=True)
     class Meta:
         model = Sets 
-        fields = ('id', 'name', 'level', 'sub_level', 'words', 'master_order')
+        fields = (
+                'id',
+                'name',
+                'level',
+                'sub_level',
+                'words',
+                'master_order'
+                )
 
 class SetsSerializerWithoutWords(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -71,12 +86,29 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     percent_correct = serializers.ReadOnlyField()
     class Meta:
         model = UserProfile 
-        fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day', 'total_reviews_ever', 'percent_correct')
+        fields = (
+                'id',
+                'number_words_practiced_today',
+                'most_words_practiced_in_day',
+                'total_reviews_ever',
+                'percent_correct'
+                )
 
 class AnalyticsLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnalyticsLog 
         progress_percent = serializers.ReadOnlyField()
         percent_correct = serializers.ReadOnlyField()
-        fields = ('words_studied_count', 'words_studied_count_today', 'words_completed_count', 'words_reviewed_count', 'words_reviewed_count_today', 'kanji_studied_count', 'kanji_completed_count', 'last_modified', 'progress_percent', 'percent_correct')
+        fields = (
+                'words_studied_count',
+                'words_studied_count_today',
+                'words_completed_count',
+                'words_reviewed_count',
+                'words_reviewed_count_today',
+                'kanji_studied_count',
+                'kanji_completed_count',
+                'last_modified',
+                'progress_percent',
+                'percent_correct'
+                )
         
