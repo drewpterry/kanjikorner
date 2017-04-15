@@ -24,6 +24,8 @@ class Kanji(models.Model):
     news_frequency = models.FloatField(null = True)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
     master_order = models.IntegerField(null = True)
+    order_from_words = models.IntegerField(null = True)
+
 
     def __unicode__(self):
         return self.kanji_name
