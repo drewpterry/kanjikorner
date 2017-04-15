@@ -33,8 +33,14 @@ class SentenceSerializer(serializers.ModelSerializer):
         model = Sentence 
         fields = ('japanese_sentence', 'english_sentence')
 
+class WordQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WordQuestion 
+        fields = ('question', 'answer')
+
 class WordsSerializer(serializers.ModelSerializer):
     kanji = KanjiSerializer(read_only=True, many=True)
+    question = WordQuestionSerializer(source='word_question', read_only=True, many=True)
     sentence = SentenceSerializer(source='word_sentence', read_only=True, many=True)
     meanings = WordMeaningsSerializer(source='the_meanings', read_only=True, many=True)
     pos = WordPosSerializer(source='thepos', read_only=True, many=True)
@@ -48,7 +54,8 @@ class WordsSerializer(serializers.ModelSerializer):
                 'hiragana',
                 'pos',
                 'master_order',
-                'sentence'
+                'sentence',
+                'question'
                 )
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):

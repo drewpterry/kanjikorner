@@ -90,7 +90,8 @@ class WordsAdmin(ImportExportModelAdmin):
             'published',
             'duplicate_word',
             'master_order',
-            'kanji'
+            # if used it will load all kanji onto the page which takes forever
+            # 'kanji'
             )
     list_filter = ('published',)
     inlines = [

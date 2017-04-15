@@ -67,18 +67,19 @@
         <p class="gray-title">Meanings:</p>
         <p class="simple-text">{{ meaningsText }}</p><br>
         <p class="gray-title">Sentences:</p><br>
-          <div v-for="(sentence, index) in currentWord.sentence">
-            <p class="simple-text">{{ index + 1 }}. {{ sentence.japanese_sentence }}</p>
-            <p class="simple-text">{{ sentence.english_sentence }}</p>
-            <br>
-          </div>
+        <div v-for="(sentence, index) in currentWord.sentence">
+          <p class="simple-text">{{ index + 1 }}. {{ sentence.japanese_sentence }}</p>
+          <p class="simple-text">{{ sentence.english_sentence }}</p>
+          <br>
+        </div>
       </div>
       <div class="col-md-4">
-        <p class="red-title">The good stuff</p>
-        <p class="lesson__question">When most frequently heard?</p>
-        <p class="simple-text">Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec.</p><br>
-        <p class="lesson__question">When not to use?</p>
-        <p class="simple-text">Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec.</p>
+        <p class="red-title">Explanation</p>
+        <div v-for="question in currentWord.question">
+          <p class="lesson__question">{{ question.question }}</p>
+          <p v-html="question.answer" class="simple-text">{{ question.answer}}</p>
+          <br>
+        </div>
       </div>
  
     </div>
@@ -94,7 +95,7 @@ import counterRatio from '../components/counterRatio.vue'
 import completeModal from '../components/deckReviewCompleteModal.vue'
 import baseModal from '../components/modalBase.vue'
 export default {
-  name: 'me',
+  name: 'ReviewDeck',
   data () {
     return {
       initialFetchComplete: false,

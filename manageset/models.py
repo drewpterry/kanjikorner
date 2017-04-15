@@ -314,6 +314,6 @@ class Sentence(models.Model):
     in_production = models.BooleanField(default = False)
 
 class WordQuestion(models.Model):
-    words = models.ForeignKey(Words)
+    words = models.ForeignKey(Words, related_name='word_question')
     question = models.TextField()
     answer = models.TextField()
