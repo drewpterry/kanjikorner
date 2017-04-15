@@ -1,4 +1,4 @@
-from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets, AnalyticsLog
+from manageset.models import UserProfile, Sets, Words, Kanji, KnownWords, UserSets, AnalyticsLog, KnownKanji
 from manageset.utils import * 
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -35,7 +35,7 @@ def review_deck_complete(request):
     if not user_set.completion_status:
         todays_log = AnalyticsLog.objects.get_or_create(request.user)
         todays_log.update_on_stack_complete()
-        todays_log.save()
+
         user_set.completion_status = True
         user_set.save()
         deck = Sets.objects.get(id = stack_id)
@@ -46,6 +46,21 @@ def review_deck_complete(request):
             new_word.set_initial_level()
             words_to_add.append(new_word)
         KnownWords.objects.bulk_create(words_to_add)
+
+        kanjis = deck.kanji.all()
+        print "HELLO" 
+        print kanjis
+        kanji_to_add = []
+        for kanji in kanjis:
+            print kanji
+            new_kanji = KnownKanji(kanji_fk = kanji, user_profile_fk = profile)
+            kanji_to_add.append(new_kanji)
+        KnownKanji.objects.bulk_create(kanji_to_add)
+        
+        todays_log.update_kanji_studied(len(kanji_to_add))
+        print todays_log.kanji_studied_count_today
+
+        todays_log.save()
 
     return Response(status=status.HTTP_200_OK)
 

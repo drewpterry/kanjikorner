@@ -156,7 +156,6 @@ export default {
       })
     },
     completeCard: function (arrayIndex, bothCorrect) {
-      console.log(this.reviewDeckOriginal.words)
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
@@ -185,9 +184,9 @@ export default {
         window.eventHub.$emit('reset')
         this.currentCardIndex = 0
         this.setCurrentWord(this.currentCardIndex)
-        let incorrectCount = this.reviewDeckLength - this.reviewDeck.words.length
+        let incorrectCount = this.reviewDeck.words.length - this.reviewDeckLength
         if (incorrectCount > 0) {
-          this.reviewDeck.words.splice(incorrectCount)
+          this.reviewDeck.words.splice(-incorrectCount)
         }
         this.secondReview = true
         this.showMessage = true
@@ -211,7 +210,6 @@ export default {
       this.currentWord.meanings.forEach(function (object) {
         arrayPos.push(object.meaning)
       })
-      // return 'weee'
       return helper.arrayToCommaSeperatedString(arrayPos)
     }
   }

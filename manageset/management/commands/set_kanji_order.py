@@ -24,6 +24,10 @@ class Command(BaseCommand):
                         kanji_arr.append(kanji)
                         kanji.order_from_words = count 
                         kanji.save()
+
+                        # add kanji relation to set
+                        each_set.kanji.clear()
+                        each_set.kanji.add(kanji)
         return
 
     def _clear_kanji_order_from_words(self):

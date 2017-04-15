@@ -202,6 +202,10 @@ class AnalyticsLog(models.Model):
         self.words_studied_count += 5
         self.words_studied_count_today += 5
 
+    def update_kanji_studied(self, amount):
+        self.kanji_studied_count += amount 
+        self.kanji_studied_count_today += amount 
+
     def update_words_reviewed(self):
         self.words_reviewed_count += 1 
         self.words_reviewed_count_today += 1 
@@ -231,7 +235,9 @@ class KnownKanji(models.Model):
     kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
+    #old field not deleting because still has use for old kanji and original order
     user_profile = models.ManyToManyField(UserProfile)
+    user_profile_fk = models.ForeignKey(UserProfile, null = True, related_name = "user_profile_fk")
     
     def __unicode__(self):
         return unicode(self.kanji)
