@@ -36,7 +36,7 @@ class Words(models.Model):
     frequency_two = models.IntegerField(db_index = True, null = True, blank = True)
     combined_frequency = models.IntegerField(db_index = True, null = True, blank = True)
     frequency_thousand = models.IntegerField(db_index = True, null = True, blank = True)
-    part_of_speech = models.CharField(max_length = 200, null = True)
+    part_of_speech = models.CharField(max_length = 200, null = True, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)
     published = models.BooleanField(default = True)
@@ -312,3 +312,8 @@ class Sentence(models.Model):
     comment_exists = models.BooleanField(default = False)
     audio = models.URLField(max_length=200, null=True)
     in_production = models.BooleanField(default = False)
+
+class WordQuestion(models.Model):
+    words = models.ForeignKey(Words)
+    question = models.TextField()
+    answer = models.TextField()

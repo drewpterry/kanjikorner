@@ -1,5 +1,5 @@
 from django.contrib import admin
-from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings, Sentence
+from manageset.models import Sets, Words, UserProfile, Kanji, WordMeanings, Sentence, WordQuestion
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from import_export import resources
@@ -24,6 +24,9 @@ class SetsAdmin(admin.ModelAdmin):
 class MeaningsInline(admin.TabularInline):
     model = WordMeanings
 
+class WordQuestionInline(admin.TabularInline):
+    model = WordQuestion
+
 class WordsResource(resources.ModelResource):
 
     class Meta:
@@ -36,6 +39,7 @@ class WordsAdmin(ImportExportModelAdmin):
     list_filter = ('published',)
     inlines = [
         MeaningsInline,
+        WordQuestionInline,
     ]
     search_fields = ['real_word', 'meaning', 'hiragana']
     ordering = ['-combined_frequency']
@@ -46,7 +50,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     fields = ('user', 'user_sets', 'most_words_practiced_in_day')   
 
 class KanjiResource(resources.ModelResource):
-
     class Meta:
         model = Kanji
 
@@ -62,12 +65,10 @@ class KanjiAdmin(ImportExportModelAdmin):
 
 
 class SentenceResource(resources.ModelResource):
-
     class Meta:
         model = Sentence
 
 class SentenceAdmin(ImportExportModelAdmin):
-
     def get_owner(self, obj):
         return obj.sentence_owner.name
 
