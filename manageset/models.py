@@ -24,6 +24,8 @@ class Kanji(models.Model):
     news_frequency = models.FloatField(null = True)
     date_added = models.DateTimeField(auto_now_add = True, null = True)
     master_order = models.IntegerField(null = True)
+    order_from_words = models.IntegerField(null = True)
+
 
     def __unicode__(self):
         return self.kanji_name
@@ -36,7 +38,7 @@ class Words(models.Model):
     frequency_two = models.IntegerField(db_index = True, null = True, blank = True)
     combined_frequency = models.IntegerField(db_index = True, null = True, blank = True)
     frequency_thousand = models.IntegerField(db_index = True, null = True, blank = True)
-    part_of_speech = models.CharField(max_length = 200, null = True)
+    part_of_speech = models.CharField(max_length = 200, null = True, blank = True)
     kanji = models.ManyToManyField(Kanji, blank = True)
     duplicate_word = models.BooleanField(default = False)
     published = models.BooleanField(default = True)
@@ -200,6 +202,10 @@ class AnalyticsLog(models.Model):
         self.words_studied_count += 5
         self.words_studied_count_today += 5
 
+    def update_kanji_studied(self, amount):
+        self.kanji_studied_count += amount 
+        self.kanji_studied_count_today += amount 
+
     def update_words_reviewed(self):
         self.words_reviewed_count += 1 
         self.words_reviewed_count_today += 1 
@@ -229,7 +235,9 @@ class KnownKanji(models.Model):
     kanji_fk =  models.ForeignKey(Kanji, related_name = "kanji_fk", null = True)
     date_added = models.DateTimeField(auto_now_add = True)
     selected_kanji = models.BooleanField(default = False)
+    #old field not deleting because still has use for old kanji and original order
     user_profile = models.ManyToManyField(UserProfile)
+    user_profile_fk = models.ForeignKey(UserProfile, null = True, related_name = "user_profile_fk")
     
     def __unicode__(self):
         return unicode(self.kanji)
@@ -303,7 +311,7 @@ class SentenceOwner(models.Model):
 class Sentence(models.Model):
     japanese_sentence = models.TextField(null=True)
     english_sentence = models.TextField(null=True)
-    words = models.ManyToManyField(Words)
+    words = models.ManyToManyField(Words, related_name='word_sentence')
     sentence_owner = models.ForeignKey(SentenceOwner, null=True)
     date_added = models.DateTimeField(auto_now_add = True)
     last_modified = models.DateTimeField(auto_now = True)
@@ -312,3 +320,8 @@ class Sentence(models.Model):
     comment_exists = models.BooleanField(default = False)
     audio = models.URLField(max_length=200, null=True)
     in_production = models.BooleanField(default = False)
+
+class WordQuestion(models.Model):
+    words = models.ForeignKey(Words, related_name='word_question')
+    question = models.TextField()
+    answer = models.TextField()

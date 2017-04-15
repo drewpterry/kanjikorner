@@ -190,15 +190,16 @@ export default {
       if (this.answer_type === 'reading') {
         return this.inputIME.value === this.back
       } else {
-        return this.checkDefinitions()
+        return this.checkDefinitions(this.currentMeanings, this.inputIME.value)
       }
     },
-    checkDefinitions: function () {
+    checkDefinitions: function (definitions, userAnswer) {
       var answerCorrect = false
-      var submittedAnswer = this.inputIME.value
-      // consider using normal for iterator so that you can use break statement
-      this.currentMeanings.forEach(function (def, i) {
-        var lettersOff = helper.getLevenshtein(submittedAnswer, def)
+      var cleanedAnswer = userAnswer.toLowerCase()
+      definitions.forEach(function (def, i) {
+        // strip out parentheses and text within
+        var cleanedDef = def.replace(/ *\([^)]*\) */g, '')
+        var lettersOff = helper.getLevenshtein(cleanedAnswer, cleanedDef)
         var percentIncorrect = lettersOff / def.length
         if (percentIncorrect < 0.33) {
           answerCorrect = true

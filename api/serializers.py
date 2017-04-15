@@ -8,7 +8,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'username', 'email', 'groups')
 
-
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
@@ -19,25 +18,58 @@ class WordPosSerializer(serializers.ModelSerializer):
         model = WordPos
         fields = ('pos',)
 
+class KanjiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Kanji 
+        fields = ('kanji_name', 'kanji_meaning',)
+
 class WordMeaningsSerializer(serializers.ModelSerializer):
     class Meta:
         model = WordMeanings 
         fields = ('meaning',)
 
+class SentenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sentence 
+        fields = ('japanese_sentence', 'english_sentence')
+
+class WordQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WordQuestion 
+        fields = ('question', 'answer')
+
 class WordsSerializer(serializers.ModelSerializer):
-    kanji = serializers.StringRelatedField(many=True)
+    kanji = KanjiSerializer(read_only=True, many=True)
+    question = WordQuestionSerializer(source='word_question', read_only=True, many=True)
+    sentence = SentenceSerializer(source='word_sentence', read_only=True, many=True)
     meanings = WordMeaningsSerializer(source='the_meanings', read_only=True, many=True)
     pos = WordPosSerializer(source='thepos', read_only=True, many=True)
     
     class Meta:
         model = Words 
-        fields = ('real_word', 'meanings', 'kanji', 'hiragana', 'pos', 'master_order')
+        fields = (
+                'real_word',
+                'meanings',
+                'kanji',
+                'hiragana',
+                'pos',
+                'master_order',
+                'sentence',
+                'question'
+                )
 
 class SetsSerializer(serializers.HyperlinkedModelSerializer):
     words = WordsSerializer(many=True, read_only=True)
     class Meta:
         model = Sets 
-        fields = ('id', 'name', 'level', 'sub_level', 'words', 'master_order')
+        fields = (
+                'id',
+                'name',
+                'level',
+                'sub_level',
+                'words',
+                'master_order'
+                )
 
 class SetsSerializerWithoutWords(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -61,12 +93,29 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     percent_correct = serializers.ReadOnlyField()
     class Meta:
         model = UserProfile 
-        fields = ('id', 'number_words_practiced_today', 'most_words_practiced_in_day', 'total_reviews_ever', 'percent_correct')
+        fields = (
+                'id',
+                'number_words_practiced_today',
+                'most_words_practiced_in_day',
+                'total_reviews_ever',
+                'percent_correct'
+                )
 
 class AnalyticsLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnalyticsLog 
         progress_percent = serializers.ReadOnlyField()
         percent_correct = serializers.ReadOnlyField()
-        fields = ('words_studied_count', 'words_studied_count_today', 'words_completed_count', 'words_reviewed_count', 'words_reviewed_count_today', 'kanji_studied_count', 'kanji_completed_count', 'last_modified', 'progress_percent', 'percent_correct')
+        fields = (
+                'words_studied_count',
+                'words_studied_count_today',
+                'words_completed_count',
+                'words_reviewed_count',
+                'words_reviewed_count_today',
+                'kanji_studied_count',
+                'kanji_completed_count',
+                'last_modified',
+                'progress_percent',
+                'percent_correct'
+                )
         

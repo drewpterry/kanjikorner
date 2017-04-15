@@ -54,8 +54,10 @@
           </div>
           <div v-for="kanji in currentWord.kanji" class="col-md-3">
             <div class="panel text-center">
-              {{ kanji }} 
-              <p class="gray-title">big</p>
+              {{ kanji.kanji_name }} 
+              <p class="gray-title">
+                {{ kanji.kanji_meaning }}
+              </p>
             </div>
           </div>
         </div>
@@ -65,15 +67,19 @@
         <p class="gray-title">Meanings:</p>
         <p class="simple-text">{{ meaningsText }}</p><br>
         <p class="gray-title">Sentences:</p><br>
-        <p class="simple-text">1. Nam dapibus nisl vitae elit fringilla rutrum.</p><br><br>
-        <p class="simple-text">2. Aenean sollicitudin, erat a elementum rutrum, neque sem pretium metus, quis mollis nisl.</p>
+        <div v-for="(sentence, index) in currentWord.sentence">
+          <p class="simple-text">{{ index + 1 }}. {{ sentence.japanese_sentence }}</p>
+          <p class="simple-text">{{ sentence.english_sentence }}</p>
+          <br>
+        </div>
       </div>
       <div class="col-md-4">
-        <p class="red-title">The good stuff</p>
-        <p class="lesson__question">When most frequently heard?</p>
-        <p class="simple-text">Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec.</p><br>
-        <p class="lesson__question">When not to use?</p>
-        <p class="simple-text">Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec.</p>
+        <p class="red-title">Explanation</p>
+        <div v-for="question in currentWord.question">
+          <p class="lesson__question">{{ question.question }}</p>
+          <p v-html="question.answer" class="simple-text">{{ question.answer}}</p>
+          <br>
+        </div>
       </div>
  
     </div>
@@ -89,7 +95,7 @@ import counterRatio from '../components/counterRatio.vue'
 import completeModal from '../components/deckReviewCompleteModal.vue'
 import baseModal from '../components/modalBase.vue'
 export default {
-  name: 'me',
+  name: 'ReviewDeck',
   data () {
     return {
       initialFetchComplete: false,
@@ -150,7 +156,6 @@ export default {
       })
     },
     completeCard: function (arrayIndex, bothCorrect) {
-      console.log(this.reviewDeckOriginal.words)
       if (bothCorrect) {
         window.eventHub.$emit('increment')
       } else {
@@ -179,9 +184,9 @@ export default {
         window.eventHub.$emit('reset')
         this.currentCardIndex = 0
         this.setCurrentWord(this.currentCardIndex)
-        let incorrectCount = this.reviewDeckLength - this.reviewDeck.words.length
+        let incorrectCount = this.reviewDeck.words.length - this.reviewDeckLength
         if (incorrectCount > 0) {
-          this.reviewDeck.words.splice(incorrectCount)
+          this.reviewDeck.words.splice(-incorrectCount)
         }
         this.secondReview = true
         this.showMessage = true
@@ -205,7 +210,6 @@ export default {
       this.currentWord.meanings.forEach(function (object) {
         arrayPos.push(object.meaning)
       })
-      // return 'weee'
       return helper.arrayToCommaSeperatedString(arrayPos)
     }
   }
