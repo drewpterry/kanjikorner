@@ -23,3 +23,11 @@ def update_word_queue(user):
                 
         words.update(last_practiced = now, time_until_review = F('time_until_review') - difference)
     return
+
+def create_percentage(numerator, denominator, decimal_places):
+    if numerator and denominator:
+        percent = 100 * (numerator / denominator)
+        percent = round(percent, decimal_places)
+    else:
+        percent = 0
+    return percent
