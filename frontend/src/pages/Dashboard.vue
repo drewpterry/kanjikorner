@@ -98,11 +98,11 @@
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Word Progress</p>
-            <p class="graph-stat__number">{{ analyticsData.progress_percent }}<sup>%</sup></p>
+            <p class="graph-stat__number">{{ analyticsData.word_progress_percent }}<sup>%</sup></p>
           </div>
           <div class="graph-stat">
             <p class="graph-stat__text">Kanji Progress</p>
-            <p class="graph-stat__number">coming soon</p>
+            <p class="graph-stat__number">{{ analyticsData.kanji_studied_count }} / {{ analyticsData.total_kanji_to_study_count }}</p>
           </div>
         </div>
       </div>

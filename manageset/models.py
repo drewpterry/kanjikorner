@@ -7,6 +7,7 @@ import random
 from datetime import datetime, timedelta, time, date
 from django.utils import timezone
 import copy
+# from utils import create_percentage 
 
 class Kanji(models.Model):
     kanji_name = models.CharField(max_length = 50)
@@ -140,24 +141,24 @@ class AnalyticsLogManager(models.Manager):
             user_analytics_log  = AnalyticsLog.objects.filter(user_profile = user.userprofile, last_modified__lt = date.today())
             if user_analytics_log.exists():
                 most_recent_log = user_analytics_log.latest('last_modified')
-                self.__fill_in_missing_analytics_logs(most_recent_log)
-                todays_log= self.__new_log_copy(most_recent_log)
+                self._fill_in_missing_analytics_logs(most_recent_log)
+                todays_log= self._new_log_copy(most_recent_log)
                 todays_log.save()
             else:
                 todays_log = AnalyticsLog.objects.create(user_profile = user.userprofile, last_modified  = date.today())
         return todays_log
 
-    def __fill_in_missing_analytics_logs(self, most_recent_log):
+    def _fill_in_missing_analytics_logs(self, most_recent_log):
         x = 1
         new_day = most_recent_log.last_modified + timedelta(days=x)
         while new_day != date.today():
-            new_log = self.__new_log_copy(most_recent_log)
+            new_log = self._new_log_copy(most_recent_log)
             new_log.last_modified = new_day 
             new_log.save()
             x += 1
             new_day = most_recent_log.last_modified + timedelta(days=x)
 
-    def __new_log_copy(self, log):
+    def _new_log_copy(self, log):
         log_copy = copy.copy(log)
         log_copy.pk = None
         log_copy.reset_daily_values() 
@@ -185,18 +186,29 @@ class AnalyticsLog(models.Model):
             self.total_incorrect_reviews += 1
         return
 
-    def percent_correct(self):
-        if self.words_reviewed_count == 0:
-            return 0
-        percent_correct = 100 * (self.total_correct_reviews / self.words_reviewed_count)
-        percent_correct = round(percent_correct, 1)
-        return percent_correct 
+# move into utilities file
+    def create_percentage(self, numerator, denominator, decimal_places):
+        if numerator and denominator:
+            percent = 100 * (numerator / denominator)
+            percent = round(percent, decimal_places)
+        else:
+            percent = 0
+        return percent
 
-    def progress_percent(self):
+    def percent_correct(self):
+        return self.create_percentage(self.total_correct_reviews, self.words_reviewed_count, 1)
+
+    def word_progress_percent(self):
         master_word_count = Words.objects.filter(master_order__gt=0).count()
-        progress_percent = 100 * (self.words_studied_count / master_word_count)
-        progress_percent = round(progress_percent, 1)
-        return progress_percent 
+        return self.create_percentage(self.words_studied_count, master_word_count, 1)
+
+    def kanji_progress_percent(self):
+        master_kanji_count = Kanji.objects.filter(order_from_words__gt=0).count()
+        return self.create_percentage(self.kanji_studied_count, master_kanji_count, 1)
+
+    def total_kanji_to_study_count(self):
+        master_kanji_count = Kanji.objects.filter(order_from_words__gt=0).count()
+        return master_kanji_count 
 
     def update_on_stack_complete(self):
         self.words_studied_count += 5

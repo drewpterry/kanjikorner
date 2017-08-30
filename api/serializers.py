@@ -115,7 +115,9 @@ class AnalyticsLogSerializer(serializers.ModelSerializer):
                 'kanji_studied_count',
                 'kanji_completed_count',
                 'last_modified',
-                'progress_percent',
-                'percent_correct'
+                'word_progress_percent',
+                'percent_correct',
+                'total_kanji_to_study_count',
+                'kanji_progress_percent'
                 )
         
